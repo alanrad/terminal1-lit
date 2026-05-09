@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>t1-menu-item — T1 Component Library</title>
+    <link rel="stylesheet" href="/src/styles/theme.css" />
+    <script type="module" src="/src/components/t1-menu/index.ts"></script>
+    <script type="module" src="/src/components/t1-menu-item/index.ts"></script>
+    <script type="module" src="/src/components/t1-icon/index.ts"></script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: var(--t1-font-sans); background: var(--t1-color-neutral-50); color: var(--t1-color-neutral-900); min-height: 100vh; }
+      .topbar { background: var(--t1-color-neutral-0); border-bottom: 1px solid var(--t1-color-neutral-200); padding: var(--t1-spacing-medium) var(--t1-spacing-3x-large); display: flex; align-items: center; gap: var(--t1-spacing-medium); }
+      .topbar a { font-size: var(--t1-font-size-small); color: var(--t1-color-primary-600); text-decoration: none; }
+      .topbar a:hover { text-decoration: underline; }
+      .topbar-sep { color: var(--t1-color-neutral-300); }
+      .topbar h1 { font-size: var(--t1-font-size-large); font-weight: var(--t1-font-weight-semibold); }
+      .content { max-width: 800px; margin: 0 auto; padding: var(--t1-spacing-3x-large) var(--t1-spacing-large); display: flex; flex-direction: column; gap: var(--t1-spacing-3x-large); }
+      .section { display: flex; flex-direction: column; gap: var(--t1-spacing-medium); }
+      .section-title { font-size: var(--t1-font-size-large); font-weight: var(--t1-font-weight-semibold); color: var(--t1-color-neutral-900); padding-bottom: var(--t1-spacing-x-small); border-bottom: 1px solid var(--t1-color-neutral-200); }
+      .section-desc { font-size: var(--t1-font-size-small); color: var(--t1-color-neutral-500); line-height: var(--t1-line-height-dense); }
+      .demo-box { background: var(--t1-color-neutral-0); border: 1px solid var(--t1-color-neutral-200); border-radius: var(--t1-border-radius-large); padding: var(--t1-spacing-large); }
+      t1-menu { min-width: 220px; }
+      code { font-family: var(--t1-font-mono); font-size: var(--t1-font-size-x-small); background: var(--t1-color-neutral-100); padding: 0.1em 0.4em; border-radius: var(--t1-border-radius-small); color: var(--t1-color-neutral-700); }
+    </style>
+  </head>
+  <body>
+    <nav class="topbar">
+      <a href="/playground/components/">Home</a>
+      <span class="topbar-sep">/</span>
+      <h1>t1-menu-item</h1>
+    </nav>
+
+    <main class="content">
+      <section class="section">
+        <h2 class="section-title">Normal Items</h2>
+        <p class="section-desc">Default menu items with plain labels.</p>
+        <div class="demo-box">
+          <t1-menu>
+            <t1-menu-item value="item1">Item 1</t1-menu-item>
+            <t1-menu-item value="item2">Item 2</t1-menu-item>
+            <t1-menu-item value="item3">Item 3</t1-menu-item>
+          </t1-menu>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Checkbox Items</h2>
+        <p class="section-desc">Set <code>type="checkbox"</code> for toggle items. Use <code>checked</code> to mark as checked.</p>
+        <div class="demo-box">
+          <t1-menu>
+            <t1-menu-item type="checkbox" value="option1" checked>Option 1 (checked)</t1-menu-item>
+            <t1-menu-item type="checkbox" value="option2">Option 2</t1-menu-item>
+            <t1-menu-item type="checkbox" value="option3" checked>Option 3 (checked)</t1-menu-item>
+          </t1-menu>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Loading Items</h2>
+        <p class="section-desc">Set <code>loading</code> to show a spinner while waiting.</p>
+        <div class="demo-box">
+          <t1-menu>
+            <t1-menu-item value="normal">Normal</t1-menu-item>
+            <t1-menu-item value="loading" loading>Loading...</t1-menu-item>
+            <t1-menu-item value="another">Another</t1-menu-item>
+          </t1-menu>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Disabled Items</h2>
+        <p class="section-desc">Set <code>disabled</code> to prevent selection.</p>
+        <div class="demo-box">
+          <t1-menu>
+            <t1-menu-item value="available">Available</t1-menu-item>
+            <t1-menu-item value="disabled1" disabled>Disabled item</t1-menu-item>
+            <t1-menu-item value="another-available">Another available</t1-menu-item>
+            <t1-menu-item type="checkbox" value="disabled-check" disabled>Disabled checkbox</t1-menu-item>
+          </t1-menu>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">With Prefix & Suffix</h2>
+        <p class="section-desc">Use <code>slot="prefix"</code> and <code>slot="suffix"</code> for icons and badges.</p>
+        <div class="demo-box">
+          <t1-menu>
+            <t1-menu-item value="home">
+              <t1-icon slot="prefix" name="house"></t1-icon>
+              Home
+            </t1-menu-item>
+            <t1-menu-item value="profile">
+              <t1-icon slot="prefix" name="person"></t1-icon>
+              Profile
+            </t1-menu-item>
+            <t1-menu-item value="messages">
+              <t1-icon slot="prefix" name="envelope"></t1-icon>
+              Messages
+              <span slot="suffix" style="font-size: var(--t1-font-size-x-small); color: var(--t1-color-neutral-400);">12</span>
+            </t1-menu-item>
+            <t1-menu-item value="logout">
+              <t1-icon slot="prefix" name="box-arrow-right"></t1-icon>
+              Log out
+            </t1-menu-item>
+          </t1-menu>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

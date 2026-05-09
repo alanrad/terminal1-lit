@@ -58,6 +58,9 @@
 				max-width: 960px;
 				margin: 0 auto;
 				padding: var(--t1-spacing-3x-large) var(--t1-spacing-large);
+				display: flex;
+				flex-direction: column;
+				gap: var(--t1-spacing-3x-large);
 			}
 
 			.section-title {
@@ -71,11 +74,11 @@
 
 			.card-grid {
 				display: grid;
-				grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+				grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 				gap: var(--t1-spacing-medium);
 			}
 
-			.card {
+			.section-card {
 				display: flex;
 				flex-direction: column;
 				background: var(--t1-color-neutral-0);
@@ -89,49 +92,55 @@
 					border-color var(--t1-transition-fast);
 			}
 
-			.card:hover {
+			.section-card:hover {
 				border-color: var(--t1-color-primary-400);
 				box-shadow: var(--t1-shadow-medium);
 			}
 
-			.card-preview {
+			.section-card-preview {
 				background: var(--t1-color-neutral-50);
 				border-bottom: 1px solid var(--t1-color-neutral-100);
-				padding: var(--t1-spacing-2x-large);
+				padding: var(--t1-spacing-3x-large);
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				gap: var(--t1-spacing-small);
-				min-height: 120px;
+				gap: var(--t1-spacing-medium);
+				min-height: 160px;
+			}
+
+			.section-card-body {
+				padding: var(--t1-spacing-large);
+			}
+
+			.section-card-body h2 {
 				font-size: var(--t1-font-size-x-large);
-			}
-
-			.card-body {
-				padding: var(--t1-spacing-medium);
-			}
-
-			.card-body h2 {
-				font-size: var(--t1-font-size-large);
-				font-weight: var(--t1-font-weight-semibold);
+				font-weight: var(--t1-font-weight-bold);
 				color: var(--t1-color-neutral-900);
-				margin-bottom: var(--t1-spacing-3x-small);
+				margin-bottom: var(--t1-spacing-x-small);
 			}
 
-			.card-body p {
+			.section-card-body p {
 				font-size: var(--t1-font-size-small);
 				color: var(--t1-color-neutral-500);
 				line-height: var(--t1-line-height-dense);
 			}
 
-			.badge {
-				display: inline-block;
+			.count-pill {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.3em;
 				font-size: var(--t1-font-size-x-small);
 				font-weight: var(--t1-font-weight-semibold);
-				padding: 0.125rem 0.5rem;
+				padding: 0.2em 0.7em;
 				border-radius: var(--t1-border-radius-pill);
 				background: var(--t1-color-primary-100);
 				color: var(--t1-color-primary-700);
-				margin-bottom: var(--t1-spacing-x-small);
+				margin-top: var(--t1-spacing-small);
+			}
+
+			.count-pill-widgets {
+				background: var(--t1-color-warning-100);
+				color: var(--t1-color-warning-700);
 			}
 		</style>
 	</head>
@@ -149,620 +158,42 @@
 		</header>
 
 		<main class="main">
-			<p class="section-title">Components</p>
-			<div class="card-grid">
-				<a href="/playground/icon/" class="card">
-					<div class="card-preview">
-						<span style="color: var(--t1-color-primary-500)">&#9670;</span>
-						<span style="color: var(--t1-color-success-500)">&#9670;</span>
-						<span style="color: var(--t1-color-warning-500)">&#9670;</span>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-icon</span>
-						<h2>Icon</h2>
-						<p>
-							SVG icon component with library registration, custom sources, and
-							sprite sheet support.
-						</p>
-					</div>
-				</a>
+			<div>
+				<p class="section-title">Explore</p>
+				<div class="card-grid">
 
-				<a href="/playground/input/" class="card">
-					<div class="card-preview">
-						<div
-							style="
-								width: 180px;
-								height: 2.5rem;
-								border: 1px solid var(--t1-color-neutral-300);
-								border-radius: var(--t1-border-radius-medium);
-								background: white;
-								display: flex;
-								align-items: center;
-								padding: 0 0.75rem;
-								color: var(--t1-color-neutral-400);
-								font-size: var(--t1-font-size-small);
-							"
-						>
-							Enter text...
-						</div>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-input</span>
-						<h2>Input</h2>
-						<p>
-							Form-associated text input with labels, help text, clearable, and
-							password toggle.
-						</p>
-					</div>
-				</a>
-
-				<a href="/playground/badge/" class="card">
-					<div class="card-preview">
-						<span
-							style="
-								display: inline-block;
-								padding: 0.2em 0.6em;
-								border-radius: 999px;
-								background: var(--t1-color-primary-600);
-								color: white;
-								font-size: var(--t1-font-size-small);
-								font-weight: 600;
-							"
-							>New</span
-						>
-						<span
-							style="
-								display: inline-block;
-								padding: 0.2em 0.6em;
-								border-radius: 999px;
-								background: var(--t1-color-success-600);
-								color: white;
-								font-size: var(--t1-font-size-small);
-								font-weight: 600;
-							"
-							>Done</span
-						>
-						<span
-							style="
-								display: inline-block;
-								padding: 0.2em 0.6em;
-								border-radius: 999px;
-								background: var(--t1-color-danger-600);
-								color: white;
-								font-size: var(--t1-font-size-small);
-								font-weight: 600;
-							"
-							>3</span
-						>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-badge</span>
-						<h2>Badge</h2>
-						<p>
-							Small status and count indicators with multiple variants, pill
-							shape, and pulse animation.
-						</p>
-					</div>
-				</a>
-
-				<a href="/playground/spinner/" class="card">
-					<div class="card-preview">
-						<span
-							style="
-								display: inline-block;
-								width: 2rem;
-								height: 2rem;
-								border: 3px solid var(--t1-color-neutral-200);
-								border-top-color: var(--t1-color-primary-600);
-								border-radius: 50%;
-								animation: spin 0.75s linear infinite;
-							"
-						></span>
-						<style>
-							@keyframes spin {
-								to {
-									transform: rotate(360deg);
-								}
-							}
-						</style>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-spinner</span>
-						<h2>Spinner</h2>
-						<p>
-							Animated loading indicator with configurable track width and
-							color.
-						</p>
-					</div>
-				</a>
-
-				<a href="/playground/button/" class="card">
-					<div class="card-preview">
-						<span
-							style="
-								display: inline-flex;
-								align-items: center;
-								padding: 0.5em 1.25em;
-								border-radius: var(--t1-border-radius-medium);
-								background: var(--t1-color-primary-600);
-								color: white;
-								font-size: var(--t1-font-size-small);
-								font-weight: 600;
-								gap: 0.4em;
-							"
-							>Primary</span
-						>
-						<span
-							style="
-								display: inline-flex;
-								align-items: center;
-								padding: 0.5em 1.25em;
-								border-radius: var(--t1-border-radius-medium);
-								border: 1px solid var(--t1-color-neutral-300);
-								background: white;
-								color: var(--t1-color-neutral-700);
-								font-size: var(--t1-font-size-small);
-							"
-							>Default</span
-						>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-button</span>
-						<h2>Button</h2>
-						<p>
-							Multi-variant button with sizes, pill/circle modes, loading state,
-							and prefix/suffix slots.
-						</p>
-					</div>
-				</a>
-
-				<a href="/playground/icon-button/" class="card">
-					<div class="card-preview">
-						<span
-							style="
-								display: inline-flex;
-								align-items: center;
-								justify-content: center;
-								width: 2.5rem;
-								height: 2.5rem;
-								border-radius: var(--t1-border-radius-medium);
-								border: 1px solid var(--t1-color-neutral-200);
-								color: var(--t1-color-neutral-700);
-								font-size: 1.2rem;
-							"
-							>&#9881;</span
-						>
-						<span
-							style="
-								display: inline-flex;
-								align-items: center;
-								justify-content: center;
-								width: 2.5rem;
-								height: 2.5rem;
-								border-radius: var(--t1-border-radius-medium);
-								border: 1px solid var(--t1-color-neutral-200);
-								color: var(--t1-color-neutral-700);
-								font-size: 1.2rem;
-							"
-							>&#10000;</span
-						>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-icon-button</span>
-						<h2>Icon Button</h2>
-						<p>
-							Icon-only button with accessible label, sizing via font-size, and
-							link mode.
-						</p>
-					</div>
-				</a>
-
-				<a href="/playground/popup/" class="card">
-					<div class="card-preview">
-						<div
-							style="
-								position: relative;
-								display: inline-flex;
-								flex-direction: column;
-								align-items: center;
-								gap: 0.5rem;
-							"
-						>
-							<div
-								style="
-									background: white;
-									border: 1px solid var(--t1-color-neutral-200);
-									border-radius: var(--t1-border-radius-medium);
-									padding: 0.5em 1em;
-									font-size: var(--t1-font-size-x-small);
-									box-shadow: var(--t1-shadow-medium);
-								"
-							>
-								Popup content
-							</div>
-							<span
-								style="
-									display: inline-flex;
-									align-items: center;
-									padding: 0.4em 1em;
-									border-radius: var(--t1-border-radius-medium);
-									background: var(--t1-color-neutral-100);
-									border: 1px solid var(--t1-color-neutral-300);
-									font-size: var(--t1-font-size-small);
-								"
-								>Anchor</span
-							>
-						</div>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-popup</span>
-						<h2>Popup</h2>
-						<p>
-							Floating UI-powered positioned popup with placement, arrow, and
-							flip/shift/size middleware.
-						</p>
-					</div>
-				</a>
-
-				<a href="/playground/menu/" class="card">
-					<div class="card-preview">
-						<div
-							style="
-								background: white;
-								border: 1px solid var(--t1-color-neutral-200);
-								border-radius: var(--t1-border-radius-medium);
-								overflow: hidden;
-								min-width: 140px;
-							"
-						>
-							<div
-								style="
-									padding: 0.4em 0.75em;
-									font-size: var(--t1-font-size-small);
-									border-bottom: 1px solid var(--t1-color-neutral-100);
-								"
-							>
-								Cut
-							</div>
-							<div
-								style="
-									padding: 0.4em 0.75em;
-									font-size: var(--t1-font-size-small);
-									background: var(--t1-color-primary-50);
-									border-bottom: 1px solid var(--t1-color-neutral-100);
-								"
-							>
-								Copy
-							</div>
-							<div
-								style="
-									padding: 0.4em 0.75em;
-									font-size: var(--t1-font-size-small);
-								"
-							>
-								Paste
+					<a href="/playground/components/" class="section-card">
+						<div class="section-card-preview">
+							<div style="display: flex; flex-wrap: wrap; gap: 0.4rem; max-width: 200px; justify-content: center; align-items: center;">
+								<span style="display: inline-flex; align-items: center; padding: 0.3em 0.8em; border-radius: var(--t1-border-radius-medium); background: var(--t1-color-primary-600); color: white; font-size: var(--t1-font-size-x-small); font-weight: 600;">Button</span>
+								<span style="display: inline-flex; align-items: center; padding: 0.2em 0.6em; border-radius: 999px; background: var(--t1-color-success-600); color: white; font-size: var(--t1-font-size-x-small); font-weight: 600;">Badge</span>
+								<span style="display: inline-flex; align-items: center; gap: 0.3em; padding: 0.2em 0.7em; border-radius: var(--t1-border-radius-small); background: var(--t1-color-warning-100); color: var(--t1-color-warning-700); font-size: var(--t1-font-size-x-small); font-weight: 500;">Tag</span>
+								<span style="display: inline-block; width: 2rem; height: 2rem; border-radius: 50%; background: var(--t1-color-neutral-300);"></span>
+								<span style="display: inline-block; width: 5rem; height: 0.6rem; border-radius: var(--t1-border-radius-small); background: var(--t1-color-neutral-200);"></span>
 							</div>
 						</div>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-menu</span>
-						<h2>Menu</h2>
-						<p>
-							Accessible menu container with keyboard navigation and t1-select
-							event.
-						</p>
-					</div>
-				</a>
+						<div class="section-card-body">
+							<h2>Components</h2>
+							<p>Primitive UI building blocks — buttons, inputs, badges, tooltips, and more.</p>
+							<span class="count-pill">22 components</span>
+						</div>
+					</a>
 
-				<a href="/playground/menu-item/" class="card">
-					<div class="card-preview">
-						<div
-							style="
-								background: white;
-								border: 1px solid var(--t1-color-neutral-200);
-								border-radius: var(--t1-border-radius-medium);
-								overflow: hidden;
-								min-width: 160px;
-							"
-						>
-							<div
-								style="
-									padding: 0.4em 0.75em;
-									font-size: var(--t1-font-size-small);
-								"
-							>
-								Normal item
-							</div>
-							<div
-								style="
-									padding: 0.4em 0.75em;
-									font-size: var(--t1-font-size-small);
-									display: flex;
-									align-items: center;
-									gap: 0.5em;
-									border-top: 1px solid var(--t1-color-neutral-100);
-								"
-							>
-								&#10003; Checkbox
+					<a href="/playground/widgets/" class="section-card">
+						<div class="section-card-preview">
+							<div style="display: flex; align-items: center; gap: 0.5rem; background: white; border: 1px solid var(--t1-color-neutral-300); border-radius: var(--t1-border-radius-medium); padding: 0.5em 0.85em; box-shadow: var(--t1-shadow-small);">
+								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="var(--t1-color-neutral-400)" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/></svg>
+								<span style="font-size: var(--t1-font-size-small); color: var(--t1-color-neutral-400);">Where would you like to go?</span>
 							</div>
 						</div>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-menu-item</span>
-						<h2>Menu Item</h2>
-						<p>
-							Individual menu item with checkbox, loading, disabled states, and
-							prefix/suffix slots.
-						</p>
-					</div>
-				</a>
-
-				<a href="/playground/dropdown/" class="card">
-					<div class="card-preview">
-						<div
-							style="
-								display: inline-flex;
-								flex-direction: column;
-								align-items: flex-start;
-								gap: 0.4rem;
-							"
-						>
-							<span
-								style="
-									display: inline-flex;
-									align-items: center;
-									gap: 0.4em;
-									padding: 0.5em 1.25em;
-									border-radius: var(--t1-border-radius-medium);
-									background: var(--t1-color-primary-600);
-									color: white;
-									font-size: var(--t1-font-size-small);
-									font-weight: 600;
-								"
-								>Actions &#9660;</span
-							>
-							<div
-								style="
-									background: white;
-									border: 1px solid var(--t1-color-neutral-200);
-									border-radius: var(--t1-border-radius-medium);
-									overflow: hidden;
-									min-width: 120px;
-									box-shadow: var(--t1-shadow-medium);
-								"
-							>
-								<div
-									style="
-										padding: 0.4em 0.75em;
-										font-size: var(--t1-font-size-small);
-									"
-								>
-									Cut
-								</div>
-								<div
-									style="
-										padding: 0.4em 0.75em;
-										font-size: var(--t1-font-size-small);
-										border-top: 1px solid var(--t1-color-neutral-100);
-									"
-								>
-									Copy
-								</div>
-							</div>
+						<div class="section-card-body">
+							<h2>Widgets</h2>
+							<p>Higher-level feature components composed from primitives, with signal-driven state.</p>
+							<span class="count-pill count-pill-widgets">1 widget</span>
 						</div>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-dropdown</span>
-						<h2>Dropdown</h2>
-						<p>
-							Trigger-based dropdown panel with placement, stay-open-on-select,
-							and keyboard dismissal.
-						</p>
-					</div>
-				</a>
+					</a>
 
-				<a href="/playground/tag/" class="card">
-					<div class="card-preview">
-						<div style="display: inline-flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;">
-							<span style="display: inline-flex; align-items: center; gap: 0.3em; padding: 0.2em 0.7em; border-radius: var(--t1-border-radius-small); background: var(--t1-color-primary-100); color: var(--t1-color-primary-700); font-size: var(--t1-font-size-x-small); font-weight: 500;">Primary</span>
-							<span style="display: inline-flex; align-items: center; gap: 0.3em; padding: 0.2em 0.7em; border-radius: var(--t1-border-radius-small); background: var(--t1-color-success-100); color: var(--t1-color-success-700); font-size: var(--t1-font-size-x-small); font-weight: 500;">Success</span>
-							<span style="display: inline-flex; align-items: center; gap: 0.3em; padding: 0.2em 0.7em; border-radius: var(--t1-border-radius-small); background: var(--t1-color-warning-100); color: var(--t1-color-warning-700); font-size: var(--t1-font-size-x-small); font-weight: 500;">Warning</span>
-							<span style="display: inline-flex; align-items: center; gap: 0.3em; padding: 0.2em 0.7em; border-radius: var(--t1-border-radius-small); background: var(--t1-color-danger-100); color: var(--t1-color-danger-700); font-size: var(--t1-font-size-x-small); font-weight: 500;">Danger</span>
-						</div>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-tag</span>
-						<h2>Tag</h2>
-						<p>
-							Compact label with variant colors, sizes, pill style, and optional remove button.
-						</p>
-					</div>
-				</a>
-
-				<a href="/playground/select/" class="card">
-					<div class="card-preview">
-						<div style="display: inline-flex; flex-direction: column; gap: 0.4rem; min-width: 160px;">
-							<div style="display: flex; align-items: center; justify-content: space-between; padding: 0.45em 0.75em; border: 1px solid var(--t1-color-neutral-300); border-radius: var(--t1-border-radius-medium); background: white; font-size: var(--t1-font-size-small); color: var(--t1-color-neutral-500);">
-								<span>Pick one…</span>
-								<span style="font-size: 0.65em; color: var(--t1-color-neutral-400);">▼</span>
-							</div>
-						</div>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-select</span>
-						<h2>Select</h2>
-						<p>
-							Single and multi-value select with tags, clearable, keyboard navigation, and form association.
-						</p>
-					</div>
-				</a>
-
-				<a href="/playground/option/" class="card">
-					<div class="card-preview">
-						<div style="background: white; border: 1px solid var(--t1-color-neutral-200); border-radius: var(--t1-border-radius-medium); overflow: hidden; min-width: 160px;">
-							<div style="display: flex; align-items: center; gap: 0.4em; padding: 0.4em 0.75em; font-size: var(--t1-font-size-small); border-bottom: 1px solid var(--t1-color-neutral-100);">
-								<span style="width: 0.8em; height: 0.8em; flex-shrink: 0;"></span>
-								Option 1
-							</div>
-							<div style="display: flex; align-items: center; gap: 0.4em; padding: 0.4em 0.75em; font-size: var(--t1-font-size-small); background: var(--t1-color-primary-600); color: white; border-bottom: 1px solid var(--t1-color-neutral-100);">
-								<span style="font-size: 0.7em;">✓</span>
-								Option 2
-							</div>
-							<div style="display: flex; align-items: center; gap: 0.4em; padding: 0.4em 0.75em; font-size: var(--t1-font-size-small); opacity: 0.4;">
-								<span style="width: 0.8em; height: 0.8em; flex-shrink: 0;"></span>
-								Option 3
-							</div>
-						</div>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-option</span>
-						<h2>Option</h2>
-						<p>
-							Selectable item for use inside t1-select, with disabled state and prefix/suffix slots.
-						</p>
-					</div>
-				</a>
-
-
-				<a href="/playground/avatar/" class="card">
-					<div class="card-preview">
-						<div style="display: inline-flex; gap: 0.5rem; align-items: center;">
-							<div style="width: 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--t1-color-neutral-400); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.7rem; font-weight: 600;">AB</div>
-							<div style="width: 2.5rem; height: 2.5rem; border-radius: var(--t1-border-radius-medium); background: var(--t1-color-primary-500); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.7rem; font-weight: 600;">JD</div>
-							<div style="width: 2.5rem; height: 2.5rem; background: var(--t1-color-neutral-300); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.9rem;">👤</div>
-						</div>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-avatar</span>
-						<h2>Avatar</h2>
-						<p>
-							User avatar with image, initials fallback, icon slot, and circle/rounded/square shapes.
-						</p>
-					</div>
-				</a>
-
-				<a href="/playground/rating/" class="card">
-					<div class="card-preview">
-						<div style="display: inline-flex; gap: 0.15rem; font-size: 1.3rem;">
-							<span style="color: var(--t1-color-warning-500);">★</span>
-							<span style="color: var(--t1-color-warning-500);">★</span>
-							<span style="color: var(--t1-color-warning-500);">★</span>
-							<span style="color: var(--t1-color-neutral-300);">★</span>
-							<span style="color: var(--t1-color-neutral-300);">★</span>
-						</div>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-rating</span>
-						<h2>Rating</h2>
-						<p>
-							Interactive star rating with precision, read-only/disabled states, keyboard support, and custom symbols.
-						</p>
-					</div>
-				</a>
-
-				<a href="/playground/card/" class="card">
-					<div class="card-preview">
-						<div style="background: white; border: 1px solid var(--t1-color-neutral-200); border-radius: var(--t1-border-radius-medium); overflow: hidden; min-width: 160px;">
-							<div style="padding: 0.4em 0.75em; font-size: var(--t1-font-size-x-small); font-weight: 600; border-bottom: 1px solid var(--t1-color-neutral-100);">Header</div>
-							<div style="padding: 0.5em 0.75em; font-size: var(--t1-font-size-x-small);">Body content</div>
-							<div style="padding: 0.4em 0.75em; font-size: var(--t1-font-size-x-small); border-top: 1px solid var(--t1-color-neutral-100); color: var(--t1-color-neutral-500);">Footer</div>
-						</div>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-card</span>
-						<h2>Card</h2>
-						<p>
-							Flexible container with image, header, body, and footer slots. CSS custom properties for border and padding.
-						</p>
-					</div>
-				</a>
-
-				<a href="/playground/skeleton/" class="card">
-					<div class="card-preview">
-						<div style="display: flex; flex-direction: column; gap: 0.4rem; width: 160px;">
-							<div style="display: flex; align-items: center; gap: 0.5rem;">
-								<div style="width: 2rem; height: 2rem; border-radius: 50%; background: var(--t1-color-neutral-200); flex-shrink: 0;"></div>
-								<div style="flex: 1; height: 0.75rem; border-radius: var(--t1-border-radius-small); background: var(--t1-color-neutral-200);"></div>
-							</div>
-							<div style="height: 0.6rem; border-radius: var(--t1-border-radius-small); background: var(--t1-color-neutral-200); width: 95%;"></div>
-							<div style="height: 0.6rem; border-radius: var(--t1-border-radius-small); background: var(--t1-color-neutral-200); width: 80%;"></div>
-						</div>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-skeleton</span>
-						<h2>Skeleton</h2>
-						<p>
-							Loading placeholder with pulse, sheen, and none effects. Fully customizable shape via CSS custom properties.
-						</p>
-					</div>
-				</a>
-
-				<a href="/playground/tooltip/" class="card">
-					<div class="card-preview">
-						<div style="display: inline-flex; flex-direction: column; align-items: center; gap: 0.4rem;">
-							<div style="background: var(--t1-color-neutral-800); color: white; font-size: var(--t1-font-size-x-small); padding: 0.3em 0.6em; border-radius: var(--t1-border-radius-medium);">Tooltip text</div>
-							<div style="display: inline-flex; align-items: center; padding: 0.4em 1em; border-radius: var(--t1-border-radius-medium); background: var(--t1-color-primary-600); color: white; font-size: var(--t1-font-size-small); font-weight: 600;">Hover Me</div>
-						</div>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-tooltip</span>
-						<h2>Tooltip</h2>
-						<p>
-							Floating tooltip with hover/focus/click triggers, all placement options, and disabled state.
-						</p>
-					</div>
-				</a>
-
-				<a href="/playground/alert/" class="card">
-					<div class="card-preview">
-						<div style="display: flex; flex-direction: column; gap: 0.3rem; min-width: 180px;">
-							<div style="padding: 0.4em 0.75em; border-left: 3px solid var(--t1-color-primary-500); background: var(--t1-color-primary-50); border-radius: var(--t1-border-radius-small); font-size: var(--t1-font-size-x-small);">Primary alert</div>
-							<div style="padding: 0.4em 0.75em; border-left: 3px solid var(--t1-color-success-500); background: var(--t1-color-success-50); border-radius: var(--t1-border-radius-small); font-size: var(--t1-font-size-x-small);">Success alert</div>
-							<div style="padding: 0.4em 0.75em; border-left: 3px solid var(--t1-color-danger-500); background: var(--t1-color-danger-50); border-radius: var(--t1-border-radius-small); font-size: var(--t1-font-size-x-small);">Danger alert</div>
-						</div>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-alert</span>
-						<h2>Alert</h2>
-						<p>
-							Inline alert and toast notifications with 5 variants, closable, auto-hide duration, and icon slot.
-						</p>
-					</div>
-				</a>
-
-				<a href="/playground/format-date/" class="card">
-					<div class="card-preview">
-						<div style="display: flex; flex-direction: column; gap: 0.25rem; font-size: var(--t1-font-size-small); color: var(--t1-color-neutral-700);">
-							<span>January 1, 2026</span>
-							<span style="color: var(--t1-color-neutral-500); font-size: var(--t1-font-size-x-small);">Thursday · 12:00 AM UTC</span>
-						</div>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-format-date</span>
-						<h2>Format Date</h2>
-						<p>
-							Locale-aware date/time formatter using Intl.DateTimeFormat with all standard options.
-						</p>
-					</div>
-				</a>
-
-				<a href="/playground/format-number/" class="card">
-					<div class="card-preview">
-						<div style="display: flex; flex-direction: column; gap: 0.25rem; font-size: var(--t1-font-size-small); color: var(--t1-color-neutral-700);">
-							<span>$1,234.56</span>
-							<span style="color: var(--t1-color-neutral-500);">75%</span>
-							<span style="color: var(--t1-color-neutral-500);">1,000,000</span>
-						</div>
-					</div>
-					<div class="card-body">
-						<span class="badge">t1-format-number</span>
-						<h2>Format Number</h2>
-						<p>
-							Locale-aware number formatter using Intl.NumberFormat with currency, percent, and decimal modes.
-						</p>
-					</div>
-				</a>
-
+				</div>
 			</div>
 		</main>
 	</body>

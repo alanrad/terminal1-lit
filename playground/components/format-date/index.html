@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>t1-format-date — T1 Component Library</title>
+    <link rel="stylesheet" href="/src/styles/theme.css" />
+    <script type="module" src="/src/components/t1-format-date/index.ts"></script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: var(--t1-font-sans); background: var(--t1-color-neutral-50); color: var(--t1-color-neutral-900); min-height: 100vh; }
+      .topbar { background: var(--t1-color-neutral-0); border-bottom: 1px solid var(--t1-color-neutral-200); padding: var(--t1-spacing-medium) var(--t1-spacing-3x-large); display: flex; align-items: center; gap: var(--t1-spacing-medium); }
+      .topbar a { font-size: var(--t1-font-size-small); color: var(--t1-color-primary-600); text-decoration: none; }
+      .topbar a:hover { text-decoration: underline; }
+      .topbar-sep { color: var(--t1-color-neutral-300); }
+      .topbar h1 { font-size: var(--t1-font-size-large); font-weight: var(--t1-font-weight-semibold); }
+      .content { max-width: 800px; margin: 0 auto; padding: var(--t1-spacing-3x-large) var(--t1-spacing-large); display: flex; flex-direction: column; gap: var(--t1-spacing-3x-large); }
+      .section { display: flex; flex-direction: column; gap: var(--t1-spacing-medium); }
+      .section-title { font-size: var(--t1-font-size-large); font-weight: var(--t1-font-weight-semibold); color: var(--t1-color-neutral-900); padding-bottom: var(--t1-spacing-x-small); border-bottom: 1px solid var(--t1-color-neutral-200); }
+      .section-desc { font-size: var(--t1-font-size-small); color: var(--t1-color-neutral-500); line-height: var(--t1-line-height-dense); }
+      .demo-box { background: var(--t1-color-neutral-0); border: 1px solid var(--t1-color-neutral-200); border-radius: var(--t1-border-radius-large); padding: var(--t1-spacing-large); display: flex; flex-direction: column; gap: var(--t1-spacing-small); font-size: var(--t1-font-size-medium); }
+      .demo-row { display: flex; align-items: baseline; gap: var(--t1-spacing-small); }
+      .demo-label { font-size: var(--t1-font-size-small); color: var(--t1-color-neutral-500); min-width: 160px; flex-shrink: 0; }
+      code { font-family: var(--t1-font-mono); font-size: var(--t1-font-size-x-small); background: var(--t1-color-neutral-100); padding: 0.1em 0.4em; border-radius: var(--t1-border-radius-small); color: var(--t1-color-neutral-700); }
+    </style>
+  </head>
+  <body>
+    <nav class="topbar">
+      <a href="/playground/components/">Home</a>
+      <span class="topbar-sep">/</span>
+      <h1>t1-format-date</h1>
+    </nav>
+
+    <main class="content">
+      <section class="section">
+        <h2 class="section-title">Date &amp; Time Formatting</h2>
+        <p class="section-desc">Formatting options mirror the <code>Intl.DateTimeFormat</code> API. Mix and match <code>month</code>, <code>day</code>, <code>year</code>, <code>weekday</code>, <code>hour</code>, <code>minute</code>, and <code>second</code> attributes.</p>
+        <div class="demo-box">
+          <div class="demo-row">
+            <span class="demo-label">Full date:</span>
+            <t1-format-date month="long" day="numeric" year="numeric"></t1-format-date>
+          </div>
+          <div class="demo-row">
+            <span class="demo-label">Time:</span>
+            <t1-format-date hour="numeric" minute="numeric" second="numeric"></t1-format-date>
+          </div>
+          <div class="demo-row">
+            <span class="demo-label">Weekday:</span>
+            <t1-format-date weekday="long"></t1-format-date>
+          </div>
+          <div class="demo-row">
+            <span class="demo-label">Month:</span>
+            <t1-format-date month="long"></t1-format-date>
+          </div>
+          <div class="demo-row">
+            <span class="demo-label">Year:</span>
+            <t1-format-date year="numeric"></t1-format-date>
+          </div>
+          <div class="demo-row">
+            <span class="demo-label">No options (default):</span>
+            <t1-format-date></t1-format-date>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Specific Date</h2>
+        <p class="section-desc">Use the <code>date</code> attribute with an ISO 8601 string to format a specific date.</p>
+        <div class="demo-box">
+          <div class="demo-row">
+            <span class="demo-label">ISO string:</span>
+            <t1-format-date date="2020-07-15T09:17:00-04:00" month="long" day="numeric" year="numeric"></t1-format-date>
+          </div>
+          <div class="demo-row">
+            <span class="demo-label">With time:</span>
+            <t1-format-date date="2020-07-15T09:17:00-04:00" month="short" day="numeric" year="numeric" hour="numeric" minute="2-digit"></t1-format-date>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Hour Formatting</h2>
+        <p class="section-desc">Use <code>hour-format="12"</code> or <code>hour-format="24"</code> to force 12- or 24-hour time. Default is <code>auto</code> (browser locale).</p>
+        <div class="demo-box">
+          <div class="demo-row">
+            <span class="demo-label">12-hour:</span>
+            <t1-format-date hour="numeric" minute="numeric" hour-format="12"></t1-format-date>
+          </div>
+          <div class="demo-row">
+            <span class="demo-label">24-hour:</span>
+            <t1-format-date hour="numeric" minute="numeric" hour-format="24"></t1-format-date>
+          </div>
+          <div class="demo-row">
+            <span class="demo-label">Auto (browser):</span>
+            <t1-format-date hour="numeric" minute="numeric" hour-format="auto"></t1-format-date>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Weekday Formats</h2>
+        <p class="section-desc">The <code>weekday</code> attribute accepts <code>long</code>, <code>short</code>, or <code>narrow</code>.</p>
+        <div class="demo-box">
+          <div class="demo-row">
+            <span class="demo-label">long:</span>
+            <t1-format-date weekday="long"></t1-format-date>
+          </div>
+          <div class="demo-row">
+            <span class="demo-label">short:</span>
+            <t1-format-date weekday="short"></t1-format-date>
+          </div>
+          <div class="demo-row">
+            <span class="demo-label">narrow:</span>
+            <t1-format-date weekday="narrow"></t1-format-date>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Time Zone</h2>
+        <p class="section-desc">Use the <code>time-zone</code> attribute to display the time in a specific zone.</p>
+        <div class="demo-box">
+          <div class="demo-row">
+            <span class="demo-label">New York:</span>
+            <t1-format-date hour="numeric" minute="2-digit" time-zone="America/New_York" time-zone-name="short"></t1-format-date>
+          </div>
+          <div class="demo-row">
+            <span class="demo-label">London:</span>
+            <t1-format-date hour="numeric" minute="2-digit" time-zone="Europe/London" time-zone-name="short"></t1-format-date>
+          </div>
+          <div class="demo-row">
+            <span class="demo-label">Tokyo:</span>
+            <t1-format-date hour="numeric" minute="2-digit" time-zone="Asia/Tokyo" time-zone-name="short"></t1-format-date>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>t1-spinner — T1 Component Library</title>
+    <link rel="stylesheet" href="/src/styles/theme.css" />
+    <script type="module" src="/src/components/t1-spinner/index.ts"></script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: var(--t1-font-sans); background: var(--t1-color-neutral-50); color: var(--t1-color-neutral-900); min-height: 100vh; }
+      .topbar { background: var(--t1-color-neutral-0); border-bottom: 1px solid var(--t1-color-neutral-200); padding: var(--t1-spacing-medium) var(--t1-spacing-3x-large); display: flex; align-items: center; gap: var(--t1-spacing-medium); }
+      .topbar a { font-size: var(--t1-font-size-small); color: var(--t1-color-primary-600); text-decoration: none; }
+      .topbar a:hover { text-decoration: underline; }
+      .topbar-sep { color: var(--t1-color-neutral-300); }
+      .topbar h1 { font-size: var(--t1-font-size-large); font-weight: var(--t1-font-weight-semibold); }
+      .content { max-width: 800px; margin: 0 auto; padding: var(--t1-spacing-3x-large) var(--t1-spacing-large); display: flex; flex-direction: column; gap: var(--t1-spacing-3x-large); }
+      .section { display: flex; flex-direction: column; gap: var(--t1-spacing-medium); }
+      .section-title { font-size: var(--t1-font-size-large); font-weight: var(--t1-font-weight-semibold); color: var(--t1-color-neutral-900); padding-bottom: var(--t1-spacing-x-small); border-bottom: 1px solid var(--t1-color-neutral-200); }
+      .section-desc { font-size: var(--t1-font-size-small); color: var(--t1-color-neutral-500); line-height: var(--t1-line-height-dense); }
+      .demo-box { background: var(--t1-color-neutral-0); border: 1px solid var(--t1-color-neutral-200); border-radius: var(--t1-border-radius-large); padding: var(--t1-spacing-large); display: flex; flex-wrap: wrap; gap: var(--t1-spacing-large); align-items: flex-end; }
+      .demo-item { display: flex; flex-direction: column; align-items: center; gap: var(--t1-spacing-x-small); font-size: var(--t1-font-size-x-small); color: var(--t1-color-neutral-500); }
+      code { font-family: var(--t1-font-mono); font-size: var(--t1-font-size-x-small); background: var(--t1-color-neutral-100); padding: 0.1em 0.4em; border-radius: var(--t1-border-radius-small); color: var(--t1-color-neutral-700); }
+    </style>
+  </head>
+  <body>
+    <nav class="topbar">
+      <a href="/playground/components/">Home</a>
+      <span class="topbar-sep">/</span>
+      <h1>t1-spinner</h1>
+    </nav>
+
+    <main class="content">
+      <section class="section">
+        <h2 class="section-title">Default</h2>
+        <p class="section-desc">The spinner uses <code>1em</code> size by default, so it matches surrounding text.</p>
+        <div class="demo-box">
+          <t1-spinner></t1-spinner>
+          <span style="font-size: var(--t1-font-size-small);">Loading <t1-spinner></t1-spinner></span>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Sizes via font-size</h2>
+        <p class="section-desc">Size the spinner using <code>font-size</code> CSS property.</p>
+        <div class="demo-box">
+          <div class="demo-item">
+            <t1-spinner style="font-size: 1rem;"></t1-spinner>
+            <span>1rem</span>
+          </div>
+          <div class="demo-item">
+            <t1-spinner style="font-size: 1.5rem;"></t1-spinner>
+            <span>1.5rem</span>
+          </div>
+          <div class="demo-item">
+            <t1-spinner style="font-size: 2rem;"></t1-spinner>
+            <span>2rem</span>
+          </div>
+          <div class="demo-item">
+            <t1-spinner style="font-size: 3rem;"></t1-spinner>
+            <span>3rem</span>
+          </div>
+          <div class="demo-item">
+            <t1-spinner style="font-size: 4rem;"></t1-spinner>
+            <span>4rem</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Custom Colors</h2>
+        <p class="section-desc">Use the <code>--indicator-color</code> and <code>--track-color</code> custom properties to change the spinner's appearance.</p>
+        <div class="demo-box">
+          <div class="demo-item">
+            <t1-spinner style="font-size: 2.5rem; --indicator-color: var(--t1-color-primary-600);"></t1-spinner>
+            <span>primary</span>
+          </div>
+          <div class="demo-item">
+            <t1-spinner style="font-size: 2.5rem; --indicator-color: var(--t1-color-success-600);"></t1-spinner>
+            <span>success</span>
+          </div>
+          <div class="demo-item">
+            <t1-spinner style="font-size: 2.5rem; --indicator-color: var(--t1-color-warning-500);"></t1-spinner>
+            <span>warning</span>
+          </div>
+          <div class="demo-item">
+            <t1-spinner style="font-size: 2.5rem; --indicator-color: var(--t1-color-danger-600);"></t1-spinner>
+            <span>danger</span>
+          </div>
+          <div class="demo-item">
+            <t1-spinner style="font-size: 2.5rem; --indicator-color: var(--t1-color-neutral-600); --track-color: var(--t1-color-neutral-200);"></t1-spinner>
+            <span>neutral</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Custom Track Width</h2>
+        <p class="section-desc">Use the <code>--track-width</code> custom property to change the thickness of the spinner.</p>
+        <div class="demo-box">
+          <div class="demo-item">
+            <t1-spinner style="font-size: 3rem; --track-width: 1px;"></t1-spinner>
+            <span>1px</span>
+          </div>
+          <div class="demo-item">
+            <t1-spinner style="font-size: 3rem; --track-width: 2px;"></t1-spinner>
+            <span>2px (default)</span>
+          </div>
+          <div class="demo-item">
+            <t1-spinner style="font-size: 3rem; --track-width: 4px;"></t1-spinner>
+            <span>4px</span>
+          </div>
+          <div class="demo-item">
+            <t1-spinner style="font-size: 3rem; --track-width: 6px;"></t1-spinner>
+            <span>6px</span>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
