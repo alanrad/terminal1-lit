@@ -6,6 +6,7 @@ export interface Translation {
   $code: string;
   $name: string;
   $dir: 'ltr' | 'rtl';
+  loading?: string;
   [key: string]: unknown;
 }
 
@@ -62,6 +63,7 @@ registerTranslation({
   clearEntry: 'Clear entry',
   hidePassword: 'Hide password',
   showPassword: 'Show password',
+  loading: 'Loading',
 });
 
 export class LocalizeController<UserTranslation extends Translation = Translation>

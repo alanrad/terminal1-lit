@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>t1-dropdown — T1 Component Library</title>
+    <link rel="stylesheet" href="/src/styles/theme.css" />
+    <script type="module" src="/src/components/t1-dropdown/index.ts"></script>
+    <script type="module" src="/src/components/t1-button/index.ts"></script>
+    <script type="module" src="/src/components/t1-menu/index.ts"></script>
+    <script type="module" src="/src/components/t1-menu-item/index.ts"></script>
+    <script type="module" src="/src/components/t1-icon/index.ts"></script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: var(--t1-font-sans); background: var(--t1-color-neutral-50); color: var(--t1-color-neutral-900); min-height: 100vh; }
+      .topbar { background: var(--t1-color-neutral-0); border-bottom: 1px solid var(--t1-color-neutral-200); padding: var(--t1-spacing-medium) var(--t1-spacing-3x-large); display: flex; align-items: center; gap: var(--t1-spacing-medium); }
+      .topbar a { font-size: var(--t1-font-size-small); color: var(--t1-color-primary-600); text-decoration: none; }
+      .topbar a:hover { text-decoration: underline; }
+      .topbar-sep { color: var(--t1-color-neutral-300); }
+      .topbar h1 { font-size: var(--t1-font-size-large); font-weight: var(--t1-font-weight-semibold); }
+      .content { max-width: 800px; margin: 0 auto; padding: var(--t1-spacing-3x-large) var(--t1-spacing-large); display: flex; flex-direction: column; gap: var(--t1-spacing-3x-large); }
+      .section { display: flex; flex-direction: column; gap: var(--t1-spacing-medium); }
+      .section-title { font-size: var(--t1-font-size-large); font-weight: var(--t1-font-weight-semibold); color: var(--t1-color-neutral-900); padding-bottom: var(--t1-spacing-x-small); border-bottom: 1px solid var(--t1-color-neutral-200); }
+      .section-desc { font-size: var(--t1-font-size-small); color: var(--t1-color-neutral-500); line-height: var(--t1-line-height-dense); }
+      .demo-box { background: var(--t1-color-neutral-0); border: 1px solid var(--t1-color-neutral-200); border-radius: var(--t1-border-radius-large); padding: var(--t1-spacing-3x-large) var(--t1-spacing-large); display: flex; flex-wrap: wrap; gap: var(--t1-spacing-large); align-items: center; justify-content: center; min-height: 140px; }
+      code { font-family: var(--t1-font-mono); font-size: var(--t1-font-size-x-small); background: var(--t1-color-neutral-100); padding: 0.1em 0.4em; border-radius: var(--t1-border-radius-small); color: var(--t1-color-neutral-700); }
+      #event-log { font-family: var(--t1-font-mono); font-size: var(--t1-font-size-x-small); background: var(--t1-color-neutral-900); color: var(--t1-color-neutral-100); padding: var(--t1-spacing-medium); border-radius: var(--t1-border-radius-medium); height: 80px; overflow-y: auto; line-height: var(--t1-line-height-dense); width: 100%; }
+    </style>
+  </head>
+  <body>
+    <nav class="topbar">
+      <a href="/playground/">Home</a>
+      <span class="topbar-sep">/</span>
+      <h1>t1-dropdown</h1>
+    </nav>
+
+    <main class="content">
+      <section class="section">
+        <h2 class="section-title">Basic Dropdown</h2>
+        <p class="section-desc">Click the button to open a dropdown menu. The first slotted element is the trigger.</p>
+        <div class="demo-box">
+          <t1-dropdown>
+            <t1-button slot="trigger" variant="primary" caret>Actions</t1-button>
+            <t1-menu>
+              <t1-menu-item value="cut">Cut</t1-menu-item>
+              <t1-menu-item value="copy">Copy</t1-menu-item>
+              <t1-menu-item value="paste">Paste</t1-menu-item>
+            </t1-menu>
+          </t1-dropdown>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">With Icons</h2>
+        <p class="section-desc">Menu items can include icons using <code>slot="prefix"</code>.</p>
+        <div class="demo-box">
+          <t1-dropdown>
+            <t1-button slot="trigger" variant="default" caret>File</t1-button>
+            <t1-menu>
+              <t1-menu-item value="new">
+                <t1-icon slot="prefix" name="file-earmark-plus"></t1-icon>
+                New File
+              </t1-menu-item>
+              <t1-menu-item value="open">
+                <t1-icon slot="prefix" name="folder2-open"></t1-icon>
+                Open
+              </t1-menu-item>
+              <t1-menu-item value="save">
+                <t1-icon slot="prefix" name="floppy"></t1-icon>
+                Save
+              </t1-menu-item>
+              <t1-menu-item value="close" disabled>
+                <t1-icon slot="prefix" name="x-circle"></t1-icon>
+                Close (disabled)
+              </t1-menu-item>
+            </t1-menu>
+          </t1-dropdown>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Checkbox Items</h2>
+        <p class="section-desc">Use <code>type="checkbox"</code> for toggle menu items inside a dropdown.</p>
+        <div class="demo-box">
+          <t1-dropdown id="format-dropdown">
+            <t1-button slot="trigger" variant="neutral" caret>Format</t1-button>
+            <t1-menu>
+              <t1-menu-item type="checkbox" value="bold" checked>Bold</t1-menu-item>
+              <t1-menu-item type="checkbox" value="italic">Italic</t1-menu-item>
+              <t1-menu-item type="checkbox" value="underline">Underline</t1-menu-item>
+            </t1-menu>
+          </t1-dropdown>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Placement</h2>
+        <p class="section-desc">Use <code>placement</code> to control which side the dropdown opens on.</p>
+        <div class="demo-box">
+          <t1-dropdown placement="top">
+            <t1-button slot="trigger" size="small" variant="default">top</t1-button>
+            <t1-menu>
+              <t1-menu-item value="a">Option A</t1-menu-item>
+              <t1-menu-item value="b">Option B</t1-menu-item>
+            </t1-menu>
+          </t1-dropdown>
+          <t1-dropdown placement="bottom">
+            <t1-button slot="trigger" size="small" variant="default">bottom</t1-button>
+            <t1-menu>
+              <t1-menu-item value="a">Option A</t1-menu-item>
+              <t1-menu-item value="b">Option B</t1-menu-item>
+            </t1-menu>
+          </t1-dropdown>
+          <t1-dropdown placement="left">
+            <t1-button slot="trigger" size="small" variant="default">left</t1-button>
+            <t1-menu>
+              <t1-menu-item value="a">Option A</t1-menu-item>
+              <t1-menu-item value="b">Option B</t1-menu-item>
+            </t1-menu>
+          </t1-dropdown>
+          <t1-dropdown placement="right">
+            <t1-button slot="trigger" size="small" variant="default">right</t1-button>
+            <t1-menu>
+              <t1-menu-item value="a">Option A</t1-menu-item>
+              <t1-menu-item value="b">Option B</t1-menu-item>
+            </t1-menu>
+          </t1-dropdown>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Stay Open on Select</h2>
+        <p class="section-desc">Add <code>stay-open-on-select</code> to keep the dropdown open after an item is clicked.</p>
+        <div class="demo-box">
+          <t1-dropdown stay-open-on-select>
+            <t1-button slot="trigger" variant="primary" caret>Stay Open</t1-button>
+            <t1-menu>
+              <t1-menu-item type="checkbox" value="notifications">Notifications</t1-menu-item>
+              <t1-menu-item type="checkbox" value="sounds" checked>Sounds</t1-menu-item>
+              <t1-menu-item type="checkbox" value="preview">Message preview</t1-menu-item>
+            </t1-menu>
+          </t1-dropdown>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Select Events</h2>
+        <p class="section-desc">Listen for <code>t1-select</code> on the dropdown to respond when items are chosen.</p>
+        <div class="demo-box" style="flex-direction: column; align-items: stretch;">
+          <div style="display: flex; justify-content: center;">
+            <t1-dropdown id="event-dropdown">
+              <t1-button slot="trigger" variant="primary" caret>User Menu</t1-button>
+              <t1-menu>
+                <t1-menu-item value="profile">
+                  <t1-icon slot="prefix" name="person"></t1-icon>
+                  Profile
+                </t1-menu-item>
+                <t1-menu-item value="settings">
+                  <t1-icon slot="prefix" name="gear"></t1-icon>
+                  Settings
+                </t1-menu-item>
+                <t1-menu-item value="logout">
+                  <t1-icon slot="prefix" name="box-arrow-right"></t1-icon>
+                  Log out
+                </t1-menu-item>
+              </t1-menu>
+            </t1-dropdown>
+          </div>
+          <div id="event-log"></div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module">
+      const dropdown = document.getElementById('event-dropdown');
+      const log = document.getElementById('event-log');
+      function appendLog(msg) {
+        const line = document.createElement('div');
+        line.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+        log.appendChild(line);
+        log.scrollTop = log.scrollHeight;
+      }
+      dropdown.addEventListener('t1-select', e => appendLog(`t1-select: "${e.detail.item.value}"`));
+
+      // Toggle checkbox items in the format dropdown
+      const formatDropdown = document.getElementById('format-dropdown');
+      formatDropdown.addEventListener('t1-select', e => {
+        const item = e.detail.item;
+        if (item.type === 'checkbox') {
+          item.checked = !item.checked;
+        }
+      });
+    </script>
+  </body>
+</html>

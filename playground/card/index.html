@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>t1-card — T1 Component Library</title>
+    <link rel="stylesheet" href="/src/styles/theme.css" />
+    <script type="module" src="/src/components/t1-card/index.ts"></script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: var(--t1-font-sans); background: var(--t1-color-neutral-50); color: var(--t1-color-neutral-900); min-height: 100vh; }
+      .topbar { background: var(--t1-color-neutral-0); border-bottom: 1px solid var(--t1-color-neutral-200); padding: var(--t1-spacing-medium) var(--t1-spacing-3x-large); display: flex; align-items: center; gap: var(--t1-spacing-medium); }
+      .topbar a { font-size: var(--t1-font-size-small); color: var(--t1-color-primary-600); text-decoration: none; }
+      .topbar a:hover { text-decoration: underline; }
+      .topbar-sep { color: var(--t1-color-neutral-300); }
+      .topbar h1 { font-size: var(--t1-font-size-large); font-weight: var(--t1-font-weight-semibold); }
+      .content { max-width: 800px; margin: 0 auto; padding: var(--t1-spacing-3x-large) var(--t1-spacing-large); display: flex; flex-direction: column; gap: var(--t1-spacing-3x-large); }
+      .section { display: flex; flex-direction: column; gap: var(--t1-spacing-medium); }
+      .section-title { font-size: var(--t1-font-size-large); font-weight: var(--t1-font-weight-semibold); color: var(--t1-color-neutral-900); padding-bottom: var(--t1-spacing-x-small); border-bottom: 1px solid var(--t1-color-neutral-200); }
+      .section-desc { font-size: var(--t1-font-size-small); color: var(--t1-color-neutral-500); line-height: var(--t1-line-height-dense); }
+      .demo-box { background: var(--t1-color-neutral-0); border: 1px solid var(--t1-color-neutral-200); border-radius: var(--t1-border-radius-large); padding: var(--t1-spacing-large); display: flex; flex-wrap: wrap; gap: var(--t1-spacing-medium); align-items: flex-start; }
+      code { font-family: var(--t1-font-mono); font-size: var(--t1-font-size-x-small); background: var(--t1-color-neutral-100); padding: 0.1em 0.4em; border-radius: var(--t1-border-radius-small); color: var(--t1-color-neutral-700); }
+    </style>
+  </head>
+  <body>
+    <nav class="topbar">
+      <a href="/playground/">Home</a>
+      <span class="topbar-sep">/</span>
+      <h1>t1-card</h1>
+    </nav>
+
+    <main class="content">
+      <section class="section">
+        <h2 class="section-title">Basic</h2>
+        <p class="section-desc">A card with only body content — no image, header, or footer.</p>
+        <div class="demo-box">
+          <t1-card style="width: 300px;">
+            This is a basic card with body content only.
+          </t1-card>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">With Header</h2>
+        <p class="section-desc">Add content to the <code>header</code> slot for a titled card.</p>
+        <div class="demo-box">
+          <t1-card style="width: 300px;">
+            <strong slot="header">Card Title</strong>
+            This card has a header. You can put all sorts of things in it!
+          </t1-card>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">With Footer</h2>
+        <p class="section-desc">Add content to the <code>footer</code> slot for actions or metadata.</p>
+        <div class="demo-box">
+          <t1-card style="width: 300px;">
+            This card has a footer section below.
+            <div slot="footer" style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+              <button>Cancel</button>
+              <button style="background: var(--t1-color-primary-600); color: white; border: none; border-radius: 4px; padding: 0.3em 0.8em; cursor: pointer;">Save</button>
+            </div>
+          </t1-card>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">With Image</h2>
+        <p class="section-desc">Add an image to the <code>image</code> slot and it will be displayed at the top of the card.</p>
+        <div class="demo-box">
+          <t1-card style="width: 300px;">
+            <img
+              slot="image"
+              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='150'%3E%3Crect width='300' height='150' fill='%23e2e8f0'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%2394a3b8' font-size='14' font-family='sans-serif'%3EImage placeholder%3C/text%3E%3C/svg%3E"
+              alt="Placeholder"
+            />
+            A card with an image slot at the top.
+          </t1-card>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Full Card</h2>
+        <p class="section-desc">A card using all four slots: image, header, body, and footer.</p>
+        <div class="demo-box">
+          <t1-card style="width: 320px;">
+            <img
+              slot="image"
+              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='160'%3E%3Crect width='320' height='160' fill='%23dbeafe'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%233b82f6' font-size='14' font-family='sans-serif'%3ECard Image%3C/text%3E%3C/svg%3E"
+              alt="Card image"
+            />
+            <strong slot="header">Full Featured Card</strong>
+            This card uses image, header, body, and footer slots together.
+            <div slot="footer" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--t1-color-neutral-500);">
+              <span>Published May 9, 2026</span>
+              <a href="#" style="color: var(--t1-color-primary-600);">Read more →</a>
+            </div>
+          </t1-card>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Custom Styling</h2>
+        <p class="section-desc">Override the <code>--border-color</code>, <code>--border-radius</code>, and <code>--padding</code> custom properties.</p>
+        <div class="demo-box">
+          <t1-card style="width: 260px; --border-radius: 1rem; --border-color: var(--t1-color-primary-300); --padding: var(--t1-spacing-x-large);">
+            <strong slot="header">Custom Styled</strong>
+            Rounded corners, colored border, and extra padding.
+          </t1-card>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
