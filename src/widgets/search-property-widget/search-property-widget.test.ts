@@ -52,6 +52,17 @@ describe('search-property-widget', () => {
   });
 
   describe('search threshold', () => {
+    it('does not call search when input is empty', async () => {
+      vi.useFakeTimers();
+      const el = createElement();
+      await el.updateComplete;
+      const spy = vi.fn();
+      el.search = spy;
+      dispatchInput(el, '');
+      vi.runAllTimers();
+      expect(spy).not.toHaveBeenCalled();
+    });
+
     it('does not call search when input has 1 character', async () => {
       vi.useFakeTimers();
       const el = createElement();
@@ -63,15 +74,16 @@ describe('search-property-widget', () => {
       expect(spy).not.toHaveBeenCalled();
     });
 
-    it('does not call search when input has exactly 3 characters', async () => {
+    it('calls search when input has 2 characters', async () => {
       vi.useFakeTimers();
       const el = createElement();
       await el.updateComplete;
       const spy = vi.fn();
       el.search = spy;
-      dispatchInput(el, 'abc');
+      dispatchInput(el, 'ab');
       vi.runAllTimers();
-      expect(spy).not.toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledOnce();
+      expect(spy).toHaveBeenCalledWith('ab');
     });
 
     it('calls search when input has 4 characters', async () => {
@@ -98,6 +110,40 @@ describe('search-property-widget', () => {
     });
   });
 
+  describe('clearing results', () => {
+    type InternalEl = SearchPropertyWidgetEl & { _state: { results: { value: unknown[] }; setResults: (d: unknown[]) => void } };
+
+    it('clears results immediately when input drops to 1 character', async () => {
+      vi.useFakeTimers();
+      const el = createElement() as InternalEl;
+      await el.updateComplete;
+      el._state.setResults([{ id: 1 }] as never);
+      dispatchInput(el, 'a');
+      expect(el._state.results.value).toEqual([]);
+    });
+
+    it('clears results immediately when input is cleared to empty', async () => {
+      vi.useFakeTimers();
+      const el = createElement() as InternalEl;
+      await el.updateComplete;
+      el._state.setResults([{ id: 1 }] as never);
+      dispatchInput(el, '');
+      expect(el._state.results.value).toEqual([]);
+    });
+
+    it('cancels any pending debounce timer when input drops below 2 characters', async () => {
+      vi.useFakeTimers();
+      const el = createElement();
+      await el.updateComplete;
+      const spy = vi.fn();
+      el.search = spy;
+      dispatchInput(el, 'Paris');
+      dispatchInput(el, 'P');
+      vi.runAllTimers();
+      expect(spy).not.toHaveBeenCalled();
+    });
+  });
+
   describe('debounce', () => {
     it('does not call search before the debounce delay elapses', async () => {
       vi.useFakeTimers();
@@ -107,18 +153,18 @@ describe('search-property-widget', () => {
       el.search = spy;
       dispatchInput(el, 'Paris');
       expect(spy).not.toHaveBeenCalled();
-      vi.advanceTimersByTime(299);
+      vi.advanceTimersByTime(999);
       expect(spy).not.toHaveBeenCalled();
     });
 
-    it('calls search after the default 300ms debounce delay', async () => {
+    it('calls search after the default 1s debounce delay', async () => {
       vi.useFakeTimers();
       const el = createElement();
       await el.updateComplete;
       const spy = vi.fn();
       el.search = spy;
       dispatchInput(el, 'Paris');
-      vi.advanceTimersByTime(300);
+      vi.advanceTimersByTime(1000);
       expect(spy).toHaveBeenCalledOnce();
     });
 

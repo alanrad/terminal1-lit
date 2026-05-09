@@ -1,0 +1,1 @@
+export { findProperty } from './findProperty';
