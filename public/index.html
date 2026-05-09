@@ -53,25 +53,18 @@
 		</style>
 		<!-- Dev: import widgets directly via Vite -->
 		<script type="module" src="../src/widgets/counter-widget/index.ts"></script>
-		<script type="module" src="../src/widgets/posts-widget/index.ts"></script>
+		<script
+			type="module"
+			src="../src/widgets/search-property-widget/index.ts"
+		></script>
 	</head>
 	<body>
 		<h1>Widget System — Dev Sandbox</h1>
 
 		<section>
-			<h2>Counter Widget (default theme)</h2>
+			<h2>Counter Widget</h2>
 			<counter-widget initial-count="0"></counter-widget>
 			<pre id="counter-log">events will appear here…</pre>
-		</section>
-
-		<section id="themed-counter">
-			<h2>Counter Widget (purple theme via CSS custom properties)</h2>
-			<counter-widget initial-count="10"></counter-widget>
-		</section>
-
-		<section>
-			<h2>Posts Widget (async data)</h2>
-			<posts-widget limit="3"></posts-widget>
 		</section>
 
 		<script>

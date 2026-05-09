@@ -27,8 +27,8 @@ widget/
 │       │   ├── counter.state.ts
 │       │   ├── counter-widget.ts
 │       │   └── index.ts
-│       └── posts-widget/    # Async data loading widget
-│           ├── posts-widget.ts
+│       └── search-property-widget/    # Async data loading widget
+│           ├── search-property-widget.ts
 │           └── index.ts
 ├── tests/unit/              # Vitest unit tests
 ├── public/index.html        # Dev sandbox (all widgets side by side)
@@ -258,7 +258,7 @@ The loader scans the DOM for any element whose tag name appears in the registry 
 <script
 	type="module"
 	src="https://cdn.example.com/widgets/sdk/loader.js"
-	data-widgets="counter-widget,posts-widget"
+	data-widgets="counter-widget,search-property-widget"
 ></script>
 ```
 
@@ -350,7 +350,7 @@ After running `npm run build`, the `dist/` folder is self-contained:
 dist/
 ├── sdk/loader.js               ← single script tag entry point
 ├── widgets/counter-widget.js   ← fully self-contained widget chunk
-├── widgets/posts-widget.js
+├── widgets/search-property-widget.js
 └── chunks/decorate-[hash].js   ← shared Lit internals (loaded once)
 ```
 
@@ -376,7 +376,7 @@ npm run release   # runs: tsc --noEmit && vite build && npm publish --access pub
 <script
 	type="module"
 	src="https://unpkg.com/@myorg/widgets@0.1.0/dist/sdk/loader.js"
-	data-widgets="posts-widget"
+	data-widgets="search-property-widget"
 ></script>
 ```
 
