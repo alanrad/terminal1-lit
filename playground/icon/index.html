@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>t1-icon — T1 Component Library</title>
+    <link rel="stylesheet" href="/src/styles/theme.css" />
+    <script type="module" src="/src/components/t1-icon/index.ts"></script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: var(--t1-font-sans);
+        background: var(--t1-color-neutral-50);
+        color: var(--t1-color-neutral-900);
+        min-height: 100vh;
+      }
+
+      .topbar {
+        background: var(--t1-color-neutral-0);
+        border-bottom: 1px solid var(--t1-color-neutral-200);
+        padding: var(--t1-spacing-medium) var(--t1-spacing-3x-large);
+        display: flex;
+        align-items: center;
+        gap: var(--t1-spacing-medium);
+      }
+
+      .topbar a {
+        font-size: var(--t1-font-size-small);
+        color: var(--t1-color-primary-600);
+        text-decoration: none;
+      }
+
+      .topbar a:hover { text-decoration: underline; }
+
+      .topbar-sep { color: var(--t1-color-neutral-300); }
+
+      .topbar h1 {
+        font-size: var(--t1-font-size-large);
+        font-weight: var(--t1-font-weight-semibold);
+      }
+
+      .content {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: var(--t1-spacing-3x-large) var(--t1-spacing-large);
+        display: flex;
+        flex-direction: column;
+        gap: var(--t1-spacing-3x-large);
+      }
+
+      .section { display: flex; flex-direction: column; gap: var(--t1-spacing-medium); }
+
+      .section-title {
+        font-size: var(--t1-font-size-large);
+        font-weight: var(--t1-font-weight-semibold);
+        color: var(--t1-color-neutral-900);
+        padding-bottom: var(--t1-spacing-x-small);
+        border-bottom: 1px solid var(--t1-color-neutral-200);
+      }
+
+      .section-desc {
+        font-size: var(--t1-font-size-small);
+        color: var(--t1-color-neutral-500);
+        line-height: var(--t1-line-height-dense);
+      }
+
+      .demo-box {
+        background: var(--t1-color-neutral-0);
+        border: 1px solid var(--t1-color-neutral-200);
+        border-radius: var(--t1-border-radius-large);
+        padding: var(--t1-spacing-large);
+      }
+
+      .icon-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--t1-spacing-medium);
+        align-items: center;
+      }
+
+      .icon-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--t1-spacing-2x-small);
+        width: 80px;
+        text-align: center;
+      }
+
+      .icon-item span {
+        font-size: var(--t1-font-size-x-small);
+        color: var(--t1-color-neutral-500);
+        word-break: break-all;
+      }
+
+      .color-row {
+        display: flex;
+        align-items: center;
+        gap: var(--t1-spacing-large);
+        flex-wrap: wrap;
+      }
+
+      .color-demo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--t1-spacing-2x-small);
+        font-size: var(--t1-font-size-x-small);
+        color: var(--t1-color-neutral-500);
+      }
+
+      .size-row {
+        display: flex;
+        align-items: flex-end;
+        gap: var(--t1-spacing-large);
+        flex-wrap: wrap;
+      }
+
+      .size-demo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--t1-spacing-2x-small);
+        font-size: var(--t1-font-size-x-small);
+        color: var(--t1-color-neutral-500);
+      }
+
+      code {
+        font-family: var(--t1-font-mono);
+        font-size: var(--t1-font-size-x-small);
+        background: var(--t1-color-neutral-100);
+        padding: 0.1em 0.4em;
+        border-radius: var(--t1-border-radius-small);
+        color: var(--t1-color-neutral-700);
+      }
+
+      pre {
+        font-family: var(--t1-font-mono);
+        font-size: var(--t1-font-size-x-small);
+        background: var(--t1-color-neutral-900);
+        color: var(--t1-color-neutral-100);
+        padding: var(--t1-spacing-medium);
+        border-radius: var(--t1-border-radius-medium);
+        overflow-x: auto;
+        line-height: var(--t1-line-height-dense);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="topbar">
+      <a href="/playground/">Home</a>
+      <span class="topbar-sep">/</span>
+      <h1>t1-icon</h1>
+    </nav>
+
+    <main class="content">
+      <section class="section">
+        <h2 class="section-title">Default Library (Bootstrap Icons via CDN)</h2>
+        <p class="section-desc">
+          The default library resolves icons from Bootstrap Icons on jsDelivr. Use the <code>name</code> attribute to specify which icon.
+        </p>
+        <div class="demo-box">
+          <div class="icon-grid">
+            <div class="icon-item">
+              <t1-icon name="house" style="font-size: 1.5rem;"></t1-icon>
+              <span>house</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="star" style="font-size: 1.5rem;"></t1-icon>
+              <span>star</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="heart" style="font-size: 1.5rem;"></t1-icon>
+              <span>heart</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="bell" style="font-size: 1.5rem;"></t1-icon>
+              <span>bell</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="search" style="font-size: 1.5rem;"></t1-icon>
+              <span>search</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="gear" style="font-size: 1.5rem;"></t1-icon>
+              <span>gear</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="person" style="font-size: 1.5rem;"></t1-icon>
+              <span>person</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="envelope" style="font-size: 1.5rem;"></t1-icon>
+              <span>envelope</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="calendar" style="font-size: 1.5rem;"></t1-icon>
+              <span>calendar</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="trash" style="font-size: 1.5rem;"></t1-icon>
+              <span>trash</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="pencil" style="font-size: 1.5rem;"></t1-icon>
+              <span>pencil</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="camera" style="font-size: 1.5rem;"></t1-icon>
+              <span>camera</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="download" style="font-size: 1.5rem;"></t1-icon>
+              <span>download</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="upload" style="font-size: 1.5rem;"></t1-icon>
+              <span>upload</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="lock" style="font-size: 1.5rem;"></t1-icon>
+              <span>lock</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="shield-check" style="font-size: 1.5rem;"></t1-icon>
+              <span>shield-check</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Colors</h2>
+        <p class="section-desc">
+          Icons inherit <code>color</code> from their context. Use CSS to control the color.
+        </p>
+        <div class="demo-box">
+          <div class="color-row">
+            <div class="color-demo" style="color: var(--t1-color-primary-600);">
+              <t1-icon name="star-fill" style="font-size: 2rem;"></t1-icon>
+              <span>primary</span>
+            </div>
+            <div class="color-demo" style="color: var(--t1-color-success-600);">
+              <t1-icon name="check-circle-fill" style="font-size: 2rem;"></t1-icon>
+              <span>success</span>
+            </div>
+            <div class="color-demo" style="color: var(--t1-color-warning-500);">
+              <t1-icon name="exclamation-triangle-fill" style="font-size: 2rem;"></t1-icon>
+              <span>warning</span>
+            </div>
+            <div class="color-demo" style="color: var(--t1-color-danger-600);">
+              <t1-icon name="x-circle-fill" style="font-size: 2rem;"></t1-icon>
+              <span>danger</span>
+            </div>
+            <div class="color-demo" style="color: var(--t1-color-neutral-400);">
+              <t1-icon name="info-circle" style="font-size: 2rem;"></t1-icon>
+              <span>neutral</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Sizing</h2>
+        <p class="section-desc">
+          Icons are sized using <code>font-size</code>. They default to <code>1em</code> so they match surrounding text.
+        </p>
+        <div class="demo-box">
+          <div class="size-row">
+            <div class="size-demo">
+              <t1-icon name="star-fill" style="font-size: 0.75rem;"></t1-icon>
+              <span>0.75rem</span>
+            </div>
+            <div class="size-demo">
+              <t1-icon name="star-fill" style="font-size: 1rem;"></t1-icon>
+              <span>1rem</span>
+            </div>
+            <div class="size-demo">
+              <t1-icon name="star-fill" style="font-size: 1.5rem;"></t1-icon>
+              <span>1.5rem</span>
+            </div>
+            <div class="size-demo">
+              <t1-icon name="star-fill" style="font-size: 2rem;"></t1-icon>
+              <span>2rem</span>
+            </div>
+            <div class="size-demo">
+              <t1-icon name="star-fill" style="font-size: 3rem;"></t1-icon>
+              <span>3rem</span>
+            </div>
+            <div class="size-demo">
+              <t1-icon name="star-fill" style="font-size: 4rem;"></t1-icon>
+              <span>4rem</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Labels (Accessibility)</h2>
+        <p class="section-desc">
+          Set the <code>label</code> attribute to make an icon accessible to assistive devices.
+          Without a label the icon gets <code>aria-hidden="true"</code>.
+        </p>
+        <div class="demo-box">
+          <div style="display: flex; gap: var(--t1-spacing-large); align-items: center; flex-wrap: wrap;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: var(--t1-spacing-x-small);">
+              <t1-icon name="heart-fill" label="Favorite" style="font-size: 2rem; color: var(--t1-color-danger-500);"></t1-icon>
+              <code style="font-size: var(--t1-font-size-x-small);">label="Favorite"</code>
+              <span style="font-size: var(--t1-font-size-x-small); color: var(--t1-color-success-600);">role=img, aria-label</span>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: var(--t1-spacing-x-small);">
+              <t1-icon name="heart-fill" style="font-size: 2rem; color: var(--t1-color-neutral-300);"></t1-icon>
+              <code style="font-size: var(--t1-font-size-x-small);">no label</code>
+              <span style="font-size: var(--t1-font-size-x-small); color: var(--t1-color-neutral-400);">aria-hidden="true"</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Custom src</h2>
+        <p class="section-desc">
+          Use <code>src</code> to load an icon from any URL. This example uses an inline data URI.
+        </p>
+        <div class="demo-box">
+          <t1-icon
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23198ec8'/%3E%3Ctext x='50' y='60' font-size='36' text-anchor='middle' fill='white' font-family='sans-serif'%3ET1%3C/text%3E%3C/svg%3E"
+            style="font-size: 4rem;"
+          ></t1-icon>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Custom Library Registration</h2>
+        <p class="section-desc">
+          Register custom icon libraries with <code>registerIconLibrary()</code>. This example registers Lucide Icons via CDN.
+        </p>
+        <div class="demo-box">
+          <div class="icon-grid" id="lucide-icons">
+            <div class="icon-item">
+              <t1-icon name="activity" library="lucide" style="font-size: 1.5rem;"></t1-icon>
+              <span>activity</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="airplay" library="lucide" style="font-size: 1.5rem;"></t1-icon>
+              <span>airplay</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="alarm-clock" library="lucide" style="font-size: 1.5rem;"></t1-icon>
+              <span>alarm-clock</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="archive" library="lucide" style="font-size: 1.5rem;"></t1-icon>
+              <span>archive</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="award" library="lucide" style="font-size: 1.5rem;"></t1-icon>
+              <span>award</span>
+            </div>
+            <div class="icon-item">
+              <t1-icon name="bar-chart" library="lucide" style="font-size: 1.5rem;"></t1-icon>
+              <span>bar-chart</span>
+            </div>
+          </div>
+        </div>
+        <pre>import { registerIconLibrary } from '/src/components/t1-icon/index.ts';
+
+registerIconLibrary('lucide', {
+  resolver: name =&gt; `https://cdn.jsdelivr.net/npm/lucide-static@0.428.0/icons/${name}.svg`,
+  mutator: svg =&gt; svg.setAttribute('stroke-width', '1.5'),
+});</pre>
+      </section>
+    </main>
+
+    <script type="module">
+      import { registerIconLibrary } from '/src/components/t1-icon/index.ts';
+
+      registerIconLibrary('lucide', {
+        resolver: name => `https://cdn.jsdelivr.net/npm/lucide-static@0.428.0/icons/${name}.svg`,
+        mutator: svg => svg.setAttribute('stroke-width', '1.5'),
+      });
+    </script>
+  </body>
+</html>

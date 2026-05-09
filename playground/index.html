@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>T1 Component Library</title>
+    <link rel="stylesheet" href="/src/styles/theme.css" />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: var(--t1-font-sans);
+        background: var(--t1-color-neutral-50);
+        color: var(--t1-color-neutral-900);
+        min-height: 100vh;
+      }
+
+      .header {
+        background: var(--t1-color-neutral-0);
+        border-bottom: 1px solid var(--t1-color-neutral-200);
+        padding: var(--t1-spacing-large) var(--t1-spacing-3x-large);
+      }
+
+      .header h1 {
+        font-size: var(--t1-font-size-2x-large);
+        font-weight: var(--t1-font-weight-bold);
+        color: var(--t1-color-primary-700);
+        letter-spacing: var(--t1-letter-spacing-dense);
+      }
+
+      .header p {
+        margin-top: var(--t1-spacing-2x-small);
+        font-size: var(--t1-font-size-medium);
+        color: var(--t1-color-neutral-500);
+      }
+
+      .main {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: var(--t1-spacing-3x-large) var(--t1-spacing-large);
+      }
+
+      .section-title {
+        font-size: var(--t1-font-size-x-small);
+        font-weight: var(--t1-font-weight-semibold);
+        text-transform: uppercase;
+        letter-spacing: var(--t1-letter-spacing-looser);
+        color: var(--t1-color-neutral-400);
+        margin-bottom: var(--t1-spacing-medium);
+      }
+
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: var(--t1-spacing-medium);
+      }
+
+      .card {
+        display: flex;
+        flex-direction: column;
+        background: var(--t1-color-neutral-0);
+        border: 1px solid var(--t1-color-neutral-200);
+        border-radius: var(--t1-border-radius-large);
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        transition: box-shadow var(--t1-transition-fast), border-color var(--t1-transition-fast);
+      }
+
+      .card:hover {
+        border-color: var(--t1-color-primary-400);
+        box-shadow: var(--t1-shadow-medium);
+      }
+
+      .card-preview {
+        background: var(--t1-color-neutral-50);
+        border-bottom: 1px solid var(--t1-color-neutral-100);
+        padding: var(--t1-spacing-2x-large);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--t1-spacing-small);
+        min-height: 120px;
+        font-size: var(--t1-font-size-x-large);
+      }
+
+      .card-body {
+        padding: var(--t1-spacing-medium);
+      }
+
+      .card-body h2 {
+        font-size: var(--t1-font-size-large);
+        font-weight: var(--t1-font-weight-semibold);
+        color: var(--t1-color-neutral-900);
+        margin-bottom: var(--t1-spacing-3x-small);
+      }
+
+      .card-body p {
+        font-size: var(--t1-font-size-small);
+        color: var(--t1-color-neutral-500);
+        line-height: var(--t1-line-height-dense);
+      }
+
+      .badge {
+        display: inline-block;
+        font-size: var(--t1-font-size-x-small);
+        font-weight: var(--t1-font-weight-semibold);
+        padding: 0.125rem 0.5rem;
+        border-radius: var(--t1-border-radius-pill);
+        background: var(--t1-color-primary-100);
+        color: var(--t1-color-primary-700);
+        margin-bottom: var(--t1-spacing-x-small);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <h1>T1 Component Library</h1>
+      <p>Lit 3 web components with TypeScript, Vite, and a full design token system.</p>
+    </header>
+
+    <main class="main">
+      <p class="section-title">Components</p>
+      <div class="card-grid">
+        <a href="/playground/icon/" class="card">
+          <div class="card-preview">
+            <span style="color: var(--t1-color-primary-500);">&#9670;</span>
+            <span style="color: var(--t1-color-success-500);">&#9670;</span>
+            <span style="color: var(--t1-color-warning-500);">&#9670;</span>
+          </div>
+          <div class="card-body">
+            <span class="badge">t1-icon</span>
+            <h2>Icon</h2>
+            <p>SVG icon component with library registration, custom sources, and sprite sheet support.</p>
+          </div>
+        </a>
+
+        <a href="/playground/input/" class="card">
+          <div class="card-preview">
+            <div style="width: 180px; height: 2.5rem; border: 1px solid var(--t1-color-neutral-300); border-radius: var(--t1-border-radius-medium); background: white; display:flex; align-items:center; padding: 0 0.75rem; color: var(--t1-color-neutral-400); font-size: var(--t1-font-size-small);">
+              Enter text...
+            </div>
+          </div>
+          <div class="card-body">
+            <span class="badge">t1-input</span>
+            <h2>Input</h2>
+            <p>Form-associated text input with labels, help text, clearable, and password toggle.</p>
+          </div>
+        </a>
+      </div>
+    </main>
+  </body>
+</html>
