@@ -2,8 +2,8 @@ import { LitElement, html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import styles from './property-card-skeleton.styles';
 import type { CSSResultGroup } from 'lit';
-import '@components/t1-card/index';
-import '@components/t1-skeleton/index';
+import '@components/t1-card';
+import '@components/t1-skeleton';
 
 const componentStyles = css`
   :host {

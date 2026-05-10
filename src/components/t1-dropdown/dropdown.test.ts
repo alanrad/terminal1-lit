@@ -1,7 +1,7 @@
 import { expect, afterEach, test } from 'vitest';
-import '../t1-menu/index';
-import '../t1-menu-item/index';
-import './index';
+import '../t1-menu';
+import '../t1-menu-item';
+import '.';
 
 type T1DropdownEl = HTMLElement & {
   updateComplete: Promise<boolean>;

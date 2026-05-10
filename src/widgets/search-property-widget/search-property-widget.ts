@@ -5,12 +5,12 @@ import { effect } from '@state/signal';
 import createSearchPropertyState, { type SearchPropertyState } from './search-property.state';
 import { baseStyles } from '@styles/base';
 import styles from './search-property-widget.styles';
-import '@components/t1-input/index';
-import '@components/t1-icon/index';
-import '@components/t1-popup/index';
-import '@components/t1-menu/index';
-import '@components/t1-menu-item/index';
-import '@components/t1-spinner/index';
+import '@components/t1-input';
+import '@components/t1-icon';
+import '@components/t1-popup';
+import '@components/t1-menu';
+import '@components/t1-menu-item';
+import '@components/t1-spinner';
 import PropertyService from '@services/property.service';
 import type { TransformedProperty } from '@services/property.service';
 import { findProperty, getPropertyIcon } from './utils';
@@ -47,6 +47,7 @@ class SearchPropertyWidget extends SignalMixin(LitElement) {
   private _state: SearchPropertyState = createSearchPropertyState();
   private _debounceTimer = 0;
   private _skeletonTimer = 0;
+  private _userQuery = '';
   private _disposeResultsEffect = () => {};
 
   connectedCallback() {
@@ -72,6 +73,7 @@ class SearchPropertyWidget extends SignalMixin(LitElement) {
 
   private handleInput = (event: Event) => {
     const value = (event.target as HTMLInputElement & { value: string }).value ?? '';
+    this._userQuery = value;
 
     clearTimeout(this._debounceTimer);
 
@@ -88,6 +90,9 @@ class SearchPropertyWidget extends SignalMixin(LitElement) {
   };
 
   private handleFocus = () => {
+    if (this._state.selectedProperty.value && this._inputEl) {
+      this._inputEl.value = this._userQuery;
+    }
     if (this._state.results.value.length > 0) {
       this._state.showPopup();
     }
@@ -99,6 +104,9 @@ class SearchPropertyWidget extends SignalMixin(LitElement) {
     if (property) {
       this._state.setSelectedProperty(property);
       this.onSelect(property);
+      if (this._inputEl) {
+        this._inputEl.value = property.fullAddress;
+      }
       clearTimeout(this._skeletonTimer);
       this._state.setShowSkeleton(true);
       this._skeletonTimer = window.setTimeout(() => {

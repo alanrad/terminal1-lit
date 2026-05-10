@@ -1,5 +1,5 @@
 import { expect, afterEach, vi, test } from 'vitest';
-import './index';
+import '.';
 
 type T1AlertEl = HTMLElement & {
   updateComplete: Promise<boolean>;

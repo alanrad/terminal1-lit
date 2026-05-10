@@ -1,5 +1,5 @@
 import { test, expect, afterEach, vi } from 'vitest';
-import './index';
+import '.';
 
 type SearchPropertyWidgetEl = HTMLElement & {
   updateComplete: Promise<boolean>;

@@ -1,6 +1,6 @@
 import { expect, beforeAll, vi, afterEach, test } from 'vitest';
 import { registerIconLibrary } from './icon.library';
-import './index';
+import '.';
 
 const SIMPLE_SVG =
   '<svg id="test-icon" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8"/></svg>';

@@ -5,7 +5,7 @@ import { live } from 'lit/directives/live.js';
 import { property, query, state } from 'lit/decorators.js';
 import { LocalizeController } from '@utils/localize';
 import { watch } from '@utils/watch';
-import '@components/t1-icon/index';
+import '@components/t1-icon';
 import styles from './input.styles';
 import type { CSSResultGroup } from 'lit';
 

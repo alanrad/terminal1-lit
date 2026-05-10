@@ -4,12 +4,12 @@ import styles from './property-card.styles';
 import type { CSSResultGroup } from 'lit';
 import type { TransformedProperty } from '@services/property.service';
 import { getPropertyIcon } from '../../utils';
-import '@components/t1-card/index';
-import '@components/t1-button/index';
-import '@components/t1-rating/index';
-import '@components/t1-icon/index';
-import '@components/t1-tag/index';
-import '@components/t1-alert/index';
+import '@components/t1-card';
+import '@components/t1-button';
+import '@components/t1-rating';
+import '@components/t1-icon';
+import '@components/t1-tag';
+import '@components/t1-alert';
 
 const componentStyles = css`
   :host {

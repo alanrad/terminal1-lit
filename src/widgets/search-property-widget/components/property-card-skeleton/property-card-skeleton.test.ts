@@ -1,5 +1,5 @@
 import { expect, afterEach, test } from 'vitest';
-import './index';
+import '.';
 
 type PropertyCardSkeletonEl = HTMLElement & {
   updateComplete: Promise<boolean>;

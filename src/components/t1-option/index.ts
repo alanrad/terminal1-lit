@@ -1,4 +1,4 @@
-import '../t1-icon/index';
+import '../t1-icon';
 import T1Option from './option.component';
 
 if (!customElements.get('t1-option')) {

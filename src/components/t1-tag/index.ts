@@ -1,4 +1,4 @@
-import '../t1-icon-button/index';
+import '../t1-icon-button';
 import T1Tag from './tag.component';
 
 if (!customElements.get('t1-tag')) {

@@ -1,4 +1,4 @@
-import '@components/t1-popup/index';
+import '@components/t1-popup';
 import T1Dropdown from './dropdown.component';
 export * from './dropdown.component';
 export default T1Dropdown;

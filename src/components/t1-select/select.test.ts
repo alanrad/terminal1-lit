@@ -1,6 +1,6 @@
 import { expect, afterEach, test } from 'vitest';
-import '../t1-option/index';
-import './index';
+import '../t1-option';
+import '.';
 
 type T1SelectEl = HTMLElement & {
   updateComplete: Promise<boolean>;

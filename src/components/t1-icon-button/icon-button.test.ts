@@ -1,5 +1,5 @@
 import { expect, afterEach, test } from 'vitest';
-import './index';
+import '.';
 
 type T1IconButtonEl = HTMLElement & {
   updateComplete: Promise<boolean>;

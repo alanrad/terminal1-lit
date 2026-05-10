@@ -1,6 +1,6 @@
-import '@components/t1-icon/index';
-import '@components/t1-popup/index';
-import '@components/t1-spinner/index';
+import '@components/t1-icon';
+import '@components/t1-popup';
+import '@components/t1-spinner';
 import T1MenuItem from './menu-item.component';
 export * from './menu-item.component';
 export default T1MenuItem;

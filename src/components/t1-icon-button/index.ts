@@ -1,4 +1,4 @@
-import '@components/t1-icon/index';
+import '@components/t1-icon';
 import T1IconButton from './icon-button.component';
 export * from './icon-button.component';
 export default T1IconButton;

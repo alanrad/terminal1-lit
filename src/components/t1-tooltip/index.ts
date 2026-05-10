@@ -1,4 +1,4 @@
-import '../t1-popup/index';
+import '../t1-popup';
 import T1Tooltip from './tooltip.component';
 export * from './tooltip.component';
 export default T1Tooltip;

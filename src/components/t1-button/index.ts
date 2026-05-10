@@ -1,5 +1,5 @@
-import '@components/t1-icon/index';
-import '@components/t1-spinner/index';
+import '@components/t1-icon';
+import '@components/t1-spinner';
 import T1Button from './button.component';
 export * from './button.component';
 export default T1Button;

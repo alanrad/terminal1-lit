@@ -1,5 +1,5 @@
 import { expect, afterEach, test } from 'vitest';
-import './index';
+import '.';
 
 type T1SkeletonEl = HTMLElement & {
   updateComplete: Promise<boolean>;

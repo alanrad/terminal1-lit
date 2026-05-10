@@ -1,5 +1,5 @@
 import { expect, afterEach, vi, test } from 'vitest';
-import './index';
+import '.';
 
 type T1RatingEl = HTMLElement & {
   updateComplete: Promise<boolean>;

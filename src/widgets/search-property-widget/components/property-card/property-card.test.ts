@@ -1,5 +1,5 @@
 import { expect, vi, afterEach, test } from 'vitest';
-import './index';
+import '.';
 import type { TransformedProperty } from '@services/property.service';
 
 type PropertyCardEl = HTMLElement & {
