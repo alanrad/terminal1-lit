@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import styles from './property-card.styles';
 import type { CSSResultGroup } from 'lit';
 import type { TransformedProperty } from '@services/property.service';
@@ -9,6 +9,7 @@ import '@components/t1-button/index';
 import '@components/t1-rating/index';
 import '@components/t1-icon/index';
 import '@components/t1-tag/index';
+import '@components/t1-alert/index';
 
 const componentStyles = css`
   :host {
@@ -29,6 +30,18 @@ export default class PropertyCard extends LitElement {
   static styles: CSSResultGroup = [componentStyles, styles];
 
   @property({ attribute: false }) selectedProperty: TransformedProperty | null = null;
+
+  @state() private _showAlert = false;
+
+  updated(changedProps: Map<string, unknown>) {
+    if (changedProps.has('selectedProperty')) {
+      this._showAlert = false;
+    }
+  }
+
+  private _handleMoreInfo = () => {
+    this._showAlert = true;
+  };
 
   render() {
     if (!this.selectedProperty) {
@@ -71,10 +84,30 @@ export default class PropertyCard extends LitElement {
                 ${p.price.currency} $${p.price.total.toLocaleString()}
               </span>
             </div>
-            <t1-button variant="primary" pill size="medium">More Info</t1-button>
+            <t1-button variant="danger" pill size="medium" @click=${this._handleMoreInfo}
+              >More Info</t1-button
+            >
           </div>
         </div>
       </t1-card>
+      ${this._showAlert
+        ? html`
+            <t1-alert
+              variant="neutral"
+              open
+              closable
+              duration="3000"
+              style="margin-top: var(--t1-spacing-medium)"
+              @t1-after-hide=${() => {
+                this._showAlert = false;
+              }}
+            >
+              <t1-icon slot="icon" name="info-circle"></t1-icon>
+              Full property details are not available at this time. Please check back later or
+              contact our support team for assistance.
+            </t1-alert>
+          `
+        : ''}
     `;
   }
 }

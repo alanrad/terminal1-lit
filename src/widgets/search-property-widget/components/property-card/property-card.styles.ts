@@ -41,8 +41,8 @@ const styles = css`
     min-height: 180px;
     background: linear-gradient(
       150deg,
-      var(--t1-color-primary-700, #1d4ed8),
-      var(--t1-color-primary-400, #60a5fa)
+      var(--t1-color-danger-700, hsl(0 73.7% 41.8%)),
+      var(--t1-color-danger-400, hsl(0 90.6% 70.8%))
     );
     display: flex;
     flex-direction: column;
@@ -119,7 +119,7 @@ const styles = css`
   .card-content__more {
     margin: 0.25rem 0 0;
     font-size: var(--t1-font-size-small, 0.875rem);
-    color: var(--t1-color-primary-600, #2563eb);
+    color: var(--t1-color-danger-600, hsl(0 72.2% 50.6%));
     cursor: pointer;
   }
 
