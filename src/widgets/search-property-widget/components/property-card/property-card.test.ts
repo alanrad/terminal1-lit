@@ -121,3 +121,63 @@ test('card shows More Info button', async () => {
   const button = el.shadowRoot!.querySelector('t1-button');
   expect(button?.textContent?.trim()).toBe('More Info');
 });
+
+test('More Info button has danger variant', async () => {
+  const el = createElement();
+  el.selectedProperty = mockProperty;
+  await el.updateComplete;
+
+  const button = el.shadowRoot!.querySelector('t1-button');
+  expect(button?.getAttribute('variant')).toBe('danger');
+});
+
+test('tag shows the property type in the image area', async () => {
+  const el = createElement();
+  el.selectedProperty = mockProperty;
+  await el.updateComplete;
+
+  const tag = el.shadowRoot!.querySelector('.card-image__tag');
+  expect(tag?.textContent?.trim()).toBe('hotel');
+});
+
+test('clicking More Info button shows the unavailability alert', async () => {
+  const el = createElement();
+  el.selectedProperty = mockProperty;
+  await el.updateComplete;
+
+  (el.shadowRoot!.querySelector('t1-button') as HTMLElement).click();
+  await el.updateComplete;
+
+  expect(el.shadowRoot!.querySelector('t1-alert')).not.toBeNull();
+});
+
+test('alert is hidden after t1-after-hide fires on it', async () => {
+  const el = createElement();
+  el.selectedProperty = mockProperty;
+  await el.updateComplete;
+
+  (el.shadowRoot!.querySelector('t1-button') as HTMLElement).click();
+  await el.updateComplete;
+
+  el.shadowRoot!.querySelector('t1-alert')!.dispatchEvent(
+    new CustomEvent('t1-after-hide', { bubbles: true, composed: true }),
+  );
+  await el.updateComplete;
+
+  expect(el.shadowRoot!.querySelector('t1-alert')).toBeNull();
+});
+
+test('alert resets when selectedProperty is replaced', async () => {
+  const el = createElement();
+  el.selectedProperty = mockProperty;
+  await el.updateComplete;
+
+  (el.shadowRoot!.querySelector('t1-button') as HTMLElement).click();
+  await el.updateComplete;
+  expect(el.shadowRoot!.querySelector('t1-alert')).not.toBeNull();
+
+  el.selectedProperty = { ...mockProperty, id: 2, name: 'Another Hotel' };
+  await el.updateComplete;
+
+  expect(el.shadowRoot!.querySelector('t1-alert')).toBeNull();
+});

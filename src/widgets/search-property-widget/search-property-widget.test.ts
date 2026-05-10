@@ -621,3 +621,140 @@ test('ArrowUp does nothing when menu has no items', async () => {
 
   expect(menu.setCurrentItem).not.toHaveBeenCalled();
 });
+
+test('unrecognized key with results present does not change state', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  el._state.setResults([makeStub(1)] as never);
+  await el.updateComplete;
+
+  el.shadowRoot!.querySelector('.autocomplete')!.dispatchEvent(
+    new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }),
+  );
+
+  expect(el._state.results.value).toHaveLength(1);
+  expect(el._state.popupVisible.value).toBe(true);
+});
+
+// ── Input value management ────────────────────────────────────────────────────
+
+test('sets input value to selected property fullAddress after menu selection', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  const stub = [makeStub(1)] as never;
+  el._state.setProperties(stub);
+  el._state.setResults(stub);
+  await el.updateComplete;
+
+  el.shadowRoot!.querySelector('t1-menu')!.dispatchEvent(
+    new CustomEvent('t1-select', {
+      detail: { item: { value: '1' } },
+      bubbles: true,
+      composed: true,
+    }),
+  );
+
+  const input = el.shadowRoot!.querySelector('t1-input') as HTMLElement & { value: string };
+  expect(input.value).toBe('1 St, Sydney, NSW, 2000, Australia');
+});
+
+test('restores user query in input when focused after a selection', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  const stub = [makeStub(1)] as never;
+  el._state.setProperties(stub);
+
+  dispatchInput(el, 'Sydney');
+  el._state.setResults(stub);
+
+  el.shadowRoot!.querySelector('t1-menu')!.dispatchEvent(
+    new CustomEvent('t1-select', {
+      detail: { item: { value: '1' } },
+      bubbles: true,
+      composed: true,
+    }),
+  );
+
+  el.shadowRoot!.querySelector('t1-input')!.dispatchEvent(
+    new CustomEvent('t1-focus', { bubbles: true, composed: true }),
+  );
+
+  const input = el.shadowRoot!.querySelector('t1-input') as HTMLElement & { value: string };
+  expect(input.value).toBe('Sydney');
+});
+
+test('focus with no selected property does not modify input value', async () => {
+  const el = createElement();
+  await el.updateComplete;
+
+  const input = el.shadowRoot!.querySelector('t1-input') as HTMLElement & { value: string };
+  input.value = 'typed text';
+
+  el.shadowRoot!.querySelector('t1-input')!.dispatchEvent(
+    new CustomEvent('t1-focus', { bubbles: true, composed: true }),
+  );
+
+  expect(input.value).toBe('typed text');
+});
+
+// ── Actual search implementation ──────────────────────────────────────────────
+
+test('search loads properties from service when none are cached', async () => {
+  const el = createElement();
+  await el.updateComplete;
+
+  const mockData = [makeStub(1), makeStub(2)];
+  const getSpy = vi.fn().mockResolvedValue(mockData);
+  (el as any)._propertyService = { getProperties: getSpy };
+
+  await el.search('Sydney');
+
+  expect(getSpy).toHaveBeenCalledOnce();
+  expect(el._state.properties.value).toStrictEqual(mockData);
+  expect(el._state.loading.value).toBe(false);
+  expect(el._state.results.value).toHaveLength(2);
+});
+
+test('search uses cached properties without calling the service again', async () => {
+  const el = createElement();
+  await el.updateComplete;
+
+  const cached = [makeStub(1), makeStub(2)];
+  el._state.setProperties(cached as never);
+
+  const getSpy = vi.fn();
+  (el as any)._propertyService = { getProperties: getSpy };
+
+  await el.search('Sydney');
+
+  expect(getSpy).not.toHaveBeenCalled();
+  expect(el._state.results.value).toHaveLength(2);
+});
+
+test('search clears loading even when the service throws', async () => {
+  const el = createElement();
+  await el.updateComplete;
+
+  (el as any)._propertyService = {
+    getProperties: vi.fn().mockRejectedValue(new Error('Network error')),
+  };
+
+  await expect(el.search('Sydney')).rejects.toThrow('Network error');
+  expect(el._state.loading.value).toBe(false);
+});
+
+// ── Lifecycle ─────────────────────────────────────────────────────────────────
+
+test('disconnectedCallback clears the debounce timer', async () => {
+  vi.useFakeTimers();
+  const el = createElement();
+  await el.updateComplete;
+  const spy = vi.fn();
+  el.search = spy;
+
+  dispatchInput(el, 'Paris');
+  el.remove();
+
+  vi.runAllTimers();
+  expect(spy).not.toHaveBeenCalled();
+});

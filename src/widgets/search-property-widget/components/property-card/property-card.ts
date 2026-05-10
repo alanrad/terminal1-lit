@@ -33,7 +33,7 @@ export default class PropertyCard extends LitElement {
 
   @state() private _showAlert = false;
 
-  updated(changedProps: Map<string, unknown>) {
+  willUpdate(changedProps: Map<string, unknown>) {
     if (changedProps.has('selectedProperty')) {
       this._showAlert = false;
     }
