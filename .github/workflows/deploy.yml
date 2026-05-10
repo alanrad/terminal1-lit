@@ -38,5 +38,6 @@ jobs:
           aws s3 sync dist/ \
             s3://${{ secrets.R2_BUCKET_NAME }}/cdn/lit/ \
             --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com \
+            --exclude "index.html" \
             --delete \
             --no-progress
