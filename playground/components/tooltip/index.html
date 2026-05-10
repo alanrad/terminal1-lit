@@ -21,28 +21,100 @@
         color: var(--t1-color-neutral-900);
         min-height: 100vh;
       }
-      .topbar {
+
+      .sticky-nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header {
         background: var(--t1-color-neutral-0);
         border-bottom: 1px solid var(--t1-color-neutral-200);
-        padding: var(--t1-spacing-medium) var(--t1-spacing-3x-large);
+        padding: var(--t1-spacing-large) var(--t1-spacing-3x-large);
         display: flex;
         align-items: center;
-        gap: var(--t1-spacing-medium);
       }
-      .topbar a {
+
+      .header-link {
+        display: flex;
+        align-items: center;
+        gap: var(--t1-spacing-large);
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .header-logo {
+        flex-shrink: 0;
+        width: 100px;
+        padding-top: 7px;
+        object-fit: contain;
+      }
+
+      .header-text h1 {
+        font-size: var(--t1-font-size-2x-large);
+        font-weight: var(--t1-font-weight-bold);
+        color: var(--t1-color-danger-600);
+        letter-spacing: var(--t1-letter-spacing-dense);
+      }
+
+      .header-text p {
+        margin-top: var(--t1-spacing-2x-small);
+        font-size: var(--t1-font-size-medium);
+        color: var(--t1-color-neutral-500);
+      }
+
+      .breadcrumb {
+        background: var(--t1-color-neutral-0);
+        border-bottom: 1px solid var(--t1-color-neutral-100);
+        padding: var(--t1-spacing-x-small) var(--t1-spacing-3x-large);
+        display: flex;
+        align-items: center;
+        gap: var(--t1-spacing-small);
         font-size: var(--t1-font-size-small);
-        color: var(--t1-color-primary-600);
+      }
+
+      .breadcrumb a {
+        color: var(--t1-color-danger-600);
         text-decoration: none;
       }
-      .topbar a:hover {
+
+      .breadcrumb a:hover {
         text-decoration: underline;
       }
-      .topbar-sep {
+
+      .breadcrumb-sep {
         color: var(--t1-color-neutral-300);
       }
-      .topbar h1 {
-        font-size: var(--t1-font-size-large);
-        font-weight: var(--t1-font-weight-semibold);
+
+      .breadcrumb-current {
+        color: var(--t1-color-neutral-500);
+      }
+
+      @media (max-width: 640px) {
+        .header {
+          padding: var(--t1-spacing-small) var(--t1-spacing-large);
+        }
+
+        .header-logo {
+          width: 64px;
+        }
+
+        .header-text h1 {
+          font-size: var(--t1-font-size-x-large);
+        }
+
+        .header-text p {
+          display: none;
+        }
+
+        .breadcrumb {
+          padding: var(--t1-spacing-x-small) var(--t1-spacing-large);
+        }
+
+        .content {
+          padding: var(--t1-spacing-2x-large) var(--t1-spacing-medium);
+        }
       }
       .content {
         max-width: 800px;
@@ -90,11 +162,28 @@
     </style>
   </head>
   <body>
-    <nav class="topbar">
-      <a href="/playground/components/">Home</a>
-      <span class="topbar-sep">/</span>
-      <h1>t1-tooltip</h1>
-    </nav>
+    <div class="sticky-nav">
+      <header class="header">
+        <a href="/playground/" class="header-link">
+          <img
+            class="header-logo"
+            src="https://terminal1.win/images/terminal-one.png"
+            alt="Terminal 1"
+          />
+          <div class="header-text">
+            <h1>Terminal 1</h1>
+            <p>Web components built with TS, Lit &amp; Vite</p>
+          </div>
+        </a>
+      </header>
+      <nav class="breadcrumb">
+        <a href="/playground/">Home</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="/playground/components/">Components</a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Tooltip</span>
+      </nav>
+    </div>
 
     <main class="content">
       <section class="section">

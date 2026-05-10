@@ -22,22 +22,31 @@
         min-height: 100vh;
       }
 
-      .header {
+      .sticky-nav {
         position: sticky;
         top: 0;
         z-index: 100;
+      }
+
+      .header {
         background: var(--t1-color-neutral-0);
         border-bottom: 1px solid var(--t1-color-neutral-200);
         padding: var(--t1-spacing-large) var(--t1-spacing-3x-large);
         display: flex;
         align-items: center;
+      }
+
+      .header-link {
+        display: flex;
+        align-items: center;
         gap: var(--t1-spacing-large);
+        text-decoration: none;
+        color: inherit;
       }
 
       .header-logo {
         flex-shrink: 0;
-        width: 64px;
-        height: 64px;
+        width: 100px;
         padding-top: 7px;
         object-fit: contain;
       }
@@ -45,7 +54,7 @@
       .header-text h1 {
         font-size: var(--t1-font-size-2x-large);
         font-weight: var(--t1-font-weight-bold);
-        color: var(--t1-color-primary-700);
+        color: var(--t1-color-danger-600);
         letter-spacing: var(--t1-letter-spacing-dense);
       }
 
@@ -64,7 +73,7 @@
         gap: var(--t1-spacing-3x-large);
       }
 
-      .section-title {
+      .section-label {
         font-size: var(--t1-font-size-x-small);
         font-weight: var(--t1-font-weight-semibold);
         text-transform: uppercase;
@@ -94,7 +103,7 @@
       }
 
       .section-card:hover {
-        border-color: var(--t1-color-primary-400);
+        border-color: var(--t1-color-danger-400);
         box-shadow: var(--t1-shadow-medium);
       }
 
@@ -134,8 +143,8 @@
         font-weight: var(--t1-font-weight-semibold);
         padding: 0.2em 0.7em;
         border-radius: var(--t1-border-radius-pill);
-        background: var(--t1-color-primary-100);
-        color: var(--t1-color-primary-700);
+        background: var(--t1-color-danger-100);
+        color: var(--t1-color-danger-700);
         margin-top: var(--t1-spacing-small);
       }
 
@@ -143,30 +152,60 @@
         background: var(--t1-color-warning-100);
         color: var(--t1-color-warning-700);
       }
+
+      @media (max-width: 640px) {
+        .header {
+          padding: var(--t1-spacing-small) var(--t1-spacing-large);
+        }
+
+        .header-logo {
+          width: 64px;
+        }
+
+        .header-text h1 {
+          font-size: var(--t1-font-size-x-large);
+        }
+
+        .header-text p {
+          display: none;
+        }
+
+        .main {
+          padding: var(--t1-spacing-2x-large) var(--t1-spacing-medium);
+        }
+      }
     </style>
   </head>
   <body>
-    <header class="header">
-      <img class="header-logo" src="https://terminal1.win/images/terminal-1.png" alt="Terminal 1" />
-      <div class="header-text">
-        <h1>Terminal 1</h1>
-        <p>Web components built with Lit, TS & Vite</p>
-      </div>
-    </header>
+    <div class="sticky-nav">
+      <header class="header">
+        <a href="/playground/" class="header-link">
+          <img
+            class="header-logo"
+            src="https://terminal1.win/images/terminal-one.png"
+            alt="Terminal 1"
+          />
+          <div class="header-text">
+            <h1>Terminal 1</h1>
+            <p>Web components built with TS, Lit & Vite</p>
+          </div>
+        </a>
+      </header>
+    </div>
 
     <main class="main">
       <div>
-        <p class="section-title">Explore</p>
+        <p class="section-label">Explore</p>
         <div class="card-grid">
           <a href="/playground/components/" class="section-card">
             <div class="section-card-preview">
               <t1-icon
                 name="layers-half"
-                style="font-size: 3rem; color: var(--t1-color-primary-500)"
+                style="font-size: 3rem; color: var(--t1-color-danger-500)"
               ></t1-icon>
               <t1-icon
                 name="layers"
-                style="font-size: 3rem; color: var(--t1-color-primary-300)"
+                style="font-size: 3rem; color: var(--t1-color-danger-300)"
               ></t1-icon>
             </div>
             <div class="section-card-body">
@@ -180,11 +219,11 @@
             <div class="section-card-preview">
               <t1-icon
                 name="gear-wide-connected"
-                style="font-size: 3rem; color: var(--t1-color-primary-500)"
+                style="font-size: 3rem; color: var(--t1-color-danger-500)"
               ></t1-icon>
               <t1-icon
                 name="gear-wide"
-                style="font-size: 3rem; color: var(--t1-color-primary-300)"
+                style="font-size: 3rem; color: var(--t1-color-danger-300)"
               ></t1-icon>
             </div>
             <div class="section-card-body">

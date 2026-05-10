@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Terminal 1</title>
+    <title>Components — Terminal 1</title>
     <link rel="stylesheet" href="/src/styles/theme.css" />
     <style>
       *,
@@ -21,22 +21,31 @@
         min-height: 100vh;
       }
 
-      .header {
+      .sticky-nav {
         position: sticky;
         top: 0;
         z-index: 100;
+      }
+
+      .header {
         background: var(--t1-color-neutral-0);
         border-bottom: 1px solid var(--t1-color-neutral-200);
         padding: var(--t1-spacing-large) var(--t1-spacing-3x-large);
         display: flex;
         align-items: center;
+      }
+
+      .header-link {
+        display: flex;
+        align-items: center;
         gap: var(--t1-spacing-large);
+        text-decoration: none;
+        color: inherit;
       }
 
       .header-logo {
         flex-shrink: 0;
-        width: 64px;
-        height: 64px;
+        width: 100px;
         padding-top: 7px;
         object-fit: contain;
       }
@@ -44,7 +53,7 @@
       .header-text h1 {
         font-size: var(--t1-font-size-2x-large);
         font-weight: var(--t1-font-weight-bold);
-        color: var(--t1-color-primary-700);
+        color: var(--t1-color-danger-600);
         letter-spacing: var(--t1-letter-spacing-dense);
       }
 
@@ -54,13 +63,40 @@
         color: var(--t1-color-neutral-500);
       }
 
+      .breadcrumb {
+        background: var(--t1-color-neutral-0);
+        border-bottom: 1px solid var(--t1-color-neutral-100);
+        padding: var(--t1-spacing-x-small) var(--t1-spacing-3x-large);
+        display: flex;
+        align-items: center;
+        gap: var(--t1-spacing-small);
+        font-size: var(--t1-font-size-small);
+      }
+
+      .breadcrumb a {
+        color: var(--t1-color-danger-600);
+        text-decoration: none;
+      }
+
+      .breadcrumb a:hover {
+        text-decoration: underline;
+      }
+
+      .breadcrumb-sep {
+        color: var(--t1-color-neutral-300);
+      }
+
+      .breadcrumb-current {
+        color: var(--t1-color-neutral-500);
+      }
+
       .main {
         max-width: 960px;
         margin: 0 auto;
         padding: var(--t1-spacing-3x-large) var(--t1-spacing-large);
       }
 
-      .section-title {
+      .section-label {
         font-size: var(--t1-font-size-x-small);
         font-weight: var(--t1-font-weight-semibold);
         text-transform: uppercase;
@@ -90,7 +126,7 @@
       }
 
       .card:hover {
-        border-color: var(--t1-color-primary-400);
+        border-color: var(--t1-color-danger-400);
         box-shadow: var(--t1-shadow-medium);
       }
 
@@ -129,64 +165,168 @@
         font-weight: var(--t1-font-weight-semibold);
         padding: 0.125rem 0.5rem;
         border-radius: var(--t1-border-radius-pill);
-        background: var(--t1-color-primary-100);
-        color: var(--t1-color-primary-700);
+        background: var(--t1-color-danger-100);
+        color: var(--t1-color-danger-700);
         margin-bottom: var(--t1-spacing-x-small);
+      }
+
+      @media (max-width: 640px) {
+        .header {
+          padding: var(--t1-spacing-small) var(--t1-spacing-large);
+        }
+
+        .header-logo {
+          width: 64px;
+        }
+
+        .header-text h1 {
+          font-size: var(--t1-font-size-x-large);
+        }
+
+        .header-text p {
+          display: none;
+        }
+
+        .breadcrumb {
+          padding: var(--t1-spacing-x-small) var(--t1-spacing-large);
+        }
+
+        .main {
+          padding: var(--t1-spacing-2x-large) var(--t1-spacing-medium);
+        }
       }
     </style>
   </head>
   <body>
-    <header class="header">
-      <img class="header-logo" src="https://terminal1.win/images/terminal-1.png" alt="Terminal 1" />
-      <div class="header-text">
-        <h1>Terminal 1</h1>
-        <p>Web components built with Lit, TS & Vite</p>
-      </div>
-    </header>
+    <div class="sticky-nav">
+      <header class="header">
+        <a href="/playground/" class="header-link">
+          <img
+            class="header-logo"
+            src="https://terminal1.win/images/terminal-one.png"
+            alt="Terminal 1"
+          />
+          <div class="header-text">
+            <h1>Terminal 1</h1>
+            <p>Web components built with TS, Lit & Vite</p>
+          </div>
+        </a>
+      </header>
+      <nav class="breadcrumb">
+        <a href="/playground/">Home</a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Components</span>
+      </nav>
+    </div>
 
     <main class="main">
-      <p class="section-title">Components</p>
+      <p class="section-label">Components</p>
       <div class="card-grid">
-        <a href="/playground/components/icon/" class="card">
+        <a href="/playground/components/alert/" class="card">
           <div class="card-preview">
-            <span style="color: var(--t1-color-primary-500)">&#9670;</span>
-            <span style="color: var(--t1-color-success-500)">&#9670;</span>
-            <span style="color: var(--t1-color-warning-500)">&#9670;</span>
+            <div style="display: flex; flex-direction: column; gap: 0.3rem; min-width: 180px">
+              <div
+                style="
+                  padding: 0.4em 0.75em;
+                  border-left: 3px solid var(--t1-color-danger-500);
+                  background: var(--t1-color-danger-50);
+                  border-radius: var(--t1-border-radius-small);
+                  font-size: var(--t1-font-size-x-small);
+                "
+              >
+                Danger alert
+              </div>
+              <div
+                style="
+                  padding: 0.4em 0.75em;
+                  border-left: 3px solid var(--t1-color-success-500);
+                  background: var(--t1-color-success-50);
+                  border-radius: var(--t1-border-radius-small);
+                  font-size: var(--t1-font-size-x-small);
+                "
+              >
+                Success alert
+              </div>
+              <div
+                style="
+                  padding: 0.4em 0.75em;
+                  border-left: 3px solid var(--t1-color-warning-500);
+                  background: var(--t1-color-warning-50);
+                  border-radius: var(--t1-border-radius-small);
+                  font-size: var(--t1-font-size-x-small);
+                "
+              >
+                Warning alert
+              </div>
+            </div>
           </div>
           <div class="card-body">
-            <span class="badge">t1-icon</span>
-            <h2>Icon</h2>
+            <span class="badge">t1-alert</span>
+            <h2>Alert</h2>
             <p>
-              SVG icon component with library registration, custom sources, and sprite sheet
-              support.
+              Inline alert and toast notifications with 5 variants, closable, auto-hide duration,
+              and icon slot.
             </p>
           </div>
         </a>
 
-        <a href="/playground/components/input/" class="card">
+        <a href="/playground/components/avatar/" class="card">
           <div class="card-preview">
-            <div
-              style="
-                width: 180px;
-                height: 2.5rem;
-                border: 1px solid var(--t1-color-neutral-300);
-                border-radius: var(--t1-border-radius-medium);
-                background: white;
-                display: flex;
-                align-items: center;
-                padding: 0 0.75rem;
-                color: var(--t1-color-neutral-400);
-                font-size: var(--t1-font-size-small);
-              "
-            >
-              Enter text...
+            <div style="display: inline-flex; gap: 0.5rem; align-items: center">
+              <div
+                style="
+                  width: 2.5rem;
+                  height: 2.5rem;
+                  border-radius: 50%;
+                  background: var(--t1-color-neutral-400);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: white;
+                  font-size: 0.7rem;
+                  font-weight: 600;
+                "
+              >
+                AB
+              </div>
+              <div
+                style="
+                  width: 2.5rem;
+                  height: 2.5rem;
+                  border-radius: var(--t1-border-radius-medium);
+                  background: var(--t1-color-danger-500);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: white;
+                  font-size: 0.7rem;
+                  font-weight: 600;
+                "
+              >
+                JD
+              </div>
+              <div
+                style="
+                  width: 2.5rem;
+                  height: 2.5rem;
+                  background: var(--t1-color-neutral-300);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: white;
+                  font-size: 0.9rem;
+                "
+              >
+                👤
+              </div>
             </div>
           </div>
           <div class="card-body">
-            <span class="badge">t1-input</span>
-            <h2>Input</h2>
+            <span class="badge">t1-avatar</span>
+            <h2>Avatar</h2>
             <p>
-              Form-associated text input with labels, help text, clearable, and password toggle.
+              User avatar with image, initials fallback, icon slot, and circle/rounded/square
+              shapes.
             </p>
           </div>
         </a>
@@ -198,7 +338,7 @@
                 display: inline-block;
                 padding: 0.2em 0.6em;
                 border-radius: 999px;
-                background: var(--t1-color-primary-600);
+                background: var(--t1-color-danger-600);
                 color: white;
                 font-size: var(--t1-font-size-small);
                 font-weight: 600;
@@ -222,7 +362,7 @@
                 display: inline-block;
                 padding: 0.2em 0.6em;
                 border-radius: 999px;
-                background: var(--t1-color-danger-600);
+                background: var(--t1-color-warning-600);
                 color: white;
                 font-size: var(--t1-font-size-small);
                 font-weight: 600;
@@ -240,34 +380,6 @@
           </div>
         </a>
 
-        <a href="/playground/components/spinner/" class="card">
-          <div class="card-preview">
-            <span
-              style="
-                display: inline-block;
-                width: 2rem;
-                height: 2rem;
-                border: 3px solid var(--t1-color-neutral-200);
-                border-top-color: var(--t1-color-primary-600);
-                border-radius: 50%;
-                animation: spin 0.75s linear infinite;
-              "
-            ></span>
-            <style>
-              @keyframes spin {
-                to {
-                  transform: rotate(360deg);
-                }
-              }
-            </style>
-          </div>
-          <div class="card-body">
-            <span class="badge">t1-spinner</span>
-            <h2>Spinner</h2>
-            <p>Animated loading indicator with configurable track width and color.</p>
-          </div>
-        </a>
-
         <a href="/playground/components/button/" class="card">
           <div class="card-preview">
             <span
@@ -276,7 +388,7 @@
                 align-items: center;
                 padding: 0.5em 1.25em;
                 border-radius: var(--t1-border-radius-medium);
-                background: var(--t1-color-primary-600);
+                background: var(--t1-color-danger-600);
                 color: white;
                 font-size: var(--t1-font-size-small);
                 font-weight: 600;
@@ -304,6 +416,178 @@
             <p>
               Multi-variant button with sizes, pill/circle modes, loading state, and prefix/suffix
               slots.
+            </p>
+          </div>
+        </a>
+
+        <a href="/playground/components/card/" class="card">
+          <div class="card-preview">
+            <div
+              style="
+                background: white;
+                border: 1px solid var(--t1-color-neutral-200);
+                border-radius: var(--t1-border-radius-medium);
+                overflow: hidden;
+                min-width: 160px;
+              "
+            >
+              <div
+                style="
+                  padding: 0.4em 0.75em;
+                  font-size: var(--t1-font-size-x-small);
+                  font-weight: 600;
+                  border-bottom: 1px solid var(--t1-color-neutral-100);
+                "
+              >
+                Header
+              </div>
+              <div style="padding: 0.5em 0.75em; font-size: var(--t1-font-size-x-small)">
+                Body content
+              </div>
+              <div
+                style="
+                  padding: 0.4em 0.75em;
+                  font-size: var(--t1-font-size-x-small);
+                  border-top: 1px solid var(--t1-color-neutral-100);
+                  color: var(--t1-color-neutral-500);
+                "
+              >
+                Footer
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <span class="badge">t1-card</span>
+            <h2>Card</h2>
+            <p>
+              Flexible container with image, header, body, and footer slots. CSS custom properties
+              for border and padding.
+            </p>
+          </div>
+        </a>
+
+        <a href="/playground/components/dropdown/" class="card">
+          <div class="card-preview">
+            <div
+              style="
+                display: inline-flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.4rem;
+              "
+            >
+              <span
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 0.4em;
+                  padding: 0.5em 1.25em;
+                  border-radius: var(--t1-border-radius-medium);
+                  background: var(--t1-color-danger-600);
+                  color: white;
+                  font-size: var(--t1-font-size-small);
+                  font-weight: 600;
+                "
+                >Actions &#9660;</span
+              >
+              <div
+                style="
+                  background: white;
+                  border: 1px solid var(--t1-color-neutral-200);
+                  border-radius: var(--t1-border-radius-medium);
+                  overflow: hidden;
+                  min-width: 120px;
+                  box-shadow: var(--t1-shadow-medium);
+                "
+              >
+                <div style="padding: 0.4em 0.75em; font-size: var(--t1-font-size-small)">Cut</div>
+                <div
+                  style="
+                    padding: 0.4em 0.75em;
+                    font-size: var(--t1-font-size-small);
+                    border-top: 1px solid var(--t1-color-neutral-100);
+                  "
+                >
+                  Copy
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <span class="badge">t1-dropdown</span>
+            <h2>Dropdown</h2>
+            <p>
+              Trigger-based dropdown panel with placement, stay-open-on-select, and keyboard
+              dismissal.
+            </p>
+          </div>
+        </a>
+
+        <a href="/playground/components/format-date/" class="card">
+          <div class="card-preview">
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+                font-size: var(--t1-font-size-small);
+                color: var(--t1-color-neutral-700);
+              "
+            >
+              <span>January 1, 2026</span>
+              <span
+                style="color: var(--t1-color-neutral-500); font-size: var(--t1-font-size-x-small)"
+                >Thursday · 12:00 AM UTC</span
+              >
+            </div>
+          </div>
+          <div class="card-body">
+            <span class="badge">t1-format-date</span>
+            <h2>Format Date</h2>
+            <p>
+              Locale-aware date/time formatter using Intl.DateTimeFormat with all standard options.
+            </p>
+          </div>
+        </a>
+
+        <a href="/playground/components/format-number/" class="card">
+          <div class="card-preview">
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+                font-size: var(--t1-font-size-small);
+                color: var(--t1-color-neutral-700);
+              "
+            >
+              <span>$1,234.56</span>
+              <span style="color: var(--t1-color-neutral-500)">75%</span>
+              <span style="color: var(--t1-color-neutral-500)">1,000,000</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <span class="badge">t1-format-number</span>
+            <h2>Format Number</h2>
+            <p>
+              Locale-aware number formatter using Intl.NumberFormat with currency, percent, and
+              decimal modes.
+            </p>
+          </div>
+        </a>
+
+        <a href="/playground/components/icon/" class="card">
+          <div class="card-preview">
+            <span style="color: var(--t1-color-danger-500)">&#9670;</span>
+            <span style="color: var(--t1-color-success-500)">&#9670;</span>
+            <span style="color: var(--t1-color-warning-500)">&#9670;</span>
+          </div>
+          <div class="card-body">
+            <span class="badge">t1-icon</span>
+            <h2>Icon</h2>
+            <p>
+              SVG icon component with library registration, custom sources, and sprite sheet
+              support.
             </p>
           </div>
         </a>
@@ -346,49 +630,30 @@
           </div>
         </a>
 
-        <a href="/playground/components/popup/" class="card">
+        <a href="/playground/components/input/" class="card">
           <div class="card-preview">
             <div
               style="
-                position: relative;
-                display: inline-flex;
-                flex-direction: column;
+                width: 180px;
+                height: 2.5rem;
+                border: 1px solid var(--t1-color-neutral-300);
+                border-radius: var(--t1-border-radius-medium);
+                background: white;
+                display: flex;
                 align-items: center;
-                gap: 0.5rem;
+                padding: 0 0.75rem;
+                color: var(--t1-color-neutral-400);
+                font-size: var(--t1-font-size-small);
               "
             >
-              <div
-                style="
-                  background: white;
-                  border: 1px solid var(--t1-color-neutral-200);
-                  border-radius: var(--t1-border-radius-medium);
-                  padding: 0.5em 1em;
-                  font-size: var(--t1-font-size-x-small);
-                  box-shadow: var(--t1-shadow-medium);
-                "
-              >
-                Popup content
-              </div>
-              <span
-                style="
-                  display: inline-flex;
-                  align-items: center;
-                  padding: 0.4em 1em;
-                  border-radius: var(--t1-border-radius-medium);
-                  background: var(--t1-color-neutral-100);
-                  border: 1px solid var(--t1-color-neutral-300);
-                  font-size: var(--t1-font-size-small);
-                "
-                >Anchor</span
-              >
+              Enter text...
             </div>
           </div>
           <div class="card-body">
-            <span class="badge">t1-popup</span>
-            <h2>Popup</h2>
+            <span class="badge">t1-input</span>
+            <h2>Input</h2>
             <p>
-              Floating UI-powered positioned popup with placement, arrow, and flip/shift/size
-              middleware.
+              Form-associated text input with labels, help text, clearable, and password toggle.
             </p>
           </div>
         </a>
@@ -417,7 +682,7 @@
                 style="
                   padding: 0.4em 0.75em;
                   font-size: var(--t1-font-size-small);
-                  background: var(--t1-color-primary-50);
+                  background: var(--t1-color-danger-50);
                   border-bottom: 1px solid var(--t1-color-neutral-100);
                 "
               >
@@ -470,128 +735,70 @@
           </div>
         </a>
 
-        <a href="/playground/components/dropdown/" class="card">
+        <a href="/playground/components/popup/" class="card">
           <div class="card-preview">
             <div
               style="
+                position: relative;
                 display: inline-flex;
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 0.4rem;
+                align-items: center;
+                gap: 0.5rem;
               "
             >
-              <span
-                style="
-                  display: inline-flex;
-                  align-items: center;
-                  gap: 0.4em;
-                  padding: 0.5em 1.25em;
-                  border-radius: var(--t1-border-radius-medium);
-                  background: var(--t1-color-primary-600);
-                  color: white;
-                  font-size: var(--t1-font-size-small);
-                  font-weight: 600;
-                "
-                >Actions &#9660;</span
-              >
               <div
                 style="
                   background: white;
                   border: 1px solid var(--t1-color-neutral-200);
                   border-radius: var(--t1-border-radius-medium);
-                  overflow: hidden;
-                  min-width: 120px;
+                  padding: 0.5em 1em;
+                  font-size: var(--t1-font-size-x-small);
                   box-shadow: var(--t1-shadow-medium);
                 "
               >
-                <div style="padding: 0.4em 0.75em; font-size: var(--t1-font-size-small)">Cut</div>
-                <div
-                  style="
-                    padding: 0.4em 0.75em;
-                    font-size: var(--t1-font-size-small);
-                    border-top: 1px solid var(--t1-color-neutral-100);
-                  "
-                >
-                  Copy
-                </div>
+                Popup content
               </div>
+              <span
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  padding: 0.4em 1em;
+                  border-radius: var(--t1-border-radius-medium);
+                  background: var(--t1-color-neutral-100);
+                  border: 1px solid var(--t1-color-neutral-300);
+                  font-size: var(--t1-font-size-small);
+                "
+                >Anchor</span
+              >
             </div>
           </div>
           <div class="card-body">
-            <span class="badge">t1-dropdown</span>
-            <h2>Dropdown</h2>
+            <span class="badge">t1-popup</span>
+            <h2>Popup</h2>
             <p>
-              Trigger-based dropdown panel with placement, stay-open-on-select, and keyboard
-              dismissal.
+              Floating UI-powered positioned popup with placement, arrow, and flip/shift/size
+              middleware.
             </p>
           </div>
         </a>
 
-        <a href="/playground/components/tag/" class="card">
+        <a href="/playground/components/rating/" class="card">
           <div class="card-preview">
-            <div style="display: inline-flex; flex-wrap: wrap; gap: 0.4rem; align-items: center">
-              <span
-                style="
-                  display: inline-flex;
-                  align-items: center;
-                  gap: 0.3em;
-                  padding: 0.2em 0.7em;
-                  border-radius: var(--t1-border-radius-small);
-                  background: var(--t1-color-primary-100);
-                  color: var(--t1-color-primary-700);
-                  font-size: var(--t1-font-size-x-small);
-                  font-weight: 500;
-                "
-                >Primary</span
-              >
-              <span
-                style="
-                  display: inline-flex;
-                  align-items: center;
-                  gap: 0.3em;
-                  padding: 0.2em 0.7em;
-                  border-radius: var(--t1-border-radius-small);
-                  background: var(--t1-color-success-100);
-                  color: var(--t1-color-success-700);
-                  font-size: var(--t1-font-size-x-small);
-                  font-weight: 500;
-                "
-                >Success</span
-              >
-              <span
-                style="
-                  display: inline-flex;
-                  align-items: center;
-                  gap: 0.3em;
-                  padding: 0.2em 0.7em;
-                  border-radius: var(--t1-border-radius-small);
-                  background: var(--t1-color-warning-100);
-                  color: var(--t1-color-warning-700);
-                  font-size: var(--t1-font-size-x-small);
-                  font-weight: 500;
-                "
-                >Warning</span
-              >
-              <span
-                style="
-                  display: inline-flex;
-                  align-items: center;
-                  gap: 0.3em;
-                  padding: 0.2em 0.7em;
-                  border-radius: var(--t1-border-radius-small);
-                  background: var(--t1-color-danger-100);
-                  color: var(--t1-color-danger-700);
-                  font-size: var(--t1-font-size-x-small);
-                  font-weight: 500;
-                "
-                >Danger</span
-              >
+            <div style="display: inline-flex; gap: 0.15rem; font-size: 1.3rem">
+              <span style="color: var(--t1-color-warning-500)">★</span>
+              <span style="color: var(--t1-color-warning-500)">★</span>
+              <span style="color: var(--t1-color-warning-500)">★</span>
+              <span style="color: var(--t1-color-neutral-300)">★</span>
+              <span style="color: var(--t1-color-neutral-300)">★</span>
             </div>
           </div>
           <div class="card-body">
-            <span class="badge">t1-tag</span>
-            <h2>Tag</h2>
-            <p>Compact label with variant colors, sizes, pill style, and optional remove button.</p>
+            <span class="badge">t1-rating</span>
+            <h2>Rating</h2>
+            <p>
+              Interactive star rating with precision, read-only/disabled states, keyboard support,
+              and custom symbols.
+            </p>
           </div>
         </a>
 
@@ -659,7 +866,7 @@
                   gap: 0.4em;
                   padding: 0.4em 0.75em;
                   font-size: var(--t1-font-size-small);
-                  background: var(--t1-color-primary-600);
+                  background: var(--t1-color-danger-600);
                   color: white;
                   border-bottom: 1px solid var(--t1-color-neutral-100);
                 "
@@ -687,133 +894,6 @@
             <h2>Option</h2>
             <p>
               Selectable item for use inside t1-select, with disabled state and prefix/suffix slots.
-            </p>
-          </div>
-        </a>
-
-        <a href="/playground/components/avatar/" class="card">
-          <div class="card-preview">
-            <div style="display: inline-flex; gap: 0.5rem; align-items: center">
-              <div
-                style="
-                  width: 2.5rem;
-                  height: 2.5rem;
-                  border-radius: 50%;
-                  background: var(--t1-color-neutral-400);
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  color: white;
-                  font-size: 0.7rem;
-                  font-weight: 600;
-                "
-              >
-                AB
-              </div>
-              <div
-                style="
-                  width: 2.5rem;
-                  height: 2.5rem;
-                  border-radius: var(--t1-border-radius-medium);
-                  background: var(--t1-color-primary-500);
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  color: white;
-                  font-size: 0.7rem;
-                  font-weight: 600;
-                "
-              >
-                JD
-              </div>
-              <div
-                style="
-                  width: 2.5rem;
-                  height: 2.5rem;
-                  background: var(--t1-color-neutral-300);
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  color: white;
-                  font-size: 0.9rem;
-                "
-              >
-                👤
-              </div>
-            </div>
-          </div>
-          <div class="card-body">
-            <span class="badge">t1-avatar</span>
-            <h2>Avatar</h2>
-            <p>
-              User avatar with image, initials fallback, icon slot, and circle/rounded/square
-              shapes.
-            </p>
-          </div>
-        </a>
-
-        <a href="/playground/components/rating/" class="card">
-          <div class="card-preview">
-            <div style="display: inline-flex; gap: 0.15rem; font-size: 1.3rem">
-              <span style="color: var(--t1-color-warning-500)">★</span>
-              <span style="color: var(--t1-color-warning-500)">★</span>
-              <span style="color: var(--t1-color-warning-500)">★</span>
-              <span style="color: var(--t1-color-neutral-300)">★</span>
-              <span style="color: var(--t1-color-neutral-300)">★</span>
-            </div>
-          </div>
-          <div class="card-body">
-            <span class="badge">t1-rating</span>
-            <h2>Rating</h2>
-            <p>
-              Interactive star rating with precision, read-only/disabled states, keyboard support,
-              and custom symbols.
-            </p>
-          </div>
-        </a>
-
-        <a href="/playground/components/card/" class="card">
-          <div class="card-preview">
-            <div
-              style="
-                background: white;
-                border: 1px solid var(--t1-color-neutral-200);
-                border-radius: var(--t1-border-radius-medium);
-                overflow: hidden;
-                min-width: 160px;
-              "
-            >
-              <div
-                style="
-                  padding: 0.4em 0.75em;
-                  font-size: var(--t1-font-size-x-small);
-                  font-weight: 600;
-                  border-bottom: 1px solid var(--t1-color-neutral-100);
-                "
-              >
-                Header
-              </div>
-              <div style="padding: 0.5em 0.75em; font-size: var(--t1-font-size-x-small)">
-                Body content
-              </div>
-              <div
-                style="
-                  padding: 0.4em 0.75em;
-                  font-size: var(--t1-font-size-x-small);
-                  border-top: 1px solid var(--t1-color-neutral-100);
-                  color: var(--t1-color-neutral-500);
-                "
-              >
-                Footer
-              </div>
-            </div>
-          </div>
-          <div class="card-body">
-            <span class="badge">t1-card</span>
-            <h2>Card</h2>
-            <p>
-              Flexible container with image, header, body, and footer slots. CSS custom properties
-              for border and padding.
             </p>
           </div>
         </a>
@@ -868,6 +948,102 @@
           </div>
         </a>
 
+        <a href="/playground/components/spinner/" class="card">
+          <div class="card-preview">
+            <span
+              style="
+                display: inline-block;
+                width: 2rem;
+                height: 2rem;
+                border: 3px solid var(--t1-color-neutral-200);
+                border-top-color: var(--t1-color-danger-600);
+                border-radius: 50%;
+                animation: spin 0.75s linear infinite;
+              "
+            ></span>
+            <style>
+              @keyframes spin {
+                to {
+                  transform: rotate(360deg);
+                }
+              }
+            </style>
+          </div>
+          <div class="card-body">
+            <span class="badge">t1-spinner</span>
+            <h2>Spinner</h2>
+            <p>Animated loading indicator with configurable track width and color.</p>
+          </div>
+        </a>
+
+        <a href="/playground/components/tag/" class="card">
+          <div class="card-preview">
+            <div style="display: inline-flex; flex-wrap: wrap; gap: 0.4rem; align-items: center">
+              <span
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 0.3em;
+                  padding: 0.2em 0.7em;
+                  border-radius: var(--t1-border-radius-small);
+                  background: var(--t1-color-danger-100);
+                  color: var(--t1-color-danger-700);
+                  font-size: var(--t1-font-size-x-small);
+                  font-weight: 500;
+                "
+                >Primary</span
+              >
+              <span
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 0.3em;
+                  padding: 0.2em 0.7em;
+                  border-radius: var(--t1-border-radius-small);
+                  background: var(--t1-color-success-100);
+                  color: var(--t1-color-success-700);
+                  font-size: var(--t1-font-size-x-small);
+                  font-weight: 500;
+                "
+                >Success</span
+              >
+              <span
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 0.3em;
+                  padding: 0.2em 0.7em;
+                  border-radius: var(--t1-border-radius-small);
+                  background: var(--t1-color-warning-100);
+                  color: var(--t1-color-warning-700);
+                  font-size: var(--t1-font-size-x-small);
+                  font-weight: 500;
+                "
+                >Warning</span
+              >
+              <span
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 0.3em;
+                  padding: 0.2em 0.7em;
+                  border-radius: var(--t1-border-radius-small);
+                  background: var(--t1-color-danger-100);
+                  color: var(--t1-color-danger-700);
+                  font-size: var(--t1-font-size-x-small);
+                  font-weight: 500;
+                "
+                >Danger</span
+              >
+            </div>
+          </div>
+          <div class="card-body">
+            <span class="badge">t1-tag</span>
+            <h2>Tag</h2>
+            <p>Compact label with variant colors, sizes, pill style, and optional remove button.</p>
+          </div>
+        </a>
+
         <a href="/playground/components/tooltip/" class="card">
           <div class="card-preview">
             <div
@@ -890,7 +1066,7 @@
                   align-items: center;
                   padding: 0.4em 1em;
                   border-radius: var(--t1-border-radius-medium);
-                  background: var(--t1-color-primary-600);
+                  background: var(--t1-color-danger-600);
                   color: white;
                   font-size: var(--t1-font-size-small);
                   font-weight: 600;
@@ -906,107 +1082,6 @@
             <p>
               Floating tooltip with hover/focus/click triggers, all placement options, and disabled
               state.
-            </p>
-          </div>
-        </a>
-
-        <a href="/playground/components/alert/" class="card">
-          <div class="card-preview">
-            <div style="display: flex; flex-direction: column; gap: 0.3rem; min-width: 180px">
-              <div
-                style="
-                  padding: 0.4em 0.75em;
-                  border-left: 3px solid var(--t1-color-primary-500);
-                  background: var(--t1-color-primary-50);
-                  border-radius: var(--t1-border-radius-small);
-                  font-size: var(--t1-font-size-x-small);
-                "
-              >
-                Primary alert
-              </div>
-              <div
-                style="
-                  padding: 0.4em 0.75em;
-                  border-left: 3px solid var(--t1-color-success-500);
-                  background: var(--t1-color-success-50);
-                  border-radius: var(--t1-border-radius-small);
-                  font-size: var(--t1-font-size-x-small);
-                "
-              >
-                Success alert
-              </div>
-              <div
-                style="
-                  padding: 0.4em 0.75em;
-                  border-left: 3px solid var(--t1-color-danger-500);
-                  background: var(--t1-color-danger-50);
-                  border-radius: var(--t1-border-radius-small);
-                  font-size: var(--t1-font-size-x-small);
-                "
-              >
-                Danger alert
-              </div>
-            </div>
-          </div>
-          <div class="card-body">
-            <span class="badge">t1-alert</span>
-            <h2>Alert</h2>
-            <p>
-              Inline alert and toast notifications with 5 variants, closable, auto-hide duration,
-              and icon slot.
-            </p>
-          </div>
-        </a>
-
-        <a href="/playground/components/format-date/" class="card">
-          <div class="card-preview">
-            <div
-              style="
-                display: flex;
-                flex-direction: column;
-                gap: 0.25rem;
-                font-size: var(--t1-font-size-small);
-                color: var(--t1-color-neutral-700);
-              "
-            >
-              <span>January 1, 2026</span>
-              <span
-                style="color: var(--t1-color-neutral-500); font-size: var(--t1-font-size-x-small)"
-                >Thursday · 12:00 AM UTC</span
-              >
-            </div>
-          </div>
-          <div class="card-body">
-            <span class="badge">t1-format-date</span>
-            <h2>Format Date</h2>
-            <p>
-              Locale-aware date/time formatter using Intl.DateTimeFormat with all standard options.
-            </p>
-          </div>
-        </a>
-
-        <a href="/playground/components/format-number/" class="card">
-          <div class="card-preview">
-            <div
-              style="
-                display: flex;
-                flex-direction: column;
-                gap: 0.25rem;
-                font-size: var(--t1-font-size-small);
-                color: var(--t1-color-neutral-700);
-              "
-            >
-              <span>$1,234.56</span>
-              <span style="color: var(--t1-color-neutral-500)">75%</span>
-              <span style="color: var(--t1-color-neutral-500)">1,000,000</span>
-            </div>
-          </div>
-          <div class="card-body">
-            <span class="badge">t1-format-number</span>
-            <h2>Format Number</h2>
-            <p>
-              Locale-aware number formatter using Intl.NumberFormat with currency, percent, and
-              decimal modes.
             </p>
           </div>
         </a>
