@@ -39,11 +39,7 @@ const styles = css`
   .card-image {
     width: 100%;
     min-height: 180px;
-    background: linear-gradient(
-      150deg,
-      var(--t1-color-danger-700, hsl(0 73.7% 41.8%)),
-      var(--t1-color-danger-400, hsl(0 90.6% 70.8%))
-    );
+    background: url('https://terminal1.win/images/background-hotel-1.png') center / cover no-repeat;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -166,6 +162,7 @@ const styles = css`
 
     .card-image {
       min-height: 160px;
+      background-image: url('https://terminal1.win/images/background-hotel-2.png');
     }
   }
 `;
