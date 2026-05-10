@@ -11,7 +11,7 @@ type T1BadgeEl = HTMLElement & {
 function createElement(attrs = '', content = 'Badge'): T1BadgeEl {
   const el = document.createElement('t1-badge') as unknown as T1BadgeEl;
   if (attrs) {
-    attrs.split(' ').forEach(attr => {
+    attrs.split(' ').forEach((attr) => {
       const [key, val] = attr.split('=');
       if (val !== undefined) {
         el.setAttribute(key, val.replace(/"/g, ''));
@@ -26,7 +26,7 @@ function createElement(attrs = '', content = 'Badge'): T1BadgeEl {
 }
 
 afterEach(() => {
-  document.body.querySelectorAll('t1-badge').forEach(el => el.remove());
+  document.body.querySelectorAll('t1-badge').forEach((el) => el.remove());
 });
 
 describe('t1-badge', () => {
@@ -78,7 +78,7 @@ describe('t1-badge', () => {
   });
 
   describe('variant attribute', () => {
-    (['primary', 'success', 'neutral', 'warning', 'danger'] as const).forEach(variant => {
+    (['primary', 'success', 'neutral', 'warning', 'danger'] as const).forEach((variant) => {
       it(`applies badge--${variant} class for variant="${variant}"`, async () => {
         const el = createElement(`variant="${variant}"`);
         await el.updateComplete;

@@ -1,5 +1,5 @@
-import { registerTranslation } from '../utilities/localize.js';
-import type { Translation } from '../utilities/localize.js';
+import { registerTranslation } from '../src/utils/localize';
+import type { Translation } from '../src/utils/localize';
 
 const translation: Translation = {
   $code: 'nb',
@@ -17,7 +17,7 @@ const translation: Translation = {
   hidePassword: 'Skjul passord',
   loading: 'Laster',
   nextSlide: 'Neste visning',
-  numOptionsSelected: num => {
+  numOptionsSelected: (num) => {
     if (num === 0) return 'Ingen alternativer valgt';
     if (num === 1) return 'Ett alternativ valgt';
     return `${num} alternativer valgt`;
@@ -30,8 +30,8 @@ const translation: Translation = {
   scrollToStart: 'Rull til starten',
   selectAColorFromTheScreen: 'Velg en farge fra skjermen',
   showPassword: 'Vis passord',
-  slideNum: slide => `Visning ${slide}`,
-  toggleColorFormat: 'Bytt fargeformat'
+  slideNum: (slide) => `Visning ${slide}`,
+  toggleColorFormat: 'Bytt fargeformat',
 };
 
 registerTranslation(translation);

@@ -1,5 +1,5 @@
-import { registerTranslation } from '../utilities/localize.js';
-import type { Translation } from '../utilities/localize.js';
+import { registerTranslation } from '../src/utils/localize';
+import type { Translation } from '../src/utils/localize';
 
 const translation: Translation = {
   $code: 'ja',
@@ -17,7 +17,7 @@ const translation: Translation = {
   hidePassword: 'パスワードを隠す',
   loading: '読み込み中',
   nextSlide: '次のスライド',
-  numOptionsSelected: num => {
+  numOptionsSelected: (num) => {
     if (num === 0) return '項目が選択されていません';
     return `${num} 個の項目が選択されました`;
   },
@@ -29,8 +29,8 @@ const translation: Translation = {
   scrollToStart: '最初にスクロールする',
   selectAColorFromTheScreen: '画面から色を選択してください',
   showPassword: 'パスワードを表示',
-  slideNum: slide => `スライド ${slide}`,
-  toggleColorFormat: '色のフォーマットを切り替える'
+  slideNum: (slide) => `スライド ${slide}`,
+  toggleColorFormat: '色のフォーマットを切り替える',
 };
 
 registerTranslation(translation);

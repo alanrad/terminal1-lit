@@ -172,7 +172,9 @@ describe('t1-input', () => {
   it('t1-focus event fires on focus', async () => {
     await el.updateComplete;
     let fired = false;
-    el.addEventListener('t1-focus', () => { fired = true; });
+    el.addEventListener('t1-focus', () => {
+      fired = true;
+    });
     const input = el.shadowRoot!.querySelector<HTMLInputElement>('.input__control')!;
     input.dispatchEvent(new FocusEvent('focus', { bubbles: false }));
     expect(fired).toBe(true);
@@ -181,7 +183,9 @@ describe('t1-input', () => {
   it('t1-blur event fires on blur', async () => {
     await el.updateComplete;
     let fired = false;
-    el.addEventListener('t1-blur', () => { fired = true; });
+    el.addEventListener('t1-blur', () => {
+      fired = true;
+    });
     const input = el.shadowRoot!.querySelector<HTMLInputElement>('.input__control')!;
     input.dispatchEvent(new FocusEvent('blur', { bubbles: false }));
     expect(fired).toBe(true);
@@ -190,7 +194,9 @@ describe('t1-input', () => {
   it('t1-input event fires on input', async () => {
     await el.updateComplete;
     let fired = false;
-    el.addEventListener('t1-input', () => { fired = true; });
+    el.addEventListener('t1-input', () => {
+      fired = true;
+    });
     const input = el.shadowRoot!.querySelector<HTMLInputElement>('.input__control')!;
     input.value = 'test';
     input.dispatchEvent(new InputEvent('input', { bubbles: true }));
@@ -200,7 +206,9 @@ describe('t1-input', () => {
   it('t1-change event fires on change', async () => {
     await el.updateComplete;
     let fired = false;
-    el.addEventListener('t1-change', () => { fired = true; });
+    el.addEventListener('t1-change', () => {
+      fired = true;
+    });
     const input = el.shadowRoot!.querySelector<HTMLInputElement>('.input__control')!;
     input.value = 'changed';
     input.dispatchEvent(new Event('change', { bubbles: true }));
@@ -213,7 +221,9 @@ describe('t1-input', () => {
     await el.updateComplete;
 
     let fired = false;
-    el.addEventListener('t1-clear', () => { fired = true; });
+    el.addEventListener('t1-clear', () => {
+      fired = true;
+    });
     const clearBtn = el.shadowRoot!.querySelector<HTMLButtonElement>('[part="clear-button"]')!;
     clearBtn.click();
     expect(fired).toBe(true);
@@ -224,7 +234,9 @@ describe('t1-input', () => {
     await el.updateComplete;
     let focused = false;
     const input = el.shadowRoot!.querySelector<HTMLInputElement>('.input__control')!;
-    input.addEventListener('focus', () => { focused = true; });
+    input.addEventListener('focus', () => {
+      focused = true;
+    });
     el.focus();
     expect(focused).toBe(true);
   });

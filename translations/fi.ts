@@ -1,5 +1,5 @@
-import { registerTranslation } from '@shoelace-style/localize';
-import type { Translation } from '../utilities/localize.js';
+import { registerTranslation } from '../src/utils/localize';
+import type { Translation } from '../src/utils/localize';
 
 const translation: Translation = {
   $code: 'fi',
@@ -17,7 +17,7 @@ const translation: Translation = {
   hidePassword: 'Piilota salasana',
   loading: 'Ladataan',
   nextSlide: 'Seuraava dia',
-  numOptionsSelected: num => {
+  numOptionsSelected: (num) => {
     if (num === 0) return 'Ei valittuja vaihtoehtoja';
     if (num === 1) return 'Yksi vaihtoehto valittu';
     return `${num} vaihtoehtoa valittu`;
@@ -30,8 +30,8 @@ const translation: Translation = {
   scrollToStart: 'Vieritä alkuun',
   selectAColorFromTheScreen: 'Valitse väri näytöltä',
   showPassword: 'Näytä salasana',
-  slideNum: slide => `Dia ${slide}`,
-  toggleColorFormat: 'Vaihda väriformaattia'
+  slideNum: (slide) => `Dia ${slide}`,
+  toggleColorFormat: 'Vaihda väriformaattia',
 };
 
 registerTranslation(translation);

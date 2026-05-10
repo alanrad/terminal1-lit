@@ -1,1 +1,1 @@
-export { CounterWidget } from "./counter-widget";
+export { CounterWidget } from './counter-widget';

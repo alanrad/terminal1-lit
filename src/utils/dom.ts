@@ -6,22 +6,15 @@ export function getShadowRoot(el: Element): ShadowRoot {
 }
 
 /** Dispatch a custom event that bubbles and crosses Shadow DOM boundaries. */
-export function emit<T = unknown>(
-  el: Element,
-  name: string,
-  detail?: T
-): void {
-  el.dispatchEvent(
-    new CustomEvent(name, { detail, bubbles: true, composed: true })
-  );
+export function emit<T = unknown>(el: Element, name: string, detail?: T): void {
+  el.dispatchEvent(new CustomEvent(name, { detail, bubbles: true, composed: true }));
 }
 
 /** Query a shadow-root descendant and throw if not found. */
-export function shadowQuery<T extends Element>(
-  root: Element | ShadowRoot,
-  selector: string
-): T {
-  const el = (root instanceof Element ? root.shadowRoot ?? root : root).querySelector<T>(selector);
+export function shadowQuery<T extends Element>(root: Element | ShadowRoot, selector: string): T {
+  const el = (root instanceof Element ? (root.shadowRoot ?? root) : root).querySelector<T>(
+    selector,
+  );
   if (!el) throw new Error(`Element not found: ${selector}`);
   return el;
 }

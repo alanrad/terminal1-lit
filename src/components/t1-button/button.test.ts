@@ -179,7 +179,13 @@ describe('t1-button', () => {
       await el.updateComplete;
 
       let focused = false;
-      el.addEventListener('t1-focus', () => { focused = true; }, { once: true });
+      el.addEventListener(
+        't1-focus',
+        () => {
+          focused = true;
+        },
+        { once: true },
+      );
       el.focus();
       await el.updateComplete;
 
@@ -194,7 +200,13 @@ describe('t1-button', () => {
       await el.updateComplete;
 
       let blurred = false;
-      el.addEventListener('t1-blur', () => { blurred = true; }, { once: true });
+      el.addEventListener(
+        't1-blur',
+        () => {
+          blurred = true;
+        },
+        { once: true },
+      );
       el.blur();
       await el.updateComplete;
 
@@ -208,7 +220,13 @@ describe('t1-button', () => {
       await el.updateComplete;
 
       let clicked = false;
-      el.addEventListener('click', () => { clicked = true; }, { once: true });
+      el.addEventListener(
+        'click',
+        () => {
+          clicked = true;
+        },
+        { once: true },
+      );
       el.click();
 
       expect(clicked).toBe(true);

@@ -1,194 +1,202 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Terminal 1</title>
-		<link rel="stylesheet" href="/src/styles/theme.css" />
-		<script type="module" src="/src/components/t1-icon/index.ts"></script>
-		<style>
-			*,
-			*::before,
-			*::after {
-				box-sizing: border-box;
-				margin: 0;
-				padding: 0;
-			}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terminal 1</title>
+    <link rel="stylesheet" href="/src/styles/theme.css" />
+    <script type="module" src="/src/components/t1-icon/index.ts"></script>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-			body {
-				font-family: var(--t1-font-sans);
-				background: var(--t1-color-neutral-50);
-				color: var(--t1-color-neutral-900);
-				min-height: 100vh;
-			}
+      body {
+        font-family: var(--t1-font-sans);
+        background: var(--t1-color-neutral-50);
+        color: var(--t1-color-neutral-900);
+        min-height: 100vh;
+      }
 
-			.header {
-				position: sticky;
-				top: 0;
-				z-index: 100;
-				background: var(--t1-color-neutral-0);
-				border-bottom: 1px solid var(--t1-color-neutral-200);
-				padding: var(--t1-spacing-large) var(--t1-spacing-3x-large);
-				display: flex;
-				align-items: center;
-				gap: var(--t1-spacing-large);
-			}
+      .header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: var(--t1-color-neutral-0);
+        border-bottom: 1px solid var(--t1-color-neutral-200);
+        padding: var(--t1-spacing-large) var(--t1-spacing-3x-large);
+        display: flex;
+        align-items: center;
+        gap: var(--t1-spacing-large);
+      }
 
-			.header-logo {
-				flex-shrink: 0;
-				width: 64px;
-				height: 64px;
-				padding-top: 7px;
-				object-fit: contain;
-			}
+      .header-logo {
+        flex-shrink: 0;
+        width: 64px;
+        height: 64px;
+        padding-top: 7px;
+        object-fit: contain;
+      }
 
-			.header-text h1 {
-				font-size: var(--t1-font-size-2x-large);
-				font-weight: var(--t1-font-weight-bold);
-				color: var(--t1-color-primary-700);
-				letter-spacing: var(--t1-letter-spacing-dense);
-			}
+      .header-text h1 {
+        font-size: var(--t1-font-size-2x-large);
+        font-weight: var(--t1-font-weight-bold);
+        color: var(--t1-color-primary-700);
+        letter-spacing: var(--t1-letter-spacing-dense);
+      }
 
-			.header-text p {
-				margin-top: var(--t1-spacing-2x-small);
-				font-size: var(--t1-font-size-medium);
-				color: var(--t1-color-neutral-500);
-			}
+      .header-text p {
+        margin-top: var(--t1-spacing-2x-small);
+        font-size: var(--t1-font-size-medium);
+        color: var(--t1-color-neutral-500);
+      }
 
-			.main {
-				max-width: 960px;
-				margin: 0 auto;
-				padding: var(--t1-spacing-3x-large) var(--t1-spacing-large);
-				display: flex;
-				flex-direction: column;
-				gap: var(--t1-spacing-3x-large);
-			}
+      .main {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: var(--t1-spacing-3x-large) var(--t1-spacing-large);
+        display: flex;
+        flex-direction: column;
+        gap: var(--t1-spacing-3x-large);
+      }
 
-			.section-title {
-				font-size: var(--t1-font-size-x-small);
-				font-weight: var(--t1-font-weight-semibold);
-				text-transform: uppercase;
-				letter-spacing: var(--t1-letter-spacing-looser);
-				color: var(--t1-color-neutral-400);
-				margin-bottom: var(--t1-spacing-medium);
-			}
+      .section-title {
+        font-size: var(--t1-font-size-x-small);
+        font-weight: var(--t1-font-weight-semibold);
+        text-transform: uppercase;
+        letter-spacing: var(--t1-letter-spacing-looser);
+        color: var(--t1-color-neutral-400);
+        margin-bottom: var(--t1-spacing-medium);
+      }
 
-			.card-grid {
-				display: grid;
-				grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-				gap: var(--t1-spacing-medium);
-			}
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: var(--t1-spacing-medium);
+      }
 
-			.section-card {
-				display: flex;
-				flex-direction: column;
-				background: var(--t1-color-neutral-0);
-				border: 1px solid var(--t1-color-neutral-200);
-				border-radius: var(--t1-border-radius-large);
-				overflow: hidden;
-				text-decoration: none;
-				color: inherit;
-				transition:
-					box-shadow var(--t1-transition-fast),
-					border-color var(--t1-transition-fast);
-			}
+      .section-card {
+        display: flex;
+        flex-direction: column;
+        background: var(--t1-color-neutral-0);
+        border: 1px solid var(--t1-color-neutral-200);
+        border-radius: var(--t1-border-radius-large);
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        transition:
+          box-shadow var(--t1-transition-fast),
+          border-color var(--t1-transition-fast);
+      }
 
-			.section-card:hover {
-				border-color: var(--t1-color-primary-400);
-				box-shadow: var(--t1-shadow-medium);
-			}
+      .section-card:hover {
+        border-color: var(--t1-color-primary-400);
+        box-shadow: var(--t1-shadow-medium);
+      }
 
-			.section-card-preview {
-				background: var(--t1-color-neutral-50);
-				border-bottom: 1px solid var(--t1-color-neutral-100);
-				padding: var(--t1-spacing-3x-large);
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				gap: var(--t1-spacing-medium);
-				min-height: 160px;
-			}
+      .section-card-preview {
+        background: var(--t1-color-neutral-50);
+        border-bottom: 1px solid var(--t1-color-neutral-100);
+        padding: var(--t1-spacing-3x-large);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--t1-spacing-medium);
+        min-height: 160px;
+      }
 
-			.section-card-body {
-				padding: var(--t1-spacing-large);
-			}
+      .section-card-body {
+        padding: var(--t1-spacing-large);
+      }
 
-			.section-card-body h2 {
-				font-size: var(--t1-font-size-x-large);
-				font-weight: var(--t1-font-weight-bold);
-				color: var(--t1-color-neutral-900);
-				margin-bottom: var(--t1-spacing-x-small);
-			}
+      .section-card-body h2 {
+        font-size: var(--t1-font-size-x-large);
+        font-weight: var(--t1-font-weight-bold);
+        color: var(--t1-color-neutral-900);
+        margin-bottom: var(--t1-spacing-x-small);
+      }
 
-			.section-card-body p {
-				font-size: var(--t1-font-size-small);
-				color: var(--t1-color-neutral-500);
-				line-height: var(--t1-line-height-dense);
-			}
+      .section-card-body p {
+        font-size: var(--t1-font-size-small);
+        color: var(--t1-color-neutral-500);
+        line-height: var(--t1-line-height-dense);
+      }
 
-			.count-pill {
-				display: inline-flex;
-				align-items: center;
-				gap: 0.3em;
-				font-size: var(--t1-font-size-x-small);
-				font-weight: var(--t1-font-weight-semibold);
-				padding: 0.2em 0.7em;
-				border-radius: var(--t1-border-radius-pill);
-				background: var(--t1-color-primary-100);
-				color: var(--t1-color-primary-700);
-				margin-top: var(--t1-spacing-small);
-			}
+      .count-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3em;
+        font-size: var(--t1-font-size-x-small);
+        font-weight: var(--t1-font-weight-semibold);
+        padding: 0.2em 0.7em;
+        border-radius: var(--t1-border-radius-pill);
+        background: var(--t1-color-primary-100);
+        color: var(--t1-color-primary-700);
+        margin-top: var(--t1-spacing-small);
+      }
 
-			.count-pill-widgets {
-				background: var(--t1-color-warning-100);
-				color: var(--t1-color-warning-700);
-			}
-		</style>
-	</head>
-	<body>
-		<header class="header">
-			<img
-				class="header-logo"
-				src="https://terminal1.win/images/terminal-1.png"
-				alt="Terminal 1"
-			/>
-			<div class="header-text">
-				<h1>Terminal 1</h1>
-				<p>Web components built with Lit, TS & Vite</p>
-			</div>
-		</header>
+      .count-pill-widgets {
+        background: var(--t1-color-warning-100);
+        color: var(--t1-color-warning-700);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <img class="header-logo" src="https://terminal1.win/images/terminal-1.png" alt="Terminal 1" />
+      <div class="header-text">
+        <h1>Terminal 1</h1>
+        <p>Web components built with Lit, TS & Vite</p>
+      </div>
+    </header>
 
-		<main class="main">
-			<div>
-				<p class="section-title">Explore</p>
-				<div class="card-grid">
+    <main class="main">
+      <div>
+        <p class="section-title">Explore</p>
+        <div class="card-grid">
+          <a href="/playground/components/" class="section-card">
+            <div class="section-card-preview">
+              <t1-icon
+                name="layers-half"
+                style="font-size: 3rem; color: var(--t1-color-primary-500)"
+              ></t1-icon>
+              <t1-icon
+                name="layers"
+                style="font-size: 3rem; color: var(--t1-color-primary-300)"
+              ></t1-icon>
+            </div>
+            <div class="section-card-body">
+              <h2>Components</h2>
+              <p>Primitive UI building blocks — buttons, inputs, badges, tooltips, and more.</p>
+              <span class="count-pill">22 components</span>
+            </div>
+          </a>
 
-					<a href="/playground/components/" class="section-card">
-						<div class="section-card-preview">
-							<t1-icon name="layers-half" style="font-size: 3rem; color: var(--t1-color-primary-500);"></t1-icon>
-							<t1-icon name="layers" style="font-size: 3rem; color: var(--t1-color-primary-300);"></t1-icon>
-						</div>
-						<div class="section-card-body">
-							<h2>Components</h2>
-							<p>Primitive UI building blocks — buttons, inputs, badges, tooltips, and more.</p>
-							<span class="count-pill">22 components</span>
-						</div>
-					</a>
-
-					<a href="/playground/widgets/" class="section-card">
-						<div class="section-card-preview">
-							<t1-icon name="gear-wide-connected" style="font-size: 3rem; color: var(--t1-color-primary-500);"></t1-icon>
-							<t1-icon name="gear-wide" style="font-size: 3rem; color: var(--t1-color-primary-300);"></t1-icon>
-						</div>
-						<div class="section-card-body">
-							<h2>Widgets</h2>
-							<p>Higher-level feature components composed from primitives, with signal-driven state.</p>
-							<span class="count-pill count-pill-widgets">1 widget</span>
-						</div>
-					</a>
-
-				</div>
-			</div>
-		</main>
-	</body>
+          <a href="/playground/widgets/" class="section-card">
+            <div class="section-card-preview">
+              <t1-icon
+                name="gear-wide-connected"
+                style="font-size: 3rem; color: var(--t1-color-primary-500)"
+              ></t1-icon>
+              <t1-icon
+                name="gear-wide"
+                style="font-size: 3rem; color: var(--t1-color-primary-300)"
+              ></t1-icon>
+            </div>
+            <div class="section-card-body">
+              <h2>Widgets</h2>
+              <p>
+                Higher-level feature components composed from primitives, with signal-driven state.
+              </p>
+              <span class="count-pill count-pill-widgets">1 widget</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </main>
+  </body>
 </html>

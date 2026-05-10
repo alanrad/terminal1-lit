@@ -7,6 +7,9 @@ export interface Translation {
   $name: string;
   $dir: 'ltr' | 'rtl';
   loading?: string;
+  goToSlide?: (slide: number, count: number) => string;
+  numOptionsSelected?: (num: number) => string;
+  slideNum?: (slide: number) => string;
   [key: string]: unknown;
 }
 
@@ -38,9 +41,12 @@ if (isClient) {
 }
 
 export function registerTranslation(...translations: Translation[]) {
-  translations.forEach(t => {
+  translations.forEach((t) => {
     const code = t.$code.toLowerCase();
-    translationsMap.set(code, translationsMap.has(code) ? { ...translationsMap.get(code), ...t } : t);
+    translationsMap.set(
+      code,
+      translationsMap.has(code) ? { ...translationsMap.get(code), ...t } : t,
+    );
     if (!fallback) fallback = t;
   });
   _update();
@@ -51,7 +57,7 @@ function _update() {
     documentDirection = document.documentElement.dir || 'ltr';
     documentLanguage = document.documentElement.lang || navigator.language;
   }
-  connectedElements.forEach(el => {
+  connectedElements.forEach((el) => {
     (el as Partial<LitElement>).requestUpdate?.();
   });
 }
@@ -66,9 +72,9 @@ registerTranslation({
   loading: 'Loading',
 });
 
-export class LocalizeController<UserTranslation extends Translation = Translation>
-  implements ReactiveController
-{
+export class LocalizeController<
+  UserTranslation extends Translation = Translation,
+> implements ReactiveController {
   host: ReactiveControllerHost & HTMLElement;
 
   constructor(host: ReactiveControllerHost & HTMLElement) {
@@ -97,7 +103,10 @@ export class LocalizeController<UserTranslation extends Translation = Translatio
     try {
       locale = new Intl.Locale(lang.replace(/_/g, '-'));
     } catch {
-      return { primary: undefined as UserTranslation | undefined, secondary: undefined as UserTranslation | undefined };
+      return {
+        primary: undefined as UserTranslation | undefined,
+        secondary: undefined as UserTranslation | undefined,
+      };
     }
     const language = locale.language.toLowerCase();
     const region = locale.region?.toLowerCase() ?? '';
@@ -116,7 +125,10 @@ export class LocalizeController<UserTranslation extends Translation = Translatio
     );
   }
 
-  term<K extends keyof UserTranslation>(key: K, ...args: FunctionParams<UserTranslation[K]>): string {
+  term<K extends keyof UserTranslation>(
+    key: K,
+    ...args: FunctionParams<UserTranslation[K]>
+  ): string {
     const { primary, secondary } = this.getTranslationData(this.lang());
     const term =
       primary?.[key] ??

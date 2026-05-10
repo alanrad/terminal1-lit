@@ -5,9 +5,17 @@ import type { CSSResultGroup } from 'lit';
 import type T1MenuItem from '@components/t1-menu-item/menu-item.component';
 
 const componentStyles = css`
-  :host { box-sizing: border-box; }
-  :host *, :host *::before, :host *::after { box-sizing: inherit; }
-  [hidden] { display: none !important; }
+  :host {
+    box-sizing: border-box;
+  }
+  :host *,
+  :host *::before,
+  :host *::after {
+    box-sizing: inherit;
+  }
+  [hidden] {
+    display: none !important;
+  }
 `;
 
 export interface MenuSelectEventDetail {
@@ -28,11 +36,15 @@ export default class T1Menu extends LitElement {
     const menuItemTypes = ['menuitem', 'menuitemcheckbox'];
 
     const composedPath = event.composedPath();
-    const target = composedPath.find((el: EventTarget) => menuItemTypes.includes((el as Element)?.getAttribute?.('role') ?? ''));
+    const target = composedPath.find((el: EventTarget) =>
+      menuItemTypes.includes((el as Element)?.getAttribute?.('role') ?? ''),
+    );
 
     if (!target) return;
 
-    const closestMenu = composedPath.find((el: EventTarget) => (el as Element)?.getAttribute?.('role') === 'menu');
+    const closestMenu = composedPath.find(
+      (el: EventTarget) => (el as Element)?.getAttribute?.('role') === 'menu',
+    );
     const clickHasSubmenu = closestMenu !== this;
 
     if (clickHasSubmenu) return;
@@ -43,7 +55,9 @@ export default class T1Menu extends LitElement {
       item.checked = !item.checked;
     }
 
-    this.dispatchEvent(new CustomEvent('t1-select', { bubbles: true, composed: true, detail: { item } }));
+    this.dispatchEvent(
+      new CustomEvent('t1-select', { bubbles: true, composed: true, detail: { item } }),
+    );
   }
 
   private handleKeyDown(event: KeyboardEvent) {
@@ -122,7 +136,7 @@ export default class T1Menu extends LitElement {
    * @internal Gets the current menu item.
    */
   getCurrentItem() {
-    return this.getAllItems().find(i => i.getAttribute('tabindex') === '0');
+    return this.getAllItems().find((i) => i.getAttribute('tabindex') === '0');
   }
 
   /**
@@ -131,7 +145,7 @@ export default class T1Menu extends LitElement {
   setCurrentItem(item: T1MenuItem) {
     const items = this.getAllItems();
 
-    items.forEach(i => {
+    items.forEach((i) => {
       i.setAttribute('tabindex', i === item ? '0' : '-1');
     });
   }

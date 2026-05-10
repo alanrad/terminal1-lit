@@ -9,9 +9,18 @@ import type T1Option from '@components/t1-option/option.component';
 import type T1Popup from '@components/t1-popup/popup.component';
 
 const componentStyles = css`
-  :host { box-sizing: border-box; display: block; }
-  :host *, :host *::before, :host *::after { box-sizing: inherit; }
-  [hidden] { display: none !important; }
+  :host {
+    box-sizing: border-box;
+    display: block;
+  }
+  :host *,
+  :host *::before,
+  :host *::after {
+    box-sizing: inherit;
+  }
+  [hidden] {
+    display: none !important;
+  }
 `;
 
 export default class T1Select extends LitElement {
@@ -114,16 +123,26 @@ export default class T1Select extends LitElement {
   private syncOptionsFromValue() {
     const options = this.getOptions();
     const values = this.multiple
-      ? (Array.isArray(this._value) ? this._value : this._value ? [this._value as string] : [])
-      : typeof this._value === 'string' ? (this._value ? [this._value] : []) : [];
+      ? Array.isArray(this._value)
+        ? this._value
+        : this._value
+          ? [this._value as string]
+          : []
+      : typeof this._value === 'string'
+        ? this._value
+          ? [this._value]
+          : []
+        : [];
 
-    options.forEach(opt => {
+    options.forEach((opt) => {
       opt.selected = values.includes(opt.value);
     });
-    this.selectedOptions = options.filter(o => o.selected);
-    this._internals?.setFormValue(this.multiple
-      ? (Array.isArray(this._value) ? this._value : []).join(' ')
-      : (this._value as string));
+    this.selectedOptions = options.filter((o) => o.selected);
+    this._internals?.setFormValue(
+      this.multiple
+        ? (Array.isArray(this._value) ? this._value : []).join(' ')
+        : (this._value as string),
+    );
   }
 
   private updateDisplayLabel() {
@@ -168,9 +187,9 @@ export default class T1Select extends LitElement {
     this.syncOptionsFromValue();
     this.updateDisplayLabel();
     this.requestUpdate();
-    this._internals?.setFormValue(this.multiple
-      ? (this._value as string[]).join(' ')
-      : (this._value as string));
+    this._internals?.setFormValue(
+      this.multiple ? (this._value as string[]).join(' ') : (this._value as string),
+    );
 
     this.dispatchEvent(new CustomEvent('t1-input', { bubbles: true, composed: true }));
     this.dispatchEvent(new CustomEvent('t1-change', { bubbles: true, composed: true }));
@@ -203,7 +222,9 @@ export default class T1Select extends LitElement {
   // ─── Keyboard navigation ───────────────────────────────────────────────────
 
   private setCurrentOption(option: T1Option | undefined) {
-    this.getOptions().forEach(o => { o.current = false; });
+    this.getOptions().forEach((o) => {
+      o.current = false;
+    });
     if (option) option.current = true;
     this.currentOption = option;
   }
@@ -211,7 +232,7 @@ export default class T1Select extends LitElement {
   private handleComboboxKeyDown(event: KeyboardEvent) {
     if (this.disabled) return;
 
-    const options = this.getOptions().filter(o => !o.disabled);
+    const options = this.getOptions().filter((o) => !o.disabled);
     const currentIdx = this.currentOption ? options.indexOf(this.currentOption) : -1;
 
     if (['ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key)) {
@@ -289,7 +310,7 @@ export default class T1Select extends LitElement {
         const selected = this.selectedOptions[0];
         if (selected) this.setCurrentOption(selected);
         else {
-          const first = this.getOptions().find(o => !o.disabled);
+          const first = this.getOptions().find((o) => !o.disabled);
           if (first) this.setCurrentOption(first);
         }
       });
@@ -322,22 +343,26 @@ export default class T1Select extends LitElement {
     if (!this.multiple) return nothing;
     const values = Array.isArray(this._value) ? this._value : [];
     const selected = this.selectedOptions;
-    const visible = this.maxOptionsVisible > 0 ? selected.slice(0, this.maxOptionsVisible) : selected;
+    const visible =
+      this.maxOptionsVisible > 0 ? selected.slice(0, this.maxOptionsVisible) : selected;
     const overflow = selected.length - visible.length;
 
     return html`
       <div class="select__tags" part="tags" aria-live="polite">
-        ${visible.map(opt => html`
-          <t1-tag
-            part="tag"
-            exportparts="base:tag__base, content:tag__content, remove-button:tag__remove-button"
-            size=${this.size}
-            ?pill=${this.pill}
-            removable
-            @t1-remove=${() => this.removeTag(opt)}
-            @click=${(e: Event) => e.stopPropagation()}
-          >${opt.getTextLabel()}</t1-tag>
-        `)}
+        ${visible.map(
+          (opt) => html`
+            <t1-tag
+              part="tag"
+              exportparts="base:tag__base, content:tag__content, remove-button:tag__remove-button"
+              size=${this.size}
+              ?pill=${this.pill}
+              removable
+              @t1-remove=${() => this.removeTag(opt)}
+              @click=${(e: Event) => e.stopPropagation()}
+              >${opt.getTextLabel()}</t1-tag
+            >
+          `,
+        )}
         ${overflow > 0 ? html`<span class="select__tags-overflow">+${overflow}</span>` : nothing}
         <input
           class="select__display-input"
@@ -354,15 +379,17 @@ export default class T1Select extends LitElement {
 
   render() {
     const hasValue = this.multiple
-      ? (Array.isArray(this._value) && this._value.length > 0)
-      : (this._value !== '');
+      ? Array.isArray(this._value) && this._value.length > 0
+      : this._value !== '';
 
     const showClearButton = this.clearable && hasValue && !this.disabled;
     const showPlaceholder = !hasValue;
 
     return html`
       ${this.label
-        ? html`<label class="select__label" @click=${() => this.displayInput?.focus()}>${this.label}</label>`
+        ? html`<label class="select__label" @click=${() => this.displayInput?.focus()}
+            >${this.label}</label
+          >`
         : nothing}
 
       <t1-popup
@@ -411,7 +438,6 @@ export default class T1Select extends LitElement {
                   readonly
                 />
               `}
-
           ${showClearButton
             ? html`
                 <button
@@ -420,7 +446,10 @@ export default class T1Select extends LitElement {
                   type="button"
                   aria-label="Clear"
                   tabindex="-1"
-                  @click=${(e: MouseEvent) => { e.stopPropagation(); this.clearValue(); }}
+                  @click=${(e: MouseEvent) => {
+                    e.stopPropagation();
+                    this.clearValue();
+                  }}
                 >
                   <t1-icon library="system" name="x-circle-fill"></t1-icon>
                 </button>

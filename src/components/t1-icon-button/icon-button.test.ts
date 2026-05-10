@@ -30,7 +30,7 @@ function createElement(attrs = ''): T1IconButtonEl {
 }
 
 afterEach(() => {
-  document.body.querySelectorAll('t1-icon-button').forEach(el => el.remove());
+  document.body.querySelectorAll('t1-icon-button').forEach((el) => el.remove());
 });
 
 describe('t1-icon-button', () => {
@@ -100,7 +100,7 @@ describe('t1-icon-button', () => {
     });
 
     describe('with target', () => {
-      (['_blank', '_parent', '_self', '_top'] as const).forEach(target => {
+      (['_blank', '_parent', '_self', '_top'] as const).forEach((target) => {
         it(`sets target="${target}" on the anchor`, async () => {
           const el = createElement(`href="some/path" target="${target}"`);
           await el.updateComplete;
@@ -163,7 +163,13 @@ describe('t1-icon-button', () => {
       await el.updateComplete;
 
       let focused = false;
-      el.addEventListener('t1-focus', () => { focused = true; }, { once: true });
+      el.addEventListener(
+        't1-focus',
+        () => {
+          focused = true;
+        },
+        { once: true },
+      );
       el.focus();
       await el.updateComplete;
 
@@ -178,7 +184,13 @@ describe('t1-icon-button', () => {
       await el.updateComplete;
 
       let blurred = false;
-      el.addEventListener('t1-blur', () => { blurred = true; }, { once: true });
+      el.addEventListener(
+        't1-blur',
+        () => {
+          blurred = true;
+        },
+        { once: true },
+      );
       el.blur();
       await el.updateComplete;
 
@@ -192,7 +204,13 @@ describe('t1-icon-button', () => {
       await el.updateComplete;
 
       let clicked = false;
-      el.addEventListener('click', () => { clicked = true; }, { once: true });
+      el.addEventListener(
+        'click',
+        () => {
+          clicked = true;
+        },
+        { once: true },
+      );
       el.click();
 
       expect(clicked).toBe(true);

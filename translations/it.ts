@@ -1,5 +1,5 @@
-import { registerTranslation } from '@shoelace-style/localize';
-import type { Translation } from '../utilities/localize.js';
+import { registerTranslation } from '../src/utils/localize';
+import type { Translation } from '../src/utils/localize';
 
 const translation: Translation = {
   $code: 'it',
@@ -17,7 +17,7 @@ const translation: Translation = {
   hidePassword: 'Nascondi password',
   loading: 'In caricamento',
   nextSlide: 'Prossima diapositiva',
-  numOptionsSelected: num => {
+  numOptionsSelected: (num) => {
     if (num === 0) return 'Nessuna opzione selezionata';
     if (num === 1) return '1 opzione selezionata';
     return `${num} opzioni selezionate`;
@@ -30,8 +30,8 @@ const translation: Translation = {
   scrollToStart: "Scorri all'inizio",
   selectAColorFromTheScreen: 'Seleziona un colore dalla schermo',
   showPassword: 'Mostra password',
-  slideNum: slide => `Diapositiva ${slide}`,
-  toggleColorFormat: 'Cambia formato colore'
+  slideNum: (slide) => `Diapositiva ${slide}`,
+  toggleColorFormat: 'Cambia formato colore',
 };
 
 registerTranslation(translation);

@@ -1,5 +1,5 @@
-import { registerTranslation } from '../utilities/localize.js';
-import type { Translation } from '../utilities/localize.js';
+import { registerTranslation } from '../src/utils/localize';
+import type { Translation } from '../src/utils/localize';
 
 const translation: Translation = {
   $code: 'he',
@@ -17,7 +17,7 @@ const translation: Translation = {
   hidePassword: 'הסתר סיסמא',
   loading: 'טוען',
   nextSlide: 'Next slide',
-  numOptionsSelected: num => {
+  numOptionsSelected: (num) => {
     if (num === 0) return 'לא נבחרו אפשרויות';
     if (num === 1) return 'נבחרה אפשרות אחת';
     return `נבחרו ${num} אפשרויות`;
@@ -30,8 +30,8 @@ const translation: Translation = {
   scrollToStart: 'גלול להתחלה',
   selectAColorFromTheScreen: 'בחור צבע מהמסך',
   showPassword: 'הראה סיסמה',
-  slideNum: slide => `שקופית ${slide}`,
-  toggleColorFormat: 'החלף פורמט צבע'
+  slideNum: (slide) => `שקופית ${slide}`,
+  toggleColorFormat: 'החלף פורמט צבע',
 };
 
 registerTranslation(translation);

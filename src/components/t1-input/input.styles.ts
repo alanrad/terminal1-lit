@@ -1,14 +1,36 @@
 import { css } from 'lit';
 
 export default css`
-  .form-control .form-control__label { display: none; }
-  .form-control--has-label .form-control__label { display: block; margin-bottom: 0.25rem; font-size: var(--t1-input-label-font-size-medium); color: var(--t1-input-label-color); }
-  .form-control--small.form-control--has-label .form-control__label { font-size: var(--t1-input-label-font-size-small); }
-  .form-control--large.form-control--has-label .form-control__label { font-size: var(--t1-input-label-font-size-large); }
-  .form-control__help-text { display: none; }
-  .form-control--has-help-text .form-control__help-text { display: block; margin-top: 0.25rem; font-size: var(--t1-input-help-text-font-size-medium); color: var(--t1-input-help-text-color); }
-  .form-control--small.form-control--has-help-text .form-control__help-text { font-size: var(--t1-input-help-text-font-size-small); }
-  .form-control--large.form-control--has-help-text .form-control__help-text { font-size: var(--t1-input-help-text-font-size-large); }
+  .form-control .form-control__label {
+    display: none;
+  }
+  .form-control--has-label .form-control__label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: var(--t1-input-label-font-size-medium);
+    color: var(--t1-input-label-color);
+  }
+  .form-control--small.form-control--has-label .form-control__label {
+    font-size: var(--t1-input-label-font-size-small);
+  }
+  .form-control--large.form-control--has-label .form-control__label {
+    font-size: var(--t1-input-label-font-size-large);
+  }
+  .form-control__help-text {
+    display: none;
+  }
+  .form-control--has-help-text .form-control__help-text {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: var(--t1-input-help-text-font-size-medium);
+    color: var(--t1-input-help-text-color);
+  }
+  .form-control--small.form-control--has-help-text .form-control__help-text {
+    font-size: var(--t1-input-help-text-font-size-small);
+  }
+  .form-control--large.form-control--has-help-text .form-control__help-text {
+    font-size: var(--t1-input-help-text-font-size-large);
+  }
 
   :host {
     display: block;

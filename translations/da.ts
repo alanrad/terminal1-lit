@@ -1,5 +1,5 @@
-import { registerTranslation } from '../utilities/localize.js';
-import type { Translation } from '../utilities/localize.js';
+import { registerTranslation } from '../src/utils/localize';
+import type { Translation } from '../src/utils/localize';
 
 const translation: Translation = {
   $code: 'da',
@@ -30,8 +30,8 @@ const translation: Translation = {
   scrollToStart: 'Scroll til start',
   selectAColorFromTheScreen: 'Vælg en farve fra skærmen',
   showPassword: 'Vis adgangskode',
-  slideNum: slide => `Slide ${slide}`,
-  toggleColorFormat: 'Skift farveformat'
+  slideNum: (slide) => `Slide ${slide}`,
+  toggleColorFormat: 'Skift farveformat',
 };
 
 registerTranslation(translation);

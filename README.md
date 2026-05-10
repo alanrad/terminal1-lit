@@ -111,12 +111,12 @@ count.subscribe(v => ...); // external subscribe — returns a disposer fn
 
 ```ts
 class CounterWidget extends SignalMixin(LitElement) {
-	connectedCallback() {
-		super.connectedCallback();
-		this._state = createCounterState();
-		this.watchSignal(this._state.count); // → requestUpdate() on change
-		this.watchSignal(this._state.isNegative);
-	}
+  connectedCallback() {
+    super.connectedCallback();
+    this._state = createCounterState();
+    this.watchSignal(this._state.count); // → requestUpdate() on change
+    this.watchSignal(this._state.isNegative);
+  }
 }
 ```
 
@@ -138,21 +138,21 @@ Each widget folder has three responsibilities cleanly separated:
 
 ```ts
 export function createCounterState(initial = 0) {
-	const count = signal(initial);
-	const isNegative = computed(() => count.value < 0);
-	return {
-		count,
-		isNegative,
-		increment: () => {
-			count.value += 1;
-		},
-		decrement: () => {
-			count.value -= 1;
-		},
-		reset: () => {
-			count.value = initial;
-		},
-	};
+  const count = signal(initial);
+  const isNegative = computed(() => count.value < 0);
+  return {
+    count,
+    isNegative,
+    increment: () => {
+      count.value += 1;
+    },
+    decrement: () => {
+      count.value -= 1;
+    },
+    reset: () => {
+      count.value = initial;
+    },
+  };
 }
 ```
 
@@ -179,7 +179,7 @@ Host pages can style internals without piercing Shadow DOM:
 
 ```css
 counter-widget::part(value) {
-	font-size: 3rem;
+  font-size: 3rem;
 }
 ```
 
@@ -191,17 +191,17 @@ counter-widget::part(value) {
 
 ```ts
 class PostService extends ApiService {
-	constructor(config?: WidgetConfig) {
-		super({ baseUrl: "https://api.example.com", ...config });
-	}
+  constructor(config?: WidgetConfig) {
+    super({ baseUrl: 'https://api.example.com', ...config });
+  }
 
-	fetchPosts(): Promise<Post[]> {
-		return this.fetch("/posts"); // inherits auth header, timeout
-	}
+  fetchPosts(): Promise<Post[]> {
+    return this.fetch('/posts'); // inherits auth header, timeout
+  }
 
-	fetchPost(id: number): Promise<Post> {
-		return this.fetch(`/posts/${id}`);
-	}
+  fetchPost(id: number): Promise<Post> {
+    return this.fetch(`/posts/${id}`);
+  }
 }
 
 export const postService = new PostService(); // singleton — widgets share one instance
@@ -220,8 +220,8 @@ Widgets that need a different API configuration can construct their own service 
 ```css
 /* host page — overrides without touching widget internals */
 counter-widget {
-	--w-color-primary: #7c3aed;
-	--w-font-family: "Inter", sans-serif;
+  --w-color-primary: #7c3aed;
+  --w-font-family: 'Inter', sans-serif;
 }
 ```
 
@@ -244,10 +244,7 @@ The loader is the only script tag a host page needs. It maps widget tag names to
 **Mode 1 — Eager, load all widgets automatically:**
 
 ```html
-<script
-	type="module"
-	src="https://cdn.example.com/widgets/sdk/loader.js"
-></script>
+<script type="module" src="https://cdn.example.com/widgets/sdk/loader.js"></script>
 ```
 
 The loader scans the DOM for any element whose tag name appears in the registry and imports the matching chunk.
@@ -256,9 +253,9 @@ The loader scans the DOM for any element whose tag name appears in the registry 
 
 ```html
 <script
-	type="module"
-	src="https://cdn.example.com/widgets/sdk/loader.js"
-	data-widgets="counter-widget,search-property-widget"
+  type="module"
+  src="https://cdn.example.com/widgets/sdk/loader.js"
+  data-widgets="counter-widget,search-property-widget"
 ></script>
 ```
 
@@ -268,15 +265,14 @@ Only the listed widgets are fetched. Use this when you know exactly which widget
 
 ```html
 <script type="module">
-	import { load } from "https://cdn.example.com/widgets/sdk/loader.js";
+  import { load } from 'https://cdn.example.com/widgets/sdk/loader.js';
 
-	// Load one widget when the user opens a panel
-	document.querySelector("#open-panel").addEventListener("click", () => {
-		load(["counter-widget"]).then(() => {
-			document.querySelector("#panel").innerHTML =
-				"<counter-widget></counter-widget>";
-		});
-	});
+  // Load one widget when the user opens a panel
+  document.querySelector('#open-panel').addEventListener('click', () => {
+    load(['counter-widget']).then(() => {
+      document.querySelector('#panel').innerHTML = '<counter-widget></counter-widget>';
+    });
+  });
 </script>
 ```
 
@@ -300,22 +296,20 @@ npm run test:ui       # Vitest browser UI at localhost:51204
 **State tests** (`counter.state.test.ts`) run in plain Node — no browser APIs needed because state is framework-free:
 
 ```ts
-it("resets to initial value", () => {
-	const s = createCounterState(3);
-	s.increment();
-	s.increment();
-	s.reset();
-	expect(s.count.value).toBe(3);
+it('resets to initial value', () => {
+  const s = createCounterState(3);
+  s.increment();
+  s.increment();
+  s.reset();
+  expect(s.count.value).toBe(3);
 });
 ```
 
 **Utility tests** (`fetch.test.ts`) use `vi.stubGlobal("fetch", vi.fn())` to mock the global fetch without any network calls:
 
 ```ts
-mockFetch.mockResolvedValue(
-	new Response(JSON.stringify({ ok: true }), { status: 200 }),
-);
-const result = await apiFetch("/test");
+mockFetch.mockResolvedValue(new Response(JSON.stringify({ ok: true }), { status: 200 }));
+const result = await apiFetch('/test');
 expect(result).toEqual({ ok: true });
 ```
 
@@ -364,9 +358,9 @@ npm run release   # runs: tsc --noEmit && vite build && npm publish --access pub
 
 ```html
 <script
-	type="module"
-	src="https://cdn.jsdelivr.net/npm/@myorg/widgets@0.1.0/dist/sdk/loader.js"
-	data-widgets="counter-widget"
+  type="module"
+  src="https://cdn.jsdelivr.net/npm/@myorg/widgets@0.1.0/dist/sdk/loader.js"
+  data-widgets="counter-widget"
 ></script>
 ```
 
@@ -374,9 +368,9 @@ npm run release   # runs: tsc --noEmit && vite build && npm publish --access pub
 
 ```html
 <script
-	type="module"
-	src="https://unpkg.com/@myorg/widgets@0.1.0/dist/sdk/loader.js"
-	data-widgets="search-property-widget"
+  type="module"
+  src="https://unpkg.com/@myorg/widgets@0.1.0/dist/sdk/loader.js"
+  data-widgets="search-property-widget"
 ></script>
 ```
 
@@ -401,18 +395,18 @@ touch src/widgets/my-widget/index.ts
 
 ```ts
 // my-widget.state.ts
-import { signal, computed } from "@state/signal.js";
+import { signal, computed } from '@state/signal.js';
 
 export function createMyWidgetState() {
-	const value = signal("");
-	const isEmpty = computed(() => value.value.trim() === "");
-	return {
-		value,
-		isEmpty,
-		clear: () => {
-			value.value = "";
-		},
-	};
+  const value = signal('');
+  const isEmpty = computed(() => value.value.trim() === '');
+  return {
+    value,
+    isEmpty,
+    clear: () => {
+      value.value = '';
+    },
+  };
 }
 ```
 
@@ -420,37 +414,37 @@ export function createMyWidgetState() {
 
 ```ts
 // my-widget.ts
-import { LitElement, html, css } from "lit";
-import { customElement, property } from "lit/decorators.js";
-import { SignalMixin } from "@state/lit-signal.js";
-import { baseStyles } from "@styles/base.js";
+import { LitElement, html, css } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { SignalMixin } from '@state/lit-signal.js';
+import { baseStyles } from '@styles/base.js';
 
-@customElement("my-widget")
+@customElement('my-widget')
 export class MyWidget extends SignalMixin(LitElement) {
-	static styles = [
-		baseStyles,
-		css`
-			:host {
-				display: block;
-			}
-		`,
-	];
+  static styles = [
+    baseStyles,
+    css`
+      :host {
+        display: block;
+      }
+    `,
+  ];
 
-	connectedCallback() {
-		super.connectedCallback();
-		// this._state = createMyWidgetState();
-		// this.watchSignal(this._state.value);
-	}
+  connectedCallback() {
+    super.connectedCallback();
+    // this._state = createMyWidgetState();
+    // this.watchSignal(this._state.value);
+  }
 
-	render() {
-		return html`<slot></slot>`;
-	}
+  render() {
+    return html`<slot></slot>`;
+  }
 }
 
 declare global {
-	interface HTMLElementTagNameMap {
-		"my-widget": MyWidget;
-	}
+  interface HTMLElementTagNameMap {
+    'my-widget': MyWidget;
+  }
 }
 ```
 
@@ -458,23 +452,23 @@ declare global {
 
 ```ts
 // index.ts
-export { MyWidget } from "./my-widget.js";
+export { MyWidget } from './my-widget.js';
 ```
 
 **5. Register in the SDK loader** (`src/sdk/loader.ts`):
 
 ```ts
 const WIDGET_REGISTRY: Record<string, string> = {
-	"counter-widget": "/widgets/counter-widget.js",
-	"posts-widget": "/widgets/posts-widget.js",
-	"my-widget": "/widgets/my-widget.js", // ← add this line
+  'counter-widget': '/widgets/counter-widget.js',
+  'posts-widget': '/widgets/posts-widget.js',
+  'my-widget': '/widgets/my-widget.js', // ← add this line
 };
 ```
 
 **6. Add to the public API** (`src/index.ts`):
 
 ```ts
-export { MyWidget } from "./widgets/my-widget/index.js";
+export { MyWidget } from './widgets/my-widget/index.js';
 ```
 
 **7. Write unit tests:**
@@ -489,8 +483,8 @@ touch tests/unit/my-widget.state.test.ts
 <script type="module" src="../src/widgets/my-widget/index.ts"></script>
 <!-- ... -->
 <section>
-	<h2>My Widget</h2>
-	<my-widget></my-widget>
+  <h2>My Widget</h2>
+  <my-widget></my-widget>
 </section>
 ```
 

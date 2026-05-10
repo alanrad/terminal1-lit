@@ -3,9 +3,17 @@ import styles from './spinner.styles';
 import type { CSSResultGroup } from 'lit';
 
 const componentStyles = css`
-  :host { box-sizing: border-box; }
-  :host *, :host *::before, :host *::after { box-sizing: inherit; }
-  [hidden] { display: none !important; }
+  :host {
+    box-sizing: border-box;
+  }
+  :host *,
+  :host *::before,
+  :host *::after {
+    box-sizing: inherit;
+  }
+  [hidden] {
+    display: none !important;
+  }
 `;
 
 export default class T1Spinner extends LitElement {

@@ -7,9 +7,17 @@ import type T1Popup from '@components/t1-popup/popup.component';
 import type { CSSResultGroup } from 'lit';
 
 const componentStyles = css`
-  :host { box-sizing: border-box; }
-  :host *, :host *::before, :host *::after { box-sizing: inherit; }
-  [hidden] { display: none !important; }
+  :host {
+    box-sizing: border-box;
+  }
+  :host *,
+  :host *::before,
+  :host *::after {
+    box-sizing: inherit;
+  }
+  [hidden] {
+    display: none !important;
+  }
 `;
 
 export default class T1Tooltip extends LitElement {
@@ -25,10 +33,18 @@ export default class T1Tooltip extends LitElement {
 
   /** The preferred placement of the tooltip. */
   @property() placement:
-    | 'top' | 'top-start' | 'top-end'
-    | 'right' | 'right-start' | 'right-end'
-    | 'bottom' | 'bottom-start' | 'bottom-end'
-    | 'left' | 'left-start' | 'left-end' = 'top';
+    | 'top'
+    | 'top-start'
+    | 'top-end'
+    | 'right'
+    | 'right-start'
+    | 'right-end'
+    | 'bottom'
+    | 'bottom-start'
+    | 'bottom-end'
+    | 'left'
+    | 'left-start'
+    | 'left-end' = 'top';
 
   /** Disables the tooltip so it won't show when triggered. */
   @property({ type: Boolean, reflect: true }) disabled = false;
@@ -145,7 +161,7 @@ export default class T1Tooltip extends LitElement {
   /** Shows the tooltip. */
   show(): Promise<void> {
     if (this.open) return Promise.resolve();
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.open = true;
       this.addEventListener('t1-after-show', () => resolve(), { once: true });
     });
@@ -154,7 +170,7 @@ export default class T1Tooltip extends LitElement {
   /** Hides the tooltip. */
   hide(): Promise<void> {
     if (!this.open) return Promise.resolve();
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.open = false;
       this.addEventListener('t1-after-hide', () => resolve(), { once: true });
     });

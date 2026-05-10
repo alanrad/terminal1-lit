@@ -26,7 +26,7 @@ function createElement(attrs: Record<string, string | boolean> = {}): T1FormatNu
 }
 
 afterEach(() => {
-  document.body.querySelectorAll('t1-format-number').forEach(el => el.remove());
+  document.body.querySelectorAll('t1-format-number').forEach((el) => el.remove());
 });
 
 function text(el: T1FormatNumberEl): string {
@@ -55,20 +55,24 @@ describe('t1-format-number', () => {
     it('formats 1000 as decimal with grouping', async () => {
       const el = createElement({ value: '1000' });
       await el.updateComplete;
-      const expected = new Intl.NumberFormat('en', { style: 'decimal', useGrouping: true }).format(1000);
+      const expected = new Intl.NumberFormat('en', { style: 'decimal', useGrouping: true }).format(
+        1000,
+      );
       expect(text(el)).toBe(expected);
     });
 
     it('formats without grouping when no-grouping is set', async () => {
       const el = createElement({ value: '1000', 'no-grouping': true });
       await el.updateComplete;
-      const expected = new Intl.NumberFormat('en', { style: 'decimal', useGrouping: false }).format(1000);
+      const expected = new Intl.NumberFormat('en', { style: 'decimal', useGrouping: false }).format(
+        1000,
+      );
       expect(text(el)).toBe(expected);
     });
   });
 
   describe('type', () => {
-    (['decimal', 'percent'] as const).forEach(type => {
+    (['decimal', 'percent'] as const).forEach((type) => {
       it(`formats as ${type}`, async () => {
         const el = createElement({ value: '0.5', type });
         await el.updateComplete;
@@ -80,13 +84,15 @@ describe('t1-format-number', () => {
     it('formats as currency', async () => {
       const el = createElement({ value: '1000', type: 'currency', currency: 'USD' });
       await el.updateComplete;
-      const expected = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' }).format(1000);
+      const expected = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' }).format(
+        1000,
+      );
       expect(text(el)).toBe(expected);
     });
   });
 
   describe('currency', () => {
-    (['USD', 'EUR', 'GBP'] as const).forEach(currency => {
+    (['USD', 'EUR', 'GBP'] as const).forEach((currency) => {
       it(`formats ${currency} currency`, async () => {
         const el = createElement({ value: '1000', type: 'currency', currency });
         await el.updateComplete;

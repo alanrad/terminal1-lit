@@ -2,7 +2,8 @@ import { describe, it, expect, beforeAll, vi, afterEach } from 'vitest';
 import { registerIconLibrary } from './icon.library';
 import './index';
 
-const SIMPLE_SVG = '<svg id="test-icon" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8"/></svg>';
+const SIMPLE_SVG =
+  '<svg id="test-icon" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8"/></svg>';
 const BAD_SVG = '<div>not an svg</div>';
 
 let urlCounter = 0;
@@ -20,7 +21,7 @@ function mockFetch(svgText: string, ok = true, status = 200) {
 
 beforeAll(() => {
   registerIconLibrary('test-lib', {
-    resolver: name => `https://example.com/test-lib/${name}-${urlCounter}.svg`,
+    resolver: (name) => `https://example.com/test-lib/${name}-${urlCounter}.svg`,
   });
 });
 
@@ -79,8 +80,8 @@ describe('t1-icon', () => {
     const el = createElement();
     await el.updateComplete;
 
-    const loadPromise = new Promise<void>(resolve =>
-      el.addEventListener('t1-load', () => resolve(), { once: true })
+    const loadPromise = new Promise<void>((resolve) =>
+      el.addEventListener('t1-load', () => resolve(), { once: true }),
     );
     el.src = uniqueUrl('src-test');
     await loadPromise;
@@ -96,8 +97,8 @@ describe('t1-icon', () => {
     el.library = 'test-lib';
     await el.updateComplete;
 
-    const loadPromise = new Promise<void>(resolve =>
-      el.addEventListener('t1-load', () => resolve(), { once: true })
+    const loadPromise = new Promise<void>((resolve) =>
+      el.addEventListener('t1-load', () => resolve(), { once: true }),
     );
     urlCounter++;
     el.name = 'test-icon';
@@ -114,8 +115,15 @@ describe('t1-icon', () => {
     await el.updateComplete;
 
     let loaded = false;
-    const loadPromise = new Promise<void>(resolve =>
-      el.addEventListener('t1-load', () => { loaded = true; resolve(); }, { once: true })
+    const loadPromise = new Promise<void>((resolve) =>
+      el.addEventListener(
+        't1-load',
+        () => {
+          loaded = true;
+          resolve();
+        },
+        { once: true },
+      ),
     );
     el.src = uniqueUrl('load-test');
     await loadPromise;
@@ -129,8 +137,8 @@ describe('t1-icon', () => {
     const el = createElement();
     await el.updateComplete;
 
-    const errorPromise = new Promise<void>(resolve =>
-      el.addEventListener('t1-error', () => resolve(), { once: true })
+    const errorPromise = new Promise<void>((resolve) =>
+      el.addEventListener('t1-error', () => resolve(), { once: true }),
     );
     el.src = uniqueUrl('bad-content');
     await errorPromise;
@@ -147,8 +155,8 @@ describe('t1-icon', () => {
     const el = createElement();
     await el.updateComplete;
 
-    const errorPromise = new Promise<void>(resolve =>
-      el.addEventListener('t1-error', () => resolve(), { once: true })
+    const errorPromise = new Promise<void>((resolve) =>
+      el.addEventListener('t1-error', () => resolve(), { once: true }),
     );
     el.src = uniqueUrl('error-test');
     await errorPromise;
@@ -162,8 +170,8 @@ describe('t1-icon', () => {
     const el = createElement();
     await el.updateComplete;
 
-    const loadPromise = new Promise<void>(resolve =>
-      el.addEventListener('t1-load', () => resolve(), { once: true })
+    const loadPromise = new Promise<void>((resolve) =>
+      el.addEventListener('t1-load', () => resolve(), { once: true }),
     );
     el.src = uniqueUrl('part-test');
     await loadPromise;

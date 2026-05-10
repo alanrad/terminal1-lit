@@ -1,4 +1,13 @@
-import { arrow, autoUpdate, computePosition, flip, offset, platform, shift, size } from '@floating-ui/dom';
+import {
+  arrow,
+  autoUpdate,
+  computePosition,
+  flip,
+  offset,
+  platform,
+  shift,
+  size,
+} from '@floating-ui/dom';
 import { LitElement, html, css } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { LocalizeController } from '@utils/localize';
@@ -8,9 +17,17 @@ import styles from './popup.styles';
 import type { CSSResultGroup } from 'lit';
 
 const componentStyles = css`
-  :host { box-sizing: border-box; }
-  :host *, :host *::before, :host *::after { box-sizing: inherit; }
-  [hidden] { display: none !important; }
+  :host {
+    box-sizing: border-box;
+  }
+  :host *,
+  :host *::before,
+  :host *::after {
+    box-sizing: inherit;
+  }
+  [hidden] {
+    display: none !important;
+  }
 `;
 
 export interface VirtualElement {
@@ -80,7 +97,11 @@ export default class T1Popup extends LitElement {
   @property({ type: Boolean }) arrow = false;
 
   /** The placement of the arrow. */
-  @property({ attribute: 'arrow-placement' }) arrowPlacement: 'start' | 'end' | 'center' | 'anchor' = 'anchor';
+  @property({ attribute: 'arrow-placement' }) arrowPlacement:
+    | 'start'
+    | 'end'
+    | 'center'
+    | 'anchor' = 'anchor';
 
   /** The amount of padding between the arrow and the edges of the popup. */
   @property({ attribute: 'arrow-padding', type: Number }) arrowPadding = 10;
@@ -94,17 +115,18 @@ export default class T1Popup extends LitElement {
       fromAttribute: (value: string) => {
         return value
           .split(' ')
-          .map(p => p.trim())
-          .filter(p => p !== '');
+          .map((p) => p.trim())
+          .filter((p) => p !== '');
       },
       toAttribute: (value: []) => {
         return value.join(' ');
-      }
-    }
+      },
+    },
   })
   flipFallbackPlacements: string | string[] = '';
 
-  @property({ attribute: 'flip-fallback-strategy' }) flipFallbackStrategy: 'best-fit' | 'initial' = 'best-fit';
+  @property({ attribute: 'flip-fallback-strategy' }) flipFallbackStrategy: 'best-fit' | 'initial' =
+    'best-fit';
 
   @property({ type: Object }) flipBoundary!: Element | Element[];
 
@@ -191,7 +213,7 @@ export default class T1Popup extends LitElement {
   }
 
   private async stop(): Promise<void> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       if (this.cleanup) {
         this.cleanup();
         this.cleanup = undefined;
@@ -211,9 +233,7 @@ export default class T1Popup extends LitElement {
       return;
     }
 
-    const middleware = [
-      offset({ mainAxis: this.distance, crossAxis: this.skidding })
-    ];
+    const middleware = [offset({ mainAxis: this.distance, crossAxis: this.skidding })];
 
     if (this.sync) {
       middleware.push(
@@ -223,8 +243,8 @@ export default class T1Popup extends LitElement {
             const syncHeight = this.sync === 'height' || this.sync === 'both';
             this.popup.style.width = syncWidth ? `${rects.reference.width}px` : '';
             this.popup.style.height = syncHeight ? `${rects.reference.height}px` : '';
-          }
-        })
+          },
+        }),
       );
     } else {
       this.popup.style.width = '';
@@ -235,10 +255,11 @@ export default class T1Popup extends LitElement {
       middleware.push(
         flip({
           boundary: this.flipBoundary,
-            fallbackPlacements: this.flipFallbackPlacements as import('@floating-ui/dom').Placement[],
-          fallbackStrategy: this.flipFallbackStrategy === 'best-fit' ? 'bestFit' : 'initialPlacement',
-          padding: this.flipPadding
-        })
+          fallbackPlacements: this.flipFallbackPlacements as import('@floating-ui/dom').Placement[],
+          fallbackStrategy:
+            this.flipFallbackStrategy === 'best-fit' ? 'bestFit' : 'initialPlacement',
+          padding: this.flipPadding,
+        }),
       );
     }
 
@@ -246,8 +267,8 @@ export default class T1Popup extends LitElement {
       middleware.push(
         shift({
           boundary: this.shiftBoundary,
-          padding: this.shiftPadding
-        })
+          padding: this.shiftPadding,
+        }),
       );
     }
 
@@ -256,7 +277,13 @@ export default class T1Popup extends LitElement {
         size({
           boundary: this.autoSizeBoundary,
           padding: this.autoSizePadding,
-          apply: ({ availableWidth, availableHeight }: { availableWidth: number; availableHeight: number }) => {
+          apply: ({
+            availableWidth,
+            availableHeight,
+          }: {
+            availableWidth: number;
+            availableHeight: number;
+          }) => {
             if (this.autoSize === 'vertical' || this.autoSize === 'both') {
               this.style.setProperty('--auto-size-available-height', `${availableHeight}px`);
             } else {
@@ -268,8 +295,8 @@ export default class T1Popup extends LitElement {
             } else {
               this.style.removeProperty('--auto-size-available-width');
             }
-          }
-        })
+          },
+        }),
       );
     } else {
       this.style.removeProperty('--auto-size-available-width');
@@ -280,8 +307,8 @@ export default class T1Popup extends LitElement {
       middleware.push(
         arrow({
           element: this.arrowEl,
-          padding: this.arrowPadding
-        })
+          padding: this.arrowPadding,
+        }),
       );
     }
 
@@ -296,55 +323,81 @@ export default class T1Popup extends LitElement {
       strategy: this.strategy,
       platform: {
         ...platform,
-        getOffsetParent
-      }
-    }).then(({ x, y, middlewareData, placement }: { x: number; y: number; middlewareData: Record<string, { x?: number; y?: number }>; placement: string }) => {
-      const isRtl = this.localize.dir() === 'rtl';
-      const placementBase = placement.split('-')[0] as 'top' | 'right' | 'bottom' | 'left';
-      const staticSide = { top: 'bottom', right: 'left', bottom: 'top', left: 'right' }[placementBase]!
+        getOffsetParent,
+      },
+    }).then(
+      ({
+        x,
+        y,
+        middlewareData,
+        placement,
+      }: {
+        x: number;
+        y: number;
+        middlewareData: Record<string, { x?: number; y?: number }>;
+        placement: string;
+      }) => {
+        const isRtl = this.localize.dir() === 'rtl';
+        const placementBase = placement.split('-')[0] as 'top' | 'right' | 'bottom' | 'left';
+        const staticSide = { top: 'bottom', right: 'left', bottom: 'top', left: 'right' }[
+          placementBase
+        ]!;
 
-      this.setAttribute('data-current-placement', placement);
+        this.setAttribute('data-current-placement', placement);
 
-      Object.assign(this.popup.style, {
-        left: `${x}px`,
-        top: `${y}px`
-      });
-
-      if (this.arrow) {
-        const arrowX = middlewareData.arrow!.x;
-        const arrowY = middlewareData.arrow!.y;
-        let top = '';
-        let right = '';
-        let bottom = '';
-        let left = '';
-
-        if (this.arrowPlacement === 'start') {
-          const value = typeof arrowX === 'number' ? `calc(${this.arrowPadding}px - var(--arrow-padding-offset))` : '';
-          top = typeof arrowY === 'number' ? `calc(${this.arrowPadding}px - var(--arrow-padding-offset))` : '';
-          right = isRtl ? value : '';
-          left = isRtl ? '' : value;
-        } else if (this.arrowPlacement === 'end') {
-          const value = typeof arrowX === 'number' ? `calc(${this.arrowPadding}px - var(--arrow-padding-offset))` : '';
-          right = isRtl ? '' : value;
-          left = isRtl ? value : '';
-          bottom = typeof arrowY === 'number' ? `calc(${this.arrowPadding}px - var(--arrow-padding-offset))` : '';
-        } else if (this.arrowPlacement === 'center') {
-          left = typeof arrowX === 'number' ? `calc(50% - var(--arrow-size-diagonal))` : '';
-          top = typeof arrowY === 'number' ? `calc(50% - var(--arrow-size-diagonal))` : '';
-        } else {
-          left = typeof arrowX === 'number' ? `${arrowX}px` : '';
-          top = typeof arrowY === 'number' ? `${arrowY}px` : '';
-        }
-
-        Object.assign(this.arrowEl.style, {
-          top,
-          right,
-          bottom,
-          left,
-          [staticSide]: 'calc(var(--arrow-size-diagonal) * -1)'
+        Object.assign(this.popup.style, {
+          left: `${x}px`,
+          top: `${y}px`,
         });
-      }
-    });
+
+        if (this.arrow) {
+          const arrowX = middlewareData.arrow!.x;
+          const arrowY = middlewareData.arrow!.y;
+          let top = '';
+          let right = '';
+          let bottom = '';
+          let left = '';
+
+          if (this.arrowPlacement === 'start') {
+            const value =
+              typeof arrowX === 'number'
+                ? `calc(${this.arrowPadding}px - var(--arrow-padding-offset))`
+                : '';
+            top =
+              typeof arrowY === 'number'
+                ? `calc(${this.arrowPadding}px - var(--arrow-padding-offset))`
+                : '';
+            right = isRtl ? value : '';
+            left = isRtl ? '' : value;
+          } else if (this.arrowPlacement === 'end') {
+            const value =
+              typeof arrowX === 'number'
+                ? `calc(${this.arrowPadding}px - var(--arrow-padding-offset))`
+                : '';
+            right = isRtl ? '' : value;
+            left = isRtl ? value : '';
+            bottom =
+              typeof arrowY === 'number'
+                ? `calc(${this.arrowPadding}px - var(--arrow-padding-offset))`
+                : '';
+          } else if (this.arrowPlacement === 'center') {
+            left = typeof arrowX === 'number' ? `calc(50% - var(--arrow-size-diagonal))` : '';
+            top = typeof arrowY === 'number' ? `calc(50% - var(--arrow-size-diagonal))` : '';
+          } else {
+            left = typeof arrowX === 'number' ? `${arrowX}px` : '';
+            top = typeof arrowY === 'number' ? `${arrowY}px` : '';
+          }
+
+          Object.assign(this.arrowEl.style, {
+            top,
+            right,
+            bottom,
+            left,
+            [staticSide]: 'calc(var(--arrow-size-diagonal) * -1)',
+          });
+        }
+      },
+    );
 
     requestAnimationFrame(() => this.updateHoverBridge());
 
@@ -426,7 +479,7 @@ export default class T1Popup extends LitElement {
         part="hover-bridge"
         class=${classMap({
           'popup-hover-bridge': true,
-          'popup-hover-bridge--visible': this.hoverBridge && this.active
+          'popup-hover-bridge--visible': this.hoverBridge && this.active,
         })}
       ></span>
 
@@ -436,7 +489,7 @@ export default class T1Popup extends LitElement {
           popup: true,
           'popup--active': this.active,
           'popup--fixed': this.strategy === 'fixed',
-          'popup--has-arrow': this.arrow
+          'popup--has-arrow': this.arrow,
         })}
       >
         <slot></slot>

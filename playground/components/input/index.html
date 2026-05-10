@@ -8,7 +8,13 @@
     <script type="module" src="/src/components/t1-icon/index.ts"></script>
     <script type="module" src="/src/components/t1-input/index.ts"></script>
     <style>
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
       body {
         font-family: var(--t1-font-sans);
@@ -32,9 +38,13 @@
         text-decoration: none;
       }
 
-      .topbar a:hover { text-decoration: underline; }
+      .topbar a:hover {
+        text-decoration: underline;
+      }
 
-      .topbar-sep { color: var(--t1-color-neutral-300); }
+      .topbar-sep {
+        color: var(--t1-color-neutral-300);
+      }
 
       .topbar h1 {
         font-size: var(--t1-font-size-large);
@@ -50,7 +60,11 @@
         gap: var(--t1-spacing-3x-large);
       }
 
-      .section { display: flex; flex-direction: column; gap: var(--t1-spacing-medium); }
+      .section {
+        display: flex;
+        flex-direction: column;
+        gap: var(--t1-spacing-medium);
+      }
 
       .section-title {
         font-size: var(--t1-font-size-large);
@@ -128,7 +142,9 @@
 
       <section class="section">
         <h2 class="section-title">Labels</h2>
-        <p class="section-desc">Use the <code>label</code> attribute to add a label above the input.</p>
+        <p class="section-desc">
+          Use the <code>label</code> attribute to add a label above the input.
+        </p>
         <div class="demo-box">
           <t1-input label="Full Name"></t1-input>
           <t1-input label="Email Address" type="email"></t1-input>
@@ -137,10 +153,16 @@
 
       <section class="section">
         <h2 class="section-title">Help Text</h2>
-        <p class="section-desc">Use <code>help-text</code> to provide additional context below the input.</p>
+        <p class="section-desc">
+          Use <code>help-text</code> to provide additional context below the input.
+        </p>
         <div class="demo-box">
           <t1-input label="Username" help-text="Must be 3–20 characters with no spaces."></t1-input>
-          <t1-input label="Password" type="password" help-text="Use 8+ characters with a mix of letters and numbers."></t1-input>
+          <t1-input
+            label="Password"
+            type="password"
+            help-text="Use 8+ characters with a mix of letters and numbers."
+          ></t1-input>
         </div>
       </section>
 
@@ -155,7 +177,9 @@
 
       <section class="section">
         <h2 class="section-title">Clearable</h2>
-        <p class="section-desc">The <code>clearable</code> attribute adds a clear button when the input has a value.</p>
+        <p class="section-desc">
+          The <code>clearable</code> attribute adds a clear button when the input has a value.
+        </p>
         <div class="demo-box">
           <t1-input clearable value="Clear me!" label="Clearable input"></t1-input>
         </div>
@@ -163,15 +187,25 @@
 
       <section class="section">
         <h2 class="section-title">Password Toggle</h2>
-        <p class="section-desc">Add <code>password-toggle</code> to password inputs to let users reveal their password.</p>
+        <p class="section-desc">
+          Add <code>password-toggle</code> to password inputs to let users reveal their password.
+        </p>
         <div class="demo-box">
-          <t1-input label="Password" type="password" password-toggle placeholder="Enter your password"></t1-input>
+          <t1-input
+            label="Password"
+            type="password"
+            password-toggle
+            placeholder="Enter your password"
+          ></t1-input>
         </div>
       </section>
 
       <section class="section">
         <h2 class="section-title">Filled Variant</h2>
-        <p class="section-desc">The <code>filled</code> attribute gives the input a filled appearance instead of an outline.</p>
+        <p class="section-desc">
+          The <code>filled</code> attribute gives the input a filled appearance instead of an
+          outline.
+        </p>
         <div class="demo-box">
           <t1-input filled label="Filled" placeholder="Filled input"></t1-input>
           <t1-input filled clearable value="With value" label="Filled clearable"></t1-input>
@@ -189,7 +223,10 @@
 
       <section class="section">
         <h2 class="section-title">Sizes</h2>
-        <p class="section-desc">Three sizes are available: <code>small</code>, <code>medium</code> (default), and <code>large</code>.</p>
+        <p class="section-desc">
+          Three sizes are available: <code>small</code>, <code>medium</code> (default), and
+          <code>large</code>.
+        </p>
         <div class="demo-box">
           <t1-input size="small" label="Small" placeholder="Small input"></t1-input>
           <t1-input size="medium" label="Medium" placeholder="Medium input"></t1-input>
@@ -199,7 +236,9 @@
 
       <section class="section">
         <h2 class="section-title">Pill</h2>
-        <p class="section-desc">The <code>pill</code> modifier gives inputs fully rounded corners.</p>
+        <p class="section-desc">
+          The <code>pill</code> modifier gives inputs fully rounded corners.
+        </p>
         <div class="demo-box">
           <div class="demo-row">
             <t1-input pill size="small" placeholder="Small pill"></t1-input>
@@ -214,7 +253,14 @@
         <p class="section-desc">Supports all standard HTML input types.</p>
         <div class="demo-box">
           <t1-input type="email" label="Email" placeholder="you@example.com"></t1-input>
-          <t1-input type="number" label="Number" placeholder="0" min="0" max="100" step="1"></t1-input>
+          <t1-input
+            type="number"
+            label="Number"
+            placeholder="0"
+            min="0"
+            max="100"
+            step="1"
+          ></t1-input>
           <t1-input type="date" label="Date"></t1-input>
           <t1-input type="url" label="URL" placeholder="https://example.com"></t1-input>
           <t1-input type="search" label="Search" placeholder="Search terms…" clearable></t1-input>
@@ -223,14 +269,21 @@
 
       <section class="section">
         <h2 class="section-title">Prefix &amp; Suffix Icons</h2>
-        <p class="section-desc">Use <code>slot="prefix"</code> and <code>slot="suffix"</code> to add icons inside the input.</p>
+        <p class="section-desc">
+          Use <code>slot="prefix"</code> and <code>slot="suffix"</code> to add icons inside the
+          input.
+        </p>
         <div class="demo-box">
           <t1-input label="Search" placeholder="Search icons…">
             <t1-icon slot="prefix" name="search"></t1-icon>
           </t1-input>
           <t1-input label="Amount" placeholder="0.00">
             <t1-icon slot="prefix" name="currency-dollar"></t1-icon>
-            <t1-icon slot="suffix" name="check-circle" style="color: var(--t1-color-success-500);"></t1-icon>
+            <t1-icon
+              slot="suffix"
+              name="check-circle"
+              style="color: var(--t1-color-success-500)"
+            ></t1-icon>
           </t1-input>
           <t1-input label="Username" placeholder="@username">
             <t1-icon slot="prefix" name="person"></t1-icon>
@@ -242,7 +295,12 @@
         <h2 class="section-title">Event Log</h2>
         <p class="section-desc">Interact with the input below to see events fire in real time.</p>
         <div class="demo-box">
-          <t1-input id="event-input" label="Interactive input" clearable placeholder="Type here…"></t1-input>
+          <t1-input
+            id="event-input"
+            label="Interactive input"
+            clearable
+            placeholder="Type here…"
+          ></t1-input>
           <div id="event-log"></div>
         </div>
       </section>
@@ -259,8 +317,8 @@
         log.scrollTop = log.scrollHeight;
       }
 
-      ['t1-focus', 't1-blur', 't1-input', 't1-change', 't1-clear'].forEach(evt => {
-        input.addEventListener(evt, e => appendLog(`${e.type}`));
+      ['t1-focus', 't1-blur', 't1-input', 't1-change', 't1-clear'].forEach((evt) => {
+        input.addEventListener(evt, (e) => appendLog(`${e.type}`));
       });
     </script>
   </body>

@@ -8,7 +8,11 @@ import type { CSSResultGroup, HTMLTemplateResult } from 'lit';
 
 const CACHEABLE_ERROR = Symbol();
 const RETRYABLE_ERROR = Symbol();
-type SVGResult = HTMLTemplateResult | SVGSVGElement | typeof RETRYABLE_ERROR | typeof CACHEABLE_ERROR;
+type SVGResult =
+  | HTMLTemplateResult
+  | SVGSVGElement
+  | typeof RETRYABLE_ERROR
+  | typeof CACHEABLE_ERROR;
 
 let parser: DOMParser;
 const iconCache = new Map<string, Promise<SVGResult>>();

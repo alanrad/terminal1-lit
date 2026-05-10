@@ -36,12 +36,12 @@ function createWithHTML(html: string): T1MenuItemEl {
 // Wait for two Lit update cycles — needed after slot assignment triggers HasSlotController re-render
 async function settled(el: T1MenuItemEl) {
   await el.updateComplete;
-  await new Promise(r => requestAnimationFrame(r));
+  await new Promise((r) => requestAnimationFrame(r));
   await el.updateComplete;
 }
 
 afterEach(() => {
-  document.body.querySelectorAll('div, t1-menu-item, t1-menu').forEach(el => el.remove());
+  document.body.querySelectorAll('div, t1-menu-item, t1-menu').forEach((el) => el.remove());
 });
 
 describe('t1-menu-item', () => {
@@ -84,7 +84,13 @@ describe('t1-menu-item', () => {
       await el.updateComplete;
 
       let clicked = false;
-      document.addEventListener('click', () => { clicked = true; }, { once: true });
+      document.addEventListener(
+        'click',
+        () => {
+          clicked = true;
+        },
+        { once: true },
+      );
       el.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
 
       expect(clicked).toBe(false);
@@ -146,11 +152,20 @@ describe('t1-menu-item', () => {
       await el.updateComplete;
 
       let fired = false;
-      el.addEventListener('slotchange', () => { fired = true; }, { once: true });
+      el.addEventListener(
+        'slotchange',
+        () => {
+          fired = true;
+        },
+        { once: true },
+      );
       el.textContent = 'Updated';
 
-      await new Promise<void>(resolve => {
-        const check = () => { if (fired) resolve(); else requestAnimationFrame(check); };
+      await new Promise<void>((resolve) => {
+        const check = () => {
+          if (fired) resolve();
+          else requestAnimationFrame(check);
+        };
         requestAnimationFrame(check);
       });
 

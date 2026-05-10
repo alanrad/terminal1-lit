@@ -14,7 +14,7 @@ function createElement(attrs: Record<string, string> = {}): T1SkeletonEl {
 }
 
 afterEach(() => {
-  document.body.querySelectorAll('t1-skeleton').forEach(el => el.remove());
+  document.body.querySelectorAll('t1-skeleton').forEach((el) => el.remove());
 });
 
 describe('t1-skeleton', () => {

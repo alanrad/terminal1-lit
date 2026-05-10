@@ -1,5 +1,5 @@
-import { registerTranslation } from '@shoelace-style/localize';
-import type { Translation } from '../utilities/localize.js';
+import { registerTranslation } from '../src/utils/localize';
+import type { Translation } from '../src/utils/localize';
 
 const translation: Translation = {
   $code: 'sl',
@@ -17,7 +17,7 @@ const translation: Translation = {
   hidePassword: 'Skrij geslo',
   loading: 'Nalaganje',
   nextSlide: 'Naslednji diapozitiv',
-  numOptionsSelected: num => {
+  numOptionsSelected: (num) => {
     if (num === 0) return 'Nobena možnost ni izbrana';
     if (num === 1) return '1 možnost izbrana';
     if (num === 2) return '2 možnosti izbrani';
@@ -32,8 +32,8 @@ const translation: Translation = {
   scrollToStart: 'Pomakni se na začetek',
   selectAColorFromTheScreen: 'Izberite barvo z zaslona',
   showPassword: 'Prikaži geslo',
-  slideNum: slide => `Diapozitiv ${slide}`,
-  toggleColorFormat: 'Preklopi format barve'
+  slideNum: (slide) => `Diapozitiv ${slide}`,
+  toggleColorFormat: 'Preklopi format barve',
 };
 
 registerTranslation(translation);

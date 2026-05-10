@@ -7,9 +7,17 @@ import styles from './icon-button.styles';
 import type { CSSResultGroup } from 'lit';
 
 const componentStyles = css`
-  :host { box-sizing: border-box; }
-  :host *, :host *::before, :host *::after { box-sizing: inherit; }
-  [hidden] { display: none !important; }
+  :host {
+    box-sizing: border-box;
+  }
+  :host *,
+  :host *::before,
+  :host *::after {
+    box-sizing: inherit;
+  }
+  [hidden] {
+    display: none !important;
+  }
 `;
 
 export default class T1IconButton extends LitElement {
@@ -86,7 +94,7 @@ export default class T1IconButton extends LitElement {
         class=${classMap({
           'icon-button': true,
           'icon-button--disabled': !isLink && this.disabled,
-          'icon-button--focused': this.hasFocus
+          'icon-button--focused': this.hasFocus,
         })}
         ?disabled=${ifDefined(isLink ? undefined : this.disabled)}
         type=${ifDefined(isLink ? undefined : 'button')}

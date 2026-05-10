@@ -23,7 +23,7 @@ function createElement(attrs = '', content = 'Option'): T1OptionEl {
 }
 
 afterEach(() => {
-  document.body.querySelectorAll('t1-option').forEach(el => el.remove());
+  document.body.querySelectorAll('t1-option').forEach((el) => el.remove());
 });
 
 describe('t1-option', () => {

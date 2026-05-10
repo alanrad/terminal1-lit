@@ -1,5 +1,5 @@
-import { registerTranslation } from '../utilities/localize.js';
-import type { Translation } from '../utilities/localize.js';
+import { registerTranslation } from '../src/utils/localize';
+import type { Translation } from '../src/utils/localize';
 
 const translation: Translation = {
   $code: 'uk',
@@ -17,7 +17,7 @@ const translation: Translation = {
   hidePassword: 'Приховати пароль',
   loading: 'Завантаження',
   nextSlide: 'Наступний слайд',
-  numOptionsSelected: num => {
+  numOptionsSelected: (num) => {
     const n = num % 10;
     if (n === 0) return 'не вибрано варіантів';
     if (n === 1) return 'вибрано 1 варіант';
@@ -32,8 +32,8 @@ const translation: Translation = {
   scrollToStart: 'Прокрутити на початок',
   selectAColorFromTheScreen: 'Виберіть колір на екрані',
   showPassword: 'Показати пароль',
-  slideNum: slide => `Слайд ${slide}`,
-  toggleColorFormat: 'Переключити кольорову модель'
+  slideNum: (slide) => `Слайд ${slide}`,
+  toggleColorFormat: 'Переключити кольорову модель',
 };
 
 registerTranslation(translation);

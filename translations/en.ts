@@ -1,5 +1,5 @@
-import { registerTranslation } from '@shoelace-style/localize';
-import type { Translation } from '../utilities/localize.js';
+import { registerTranslation } from '../src/utils/localize';
+import type { Translation } from '../src/utils/localize';
 
 const translation: Translation = {
   $code: 'en',
@@ -17,7 +17,7 @@ const translation: Translation = {
   hidePassword: 'Hide password',
   loading: 'Loading',
   nextSlide: 'Next slide',
-  numOptionsSelected: num => {
+  numOptionsSelected: (num) => {
     if (num === 0) return 'No options selected';
     if (num === 1) return '1 option selected';
     return `${num} options selected`;
@@ -30,8 +30,8 @@ const translation: Translation = {
   scrollToStart: 'Scroll to start',
   selectAColorFromTheScreen: 'Select a color from the screen',
   showPassword: 'Show password',
-  slideNum: slide => `Slide ${slide}`,
-  toggleColorFormat: 'Toggle color format'
+  slideNum: (slide) => `Slide ${slide}`,
+  toggleColorFormat: 'Toggle color format',
 };
 
 registerTranslation(translation);

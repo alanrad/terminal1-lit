@@ -10,7 +10,15 @@ type T1AvatarEl = HTMLElement & {
   shape: 'circle' | 'square' | 'rounded';
 };
 
-function createElement(props: Partial<{ image: string; label: string; initials: string; loading: string; shape: string }> = {}): T1AvatarEl {
+function createElement(
+  props: Partial<{
+    image: string;
+    label: string;
+    initials: string;
+    loading: string;
+    shape: string;
+  }> = {},
+): T1AvatarEl {
   const el = document.createElement('t1-avatar') as unknown as T1AvatarEl;
   Object.entries(props).forEach(([key, val]) => el.setAttribute(key, val));
   document.body.appendChild(el);
@@ -18,7 +26,7 @@ function createElement(props: Partial<{ image: string; label: string; initials: 
 }
 
 afterEach(() => {
-  document.body.querySelectorAll('t1-avatar').forEach(el => el.remove());
+  document.body.querySelectorAll('t1-avatar').forEach((el) => el.remove());
 });
 
 describe('t1-avatar', () => {
@@ -49,7 +57,7 @@ describe('t1-avatar', () => {
   });
 
   describe('shape attribute', () => {
-    (['circle', 'square', 'rounded'] as const).forEach(shape => {
+    (['circle', 'square', 'rounded'] as const).forEach((shape) => {
       it(`applies avatar--${shape} class for shape="${shape}"`, async () => {
         const el = createElement({ shape, label: 'Avatar' });
         await el.updateComplete;
@@ -68,7 +76,7 @@ describe('t1-avatar', () => {
 
       const initials = el.shadowRoot!.querySelector('[part~="initials"]');
       expect(initials).not.toBeNull();
-      expect(initials!.textContent).toBe('AB');
+      expect(initials!.textContent?.trim()).toBe('AB');
     });
 
     it('does not render icon when initials are set', async () => {

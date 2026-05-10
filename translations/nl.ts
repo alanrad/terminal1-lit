@@ -1,5 +1,5 @@
-import { registerTranslation } from '../utilities/localize.js';
-import type { Translation } from '../utilities/localize.js';
+import { registerTranslation } from '../src/utils/localize';
+import type { Translation } from '../src/utils/localize';
 
 const translation: Translation = {
   $code: 'nl',
@@ -17,7 +17,7 @@ const translation: Translation = {
   hidePassword: 'Verberg wachtwoord',
   loading: 'Bezig met laden',
   nextSlide: 'Volgende dia',
-  numOptionsSelected: num => {
+  numOptionsSelected: (num) => {
     if (num === 0) return 'Geen optie geselecteerd';
     if (num === 1) return '1 optie geselecteerd';
     return `${num} opties geselecteerd`;
@@ -30,8 +30,8 @@ const translation: Translation = {
   scrollToStart: 'Scroll naar begin',
   selectAColorFromTheScreen: 'Selecteer een kleur van het scherm',
   showPassword: 'Laat wachtwoord zien',
-  slideNum: slide => `Schuif ${slide}`,
-  toggleColorFormat: 'Wissel kleurnotatie'
+  slideNum: (slide) => `Schuif ${slide}`,
+  toggleColorFormat: 'Wissel kleurnotatie',
 };
 
 registerTranslation(translation);

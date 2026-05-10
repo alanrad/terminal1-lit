@@ -26,7 +26,7 @@ function createElement(): T1FormatDateEl {
 }
 
 afterEach(() => {
-  document.body.querySelectorAll('t1-format-date').forEach(el => el.remove());
+  document.body.querySelectorAll('t1-format-date').forEach((el) => el.remove());
 });
 
 function text(el: T1FormatDateEl): string {
@@ -56,7 +56,7 @@ describe('t1-format-date', () => {
   });
 
   describe('weekday', () => {
-    (['narrow', 'short', 'long'] as const).forEach(fmt => {
+    (['narrow', 'short', 'long'] as const).forEach((fmt) => {
       it(`formats weekday as "${fmt}"`, async () => {
         const el = createElement();
         el.date = JAN_1;
@@ -69,7 +69,7 @@ describe('t1-format-date', () => {
   });
 
   describe('year', () => {
-    (['numeric', '2-digit'] as const).forEach(fmt => {
+    (['numeric', '2-digit'] as const).forEach((fmt) => {
       it(`formats year as "${fmt}"`, async () => {
         const el = createElement();
         el.date = JAN_1;
@@ -82,7 +82,7 @@ describe('t1-format-date', () => {
   });
 
   describe('month', () => {
-    (['numeric', '2-digit', 'narrow', 'short', 'long'] as const).forEach(fmt => {
+    (['numeric', '2-digit', 'narrow', 'short', 'long'] as const).forEach((fmt) => {
       it(`formats month as "${fmt}"`, async () => {
         const el = createElement();
         el.date = JAN_1;
@@ -95,7 +95,7 @@ describe('t1-format-date', () => {
   });
 
   describe('day', () => {
-    (['numeric', '2-digit'] as const).forEach(fmt => {
+    (['numeric', '2-digit'] as const).forEach((fmt) => {
       it(`formats day as "${fmt}"`, async () => {
         const el = createElement();
         el.date = JAN_1;
@@ -108,7 +108,7 @@ describe('t1-format-date', () => {
   });
 
   describe('hour', () => {
-    (['numeric', '2-digit'] as const).forEach(fmt => {
+    (['numeric', '2-digit'] as const).forEach((fmt) => {
       it(`formats hour as "${fmt}"`, async () => {
         const el = createElement();
         el.date = JAN_1;
@@ -121,7 +121,7 @@ describe('t1-format-date', () => {
   });
 
   describe('minute', () => {
-    (['numeric', '2-digit'] as const).forEach(fmt => {
+    (['numeric', '2-digit'] as const).forEach((fmt) => {
       it(`formats minute as "${fmt}"`, async () => {
         const el = createElement();
         el.date = JAN_1;
@@ -134,7 +134,7 @@ describe('t1-format-date', () => {
   });
 
   describe('second', () => {
-    (['numeric', '2-digit'] as const).forEach(fmt => {
+    (['numeric', '2-digit'] as const).forEach((fmt) => {
       it(`formats second as "${fmt}"`, async () => {
         const el = createElement();
         el.date = JAN_1;
@@ -147,7 +147,7 @@ describe('t1-format-date', () => {
   });
 
   describe('hourFormat', () => {
-    (['auto', '12', '24'] as const).forEach(fmt => {
+    (['auto', '12', '24'] as const).forEach((fmt) => {
       it(`respects hourFormat="${fmt}"`, async () => {
         const el = createElement();
         el.date = JAN_1;

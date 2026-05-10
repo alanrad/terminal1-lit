@@ -1,62 +1,71 @@
 {
-	"name": "terminal-1-lit-web-components",
-	"version": "0.1.0",
-	"description": "Web component widget library built with Lit + Vite",
-	"type": "module",
-	"main": "dist/sdk/loader.js",
-	"module": "dist/sdk/loader.js",
-	"types": "dist/types/index.d.ts",
-	"exports": {
-		".": {
-			"import": "./dist/sdk/loader.js",
-			"types": "./dist/types/index.d.ts"
-		},
-		"./widgets/*": {
-			"import": "./dist/widgets/*.js"
-		}
-	},
-	"files": [
-		"dist"
-	],
-	"scripts": {
-		"dev": "vite",
-		"build": "tsc --noEmit && vite build",
-		"build:watch": "vite build --watch",
-		"preview": "vite preview",
-		"test": "vitest run",
-		"test:watch": "vitest",
-		"test:ui": "vitest --ui",
-		"test:coverage": "vitest run --coverage",
-		"type-check": "tsc --noEmit",
-		"release": "npm run build && npm publish --access public"
-	},
-	"keywords": [
-		"web-components",
-		"lit",
-		"widgets",
-		"shadow-dom",
-		"cdn"
-	],
-	"author": "Alan Rad",
-	"license": "MIT",
-	"dependencies": {
-		"@floating-ui/dom": "^1.7.6",
-		"@lit/reactive-element": "^2.1.2",
-		"lit": "^3.3.2"
-	},
-	"devDependencies": {
-		"@open-wc/testing": "^4.0.0",
-		"@vitest/ui": "^4.1.5",
-		"@web/test-runner": "^0.20.2",
-		"composed-offset-position": "^0.0.6",
-		"jsdom": "^29.1.1",
-		"typescript": "^6.0.3",
-		"vite": "^8.0.10",
-		"vite-plugin-dts": "^5.0.0",
-		"vitest": "^4.1.5"
-	},
-	"publishConfig": {
-		"access": "public",
-		"registry": "https://registry.npmjs.org/"
-	}
+  "name": "terminal-1-lit-web-components",
+  "version": "0.1.0",
+  "description": "Web component widget library built with Lit + Vite",
+  "type": "module",
+  "main": "dist/sdk/loader.js",
+  "module": "dist/sdk/loader.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/sdk/loader.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./widgets/*": {
+      "import": "./dist/widgets/*.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "build:watch": "vite build --watch",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "type-check": "tsc --project tsconfig.check.json",
+    "release": "npm run build && npm publish --access public",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,js,html,css,json,md}": "prettier --write"
+  },
+  "keywords": [
+    "web-components",
+    "lit",
+    "widgets",
+    "shadow-dom",
+    "cdn"
+  ],
+  "author": "Alan Rad",
+  "license": "MIT",
+  "dependencies": {
+    "@floating-ui/dom": "^1.7.6",
+    "@lit/reactive-element": "^2.1.2",
+    "lit": "^3.3.2"
+  },
+  "devDependencies": {
+    "@open-wc/testing": "^4.0.0",
+    "@vitest/ui": "^4.1.5",
+    "@web/test-runner": "^0.20.2",
+    "composed-offset-position": "^0.0.6",
+    "husky": "^9.1.7",
+    "jsdom": "^29.1.1",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.3",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.10",
+    "vite-plugin-dts": "^5.0.0",
+    "vitest": "^4.1.5"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
 }

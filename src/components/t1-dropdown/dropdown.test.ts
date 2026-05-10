@@ -33,7 +33,7 @@ function createDropdown(attrs = '', innerHTML = MENU_HTML): T1DropdownEl {
 }
 
 afterEach(() => {
-  document.body.querySelectorAll('div').forEach(el => el.remove());
+  document.body.querySelectorAll('div').forEach((el) => el.remove());
 });
 
 describe('t1-dropdown', () => {
@@ -104,7 +104,13 @@ describe('t1-dropdown', () => {
       await el.updateComplete;
 
       let shown = false;
-      el.addEventListener('t1-show', () => { shown = true; }, { once: true });
+      el.addEventListener(
+        't1-show',
+        () => {
+          shown = true;
+        },
+        { once: true },
+      );
       el.show();
       await el.updateComplete;
 
@@ -115,8 +121,8 @@ describe('t1-dropdown', () => {
       const el = createDropdown();
       await el.updateComplete;
 
-      const afterShowPromise = new Promise<void>(resolve =>
-        el.addEventListener('t1-after-show', () => resolve(), { once: true })
+      const afterShowPromise = new Promise<void>((resolve) =>
+        el.addEventListener('t1-after-show', () => resolve(), { once: true }),
       );
       el.show();
       await afterShowPromise;
@@ -164,7 +170,13 @@ describe('t1-dropdown', () => {
       await el.updateComplete;
 
       let hidden = false;
-      el.addEventListener('t1-hide', () => { hidden = true; }, { once: true });
+      el.addEventListener(
+        't1-hide',
+        () => {
+          hidden = true;
+        },
+        { once: true },
+      );
       el.hide();
       await el.updateComplete;
 
@@ -175,8 +187,8 @@ describe('t1-dropdown', () => {
       const el = createDropdown('open');
       await el.updateComplete;
 
-      const afterHidePromise = new Promise<void>(resolve =>
-        el.addEventListener('t1-after-hide', () => resolve(), { once: true })
+      const afterHidePromise = new Promise<void>((resolve) =>
+        el.addEventListener('t1-after-hide', () => resolve(), { once: true }),
       );
       el.hide();
       await afterHidePromise;
@@ -215,7 +227,9 @@ describe('t1-dropdown', () => {
       await el.updateComplete;
 
       const menu = el.querySelector('t1-menu')!;
-      menu.dispatchEvent(new CustomEvent('t1-select', { bubbles: true, composed: true, detail: { item: {} } }));
+      menu.dispatchEvent(
+        new CustomEvent('t1-select', { bubbles: true, composed: true, detail: { item: {} } }),
+      );
       await el.updateComplete;
 
       expect(el.open).toBe(false);
@@ -226,7 +240,9 @@ describe('t1-dropdown', () => {
       await el.updateComplete;
 
       const menu = el.querySelector('t1-menu')!;
-      menu.dispatchEvent(new CustomEvent('t1-select', { bubbles: true, composed: true, detail: { item: {} } }));
+      menu.dispatchEvent(
+        new CustomEvent('t1-select', { bubbles: true, composed: true, detail: { item: {} } }),
+      );
       await el.updateComplete;
 
       expect(el.open).toBe(true);

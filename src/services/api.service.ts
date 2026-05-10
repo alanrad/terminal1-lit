@@ -1,4 +1,4 @@
-import { apiFetch, type FetchOptions } from "@utils/fetch";
+import { apiFetch, type FetchOptions } from '@utils/fetch';
 
 export interface WidgetConfig {
   baseUrl?: string;
@@ -15,7 +15,7 @@ export abstract class ApiService {
   private readonly apiKey?: string;
   private readonly timeoutMs?: number;
 
-  constructor({ baseUrl = "", apiKey, timeoutMs }: WidgetConfig = {}) {
+  constructor({ baseUrl = '', apiKey, timeoutMs }: WidgetConfig = {}) {
     this.baseUrl = baseUrl;
     this.apiKey = apiKey;
     this.timeoutMs = timeoutMs;
@@ -23,7 +23,7 @@ export abstract class ApiService {
 
   protected fetch<T>(path: string, opts: FetchOptions = {}): Promise<T> {
     const headers: Record<string, string> = {};
-    if (this.apiKey) headers["Authorization"] = `Bearer ${this.apiKey}`;
+    if (this.apiKey) headers['Authorization'] = `Bearer ${this.apiKey}`;
     return apiFetch<T>(path, {
       baseUrl: this.baseUrl,
       timeoutMs: this.timeoutMs,

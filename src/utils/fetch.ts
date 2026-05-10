@@ -1,10 +1,10 @@
 export class HttpError extends Error {
   constructor(
     public readonly status: number,
-    message: string
+    message: string,
   ) {
     super(message);
-    this.name = "HttpError";
+    this.name = 'HttpError';
   }
 }
 
@@ -21,21 +21,19 @@ export interface FetchOptions extends RequestInit {
  */
 export async function apiFetch<T = unknown>(
   path: string,
-  { baseUrl = "", timeoutMs, ...init }: FetchOptions = {}
+  { baseUrl = '', timeoutMs, ...init }: FetchOptions = {},
 ): Promise<T> {
   const url = baseUrl ? `${baseUrl}${path}` : path;
 
   const controller = timeoutMs ? new AbortController() : null;
-  const timerId = controller
-    ? setTimeout(() => controller.abort(), timeoutMs)
-    : null;
+  const timerId = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
 
   try {
     const res = await fetch(url, {
       ...init,
       signal: controller?.signal ?? init.signal,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         ...init.headers,
       },
     });

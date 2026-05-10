@@ -7,9 +7,17 @@ import styles from './alert.styles';
 import type { CSSResultGroup } from 'lit';
 
 const componentStyles = css`
-  :host { box-sizing: border-box; }
-  :host *, :host *::before, :host *::after { box-sizing: inherit; }
-  [hidden] { display: none !important; }
+  :host {
+    box-sizing: border-box;
+  }
+  :host *,
+  :host *::before,
+  :host *::after {
+    box-sizing: inherit;
+  }
+  [hidden] {
+    display: none !important;
+  }
 `;
 
 const CLOSE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>`;
@@ -18,7 +26,6 @@ export default class T1Alert extends LitElement {
   static styles: CSSResultGroup = [componentStyles, styles];
 
   private autoHideTimeout: ReturnType<typeof setTimeout> | undefined;
-  private remainingTime = Infinity;
   private readonly hasSlotController = new HasSlotController(this, 'icon');
 
   private static toastStackEl: HTMLDivElement | null = null;
@@ -41,7 +48,8 @@ export default class T1Alert extends LitElement {
   @property({ type: Boolean, reflect: true }) closable = false;
 
   /** The alert's theme variant. */
-  @property({ reflect: true }) variant: 'primary' | 'success' | 'neutral' | 'warning' | 'danger' = 'primary';
+  @property({ reflect: true }) variant: 'primary' | 'success' | 'neutral' | 'warning' | 'danger' =
+    'primary';
 
   /**
    * Milliseconds before the alert closes itself. Defaults to `Infinity` (never auto-closes).
@@ -56,7 +64,6 @@ export default class T1Alert extends LitElement {
   private startAutoHide() {
     clearTimeout(this.autoHideTimeout);
     if (this.open && this.duration < Infinity) {
-      this.remainingTime = this.duration;
       this.autoHideTimeout = setTimeout(() => this.hide(), this.duration);
     }
   }
@@ -67,7 +74,6 @@ export default class T1Alert extends LitElement {
 
   private resumeAutoHide() {
     if (this.open && this.duration < Infinity) {
-      this.remainingTime = this.duration;
       this.autoHideTimeout = setTimeout(() => this.hide(), this.duration);
     }
   }
@@ -101,7 +107,7 @@ export default class T1Alert extends LitElement {
   /** Shows the alert. */
   show(): Promise<void> {
     if (this.open) return Promise.resolve();
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.open = true;
       this.addEventListener('t1-after-show', () => resolve(), { once: true });
     });
@@ -110,7 +116,7 @@ export default class T1Alert extends LitElement {
   /** Hides the alert. */
   hide(): Promise<void> {
     if (!this.open) return Promise.resolve();
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.open = false;
       this.addEventListener('t1-after-hide', () => resolve(), { once: true });
     });
@@ -121,7 +127,7 @@ export default class T1Alert extends LitElement {
    * DOM once hidden. Reuse the element reference to toast again.
    */
   async toast(): Promise<void> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       if (T1Alert.toastStack.parentElement === null) {
         document.body.append(T1Alert.toastStack);
       }
@@ -142,7 +148,7 @@ export default class T1Alert extends LitElement {
             T1Alert.toastStackEl = null;
           }
         },
-        { once: true }
+        { once: true },
       );
     });
   }

@@ -1,4 +1,4 @@
-import { css } from "lit";
+import { css } from 'lit';
 
 /** Shared base styles injected into every widget's Shadow DOM. */
 export const baseStyles = css`

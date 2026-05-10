@@ -35,12 +35,12 @@ function createSelect(attrs = '', innerHTML = OPTIONS_HTML): T1SelectEl {
 
 async function settled(el: T1SelectEl) {
   await el.updateComplete;
-  await new Promise(r => requestAnimationFrame(r));
+  await new Promise((r) => requestAnimationFrame(r));
   await el.updateComplete;
 }
 
 afterEach(() => {
-  document.body.querySelectorAll('div').forEach(el => el.remove());
+  document.body.querySelectorAll('div').forEach((el) => el.remove());
 });
 
 describe('t1-select', () => {
@@ -101,7 +101,13 @@ describe('t1-select', () => {
       await settled(el);
 
       let shown = false;
-      el.addEventListener('t1-show', () => { shown = true; }, { once: true });
+      el.addEventListener(
+        't1-show',
+        () => {
+          shown = true;
+        },
+        { once: true },
+      );
       el.show();
       await el.updateComplete;
 
@@ -113,7 +119,13 @@ describe('t1-select', () => {
       await settled(el);
 
       let hidden = false;
-      el.addEventListener('t1-hide', () => { hidden = true; }, { once: true });
+      el.addEventListener(
+        't1-hide',
+        () => {
+          hidden = true;
+        },
+        { once: true },
+      );
       el.hide();
       await el.updateComplete;
 
@@ -161,7 +173,13 @@ describe('t1-select', () => {
       await settled(el);
 
       let changed = false;
-      el.addEventListener('t1-change', () => { changed = true; }, { once: true });
+      el.addEventListener(
+        't1-change',
+        () => {
+          changed = true;
+        },
+        { once: true },
+      );
 
       const listbox = el.shadowRoot!.querySelector('[part~="listbox"]')!;
       const opt1 = el.querySelector('[value="opt1"]')!;
@@ -177,7 +195,9 @@ describe('t1-select', () => {
       await settled(el);
 
       let changed = false;
-      el.addEventListener('t1-change', () => { changed = true; });
+      el.addEventListener('t1-change', () => {
+        changed = true;
+      });
 
       const opt4 = el.querySelector('[value="opt4"]')!;
       opt4.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
@@ -247,7 +267,13 @@ describe('t1-select', () => {
       await settled(el);
 
       let cleared = false;
-      el.addEventListener('t1-clear', () => { cleared = true; }, { once: true });
+      el.addEventListener(
+        't1-clear',
+        () => {
+          cleared = true;
+        },
+        { once: true },
+      );
 
       const clearBtn = el.shadowRoot!.querySelector<HTMLElement>('[part~="clear-button"]')!;
       clearBtn.click();
@@ -341,7 +367,13 @@ describe('t1-select', () => {
       await settled(el);
 
       let focused = false;
-      el.addEventListener('t1-focus', () => { focused = true; }, { once: true });
+      el.addEventListener(
+        't1-focus',
+        () => {
+          focused = true;
+        },
+        { once: true },
+      );
 
       const combobox = el.shadowRoot!.querySelector('[part~="combobox"]')!;
       combobox.dispatchEvent(new FocusEvent('focus', { bubbles: true }));
@@ -355,7 +387,13 @@ describe('t1-select', () => {
       await settled(el);
 
       let blurred = false;
-      el.addEventListener('t1-blur', () => { blurred = true; }, { once: true });
+      el.addEventListener(
+        't1-blur',
+        () => {
+          blurred = true;
+        },
+        { once: true },
+      );
 
       const combobox = el.shadowRoot!.querySelector('[part~="combobox"]')!;
       combobox.dispatchEvent(new FocusEvent('blur', { bubbles: true }));

@@ -6,9 +6,17 @@ import styles from './option.styles';
 import type { CSSResultGroup } from 'lit';
 
 const componentStyles = css`
-  :host { box-sizing: border-box; }
-  :host *, :host *::before, :host *::after { box-sizing: inherit; }
-  [hidden] { display: none !important; }
+  :host {
+    box-sizing: border-box;
+  }
+  :host *,
+  :host *::before,
+  :host *::after {
+    box-sizing: inherit;
+  }
+  [hidden] {
+    display: none !important;
+  }
 `;
 
 export default class T1Option extends LitElement {
@@ -37,7 +45,9 @@ export default class T1Option extends LitElement {
   private handleDefaultSlotChange() {
     if (this.isInitialized) {
       customElements.whenDefined('t1-select').then(() => {
-        const controller = this.closest('t1-select') as (HTMLElement & { handleDefaultSlotChange?(): void }) | null;
+        const controller = this.closest('t1-select') as
+          | (HTMLElement & { handleDefaultSlotChange?(): void })
+          | null;
         if (controller?.handleDefaultSlotChange) {
           controller.handleDefaultSlotChange();
         }
@@ -71,7 +81,10 @@ export default class T1Option extends LitElement {
       this.value = String(this.value);
     }
     if (this.value.includes(' ')) {
-      console.error('Option values cannot include a space. All spaces have been replaced with underscores.', this);
+      console.error(
+        'Option values cannot include a space. All spaces have been replaced with underscores.',
+        this,
+      );
       this.value = this.value.replace(/ /g, '_');
     }
   }
@@ -80,7 +93,7 @@ export default class T1Option extends LitElement {
   getTextLabel() {
     const nodes = this.childNodes;
     let label = '';
-    [...nodes].forEach(node => {
+    [...nodes].forEach((node) => {
       if (node.nodeType === Node.ELEMENT_NODE) {
         if (!(node as HTMLElement).hasAttribute('slot')) {
           label += (node as HTMLElement).textContent;

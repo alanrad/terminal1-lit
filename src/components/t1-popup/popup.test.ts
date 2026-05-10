@@ -28,7 +28,7 @@ function createElement(attrs = ''): T1PopupEl {
 }
 
 afterEach(() => {
-  document.body.querySelectorAll('t1-popup').forEach(el => el.remove());
+  document.body.querySelectorAll('t1-popup').forEach((el) => el.remove());
 });
 
 describe('t1-popup', () => {
@@ -147,7 +147,13 @@ describe('t1-popup', () => {
       await el.updateComplete;
 
       let repositioned = false;
-      el.addEventListener('t1-reposition', () => { repositioned = true; }, { once: true });
+      el.addEventListener(
+        't1-reposition',
+        () => {
+          repositioned = true;
+        },
+        { once: true },
+      );
       el.reposition();
 
       anchor.remove();

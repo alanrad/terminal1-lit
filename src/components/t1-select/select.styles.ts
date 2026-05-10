@@ -173,7 +173,8 @@ export default css`
     font-size: var(--t1-font-size-medium);
     font-weight: var(--t1-font-weight-normal);
     background-color: var(--t1-panel-background-color, var(--t1-color-neutral-0));
-    border: solid var(--t1-panel-border-width, 1px) var(--t1-panel-border-color, var(--t1-color-neutral-200));
+    border: solid var(--t1-panel-border-width, 1px)
+      var(--t1-panel-border-color, var(--t1-color-neutral-200));
     border-radius: var(--t1-border-radius-medium);
     padding-block: var(--t1-spacing-x-small);
     overflow-y: auto;

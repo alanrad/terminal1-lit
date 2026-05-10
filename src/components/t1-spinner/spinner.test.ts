@@ -12,7 +12,7 @@ function createElement(): T1SpinnerEl {
 }
 
 afterEach(() => {
-  document.body.querySelectorAll('t1-spinner').forEach(el => el.remove());
+  document.body.querySelectorAll('t1-spinner').forEach((el) => el.remove());
 });
 
 describe('t1-spinner', () => {

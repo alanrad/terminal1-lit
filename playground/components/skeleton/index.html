@@ -7,19 +7,84 @@
     <link rel="stylesheet" href="/src/styles/theme.css" />
     <script type="module" src="/src/components/t1-skeleton/index.ts"></script>
     <style>
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-      body { font-family: var(--t1-font-sans); background: var(--t1-color-neutral-50); color: var(--t1-color-neutral-900); min-height: 100vh; }
-      .topbar { background: var(--t1-color-neutral-0); border-bottom: 1px solid var(--t1-color-neutral-200); padding: var(--t1-spacing-medium) var(--t1-spacing-3x-large); display: flex; align-items: center; gap: var(--t1-spacing-medium); }
-      .topbar a { font-size: var(--t1-font-size-small); color: var(--t1-color-primary-600); text-decoration: none; }
-      .topbar a:hover { text-decoration: underline; }
-      .topbar-sep { color: var(--t1-color-neutral-300); }
-      .topbar h1 { font-size: var(--t1-font-size-large); font-weight: var(--t1-font-weight-semibold); }
-      .content { max-width: 800px; margin: 0 auto; padding: var(--t1-spacing-3x-large) var(--t1-spacing-large); display: flex; flex-direction: column; gap: var(--t1-spacing-3x-large); }
-      .section { display: flex; flex-direction: column; gap: var(--t1-spacing-medium); }
-      .section-title { font-size: var(--t1-font-size-large); font-weight: var(--t1-font-weight-semibold); color: var(--t1-color-neutral-900); padding-bottom: var(--t1-spacing-x-small); border-bottom: 1px solid var(--t1-color-neutral-200); }
-      .section-desc { font-size: var(--t1-font-size-small); color: var(--t1-color-neutral-500); line-height: var(--t1-line-height-dense); }
-      .demo-box { background: var(--t1-color-neutral-0); border: 1px solid var(--t1-color-neutral-200); border-radius: var(--t1-border-radius-large); padding: var(--t1-spacing-large); display: flex; flex-direction: column; gap: var(--t1-spacing-medium); }
-      code { font-family: var(--t1-font-mono); font-size: var(--t1-font-size-x-small); background: var(--t1-color-neutral-100); padding: 0.1em 0.4em; border-radius: var(--t1-border-radius-small); color: var(--t1-color-neutral-700); }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: var(--t1-font-sans);
+        background: var(--t1-color-neutral-50);
+        color: var(--t1-color-neutral-900);
+        min-height: 100vh;
+      }
+      .topbar {
+        background: var(--t1-color-neutral-0);
+        border-bottom: 1px solid var(--t1-color-neutral-200);
+        padding: var(--t1-spacing-medium) var(--t1-spacing-3x-large);
+        display: flex;
+        align-items: center;
+        gap: var(--t1-spacing-medium);
+      }
+      .topbar a {
+        font-size: var(--t1-font-size-small);
+        color: var(--t1-color-primary-600);
+        text-decoration: none;
+      }
+      .topbar a:hover {
+        text-decoration: underline;
+      }
+      .topbar-sep {
+        color: var(--t1-color-neutral-300);
+      }
+      .topbar h1 {
+        font-size: var(--t1-font-size-large);
+        font-weight: var(--t1-font-weight-semibold);
+      }
+      .content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--t1-spacing-3x-large) var(--t1-spacing-large);
+        display: flex;
+        flex-direction: column;
+        gap: var(--t1-spacing-3x-large);
+      }
+      .section {
+        display: flex;
+        flex-direction: column;
+        gap: var(--t1-spacing-medium);
+      }
+      .section-title {
+        font-size: var(--t1-font-size-large);
+        font-weight: var(--t1-font-weight-semibold);
+        color: var(--t1-color-neutral-900);
+        padding-bottom: var(--t1-spacing-x-small);
+        border-bottom: 1px solid var(--t1-color-neutral-200);
+      }
+      .section-desc {
+        font-size: var(--t1-font-size-small);
+        color: var(--t1-color-neutral-500);
+        line-height: var(--t1-line-height-dense);
+      }
+      .demo-box {
+        background: var(--t1-color-neutral-0);
+        border: 1px solid var(--t1-color-neutral-200);
+        border-radius: var(--t1-border-radius-large);
+        padding: var(--t1-spacing-large);
+        display: flex;
+        flex-direction: column;
+        gap: var(--t1-spacing-medium);
+      }
+      code {
+        font-family: var(--t1-font-mono);
+        font-size: var(--t1-font-size-x-small);
+        background: var(--t1-color-neutral-100);
+        padding: 0.1em 0.4em;
+        border-radius: var(--t1-border-radius-small);
+        color: var(--t1-color-neutral-700);
+      }
     </style>
   </head>
   <body>
@@ -32,33 +97,45 @@
     <main class="content">
       <section class="section">
         <h2 class="section-title">Overview</h2>
-        <p class="section-desc">Skeletons are used to provide a visual representation of where content will eventually be drawn during asynchronous operations.</p>
+        <p class="section-desc">
+          Skeletons are used to provide a visual representation of where content will eventually be
+          drawn during asynchronous operations.
+        </p>
         <div class="demo-box">
-          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
-            <t1-skeleton style="width: 3rem; height: 3rem; flex-shrink: 0;"></t1-skeleton>
-            <t1-skeleton style="flex: 1;"></t1-skeleton>
+          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem">
+            <t1-skeleton style="width: 3rem; height: 3rem; flex-shrink: 0"></t1-skeleton>
+            <t1-skeleton style="flex: 1"></t1-skeleton>
           </div>
-          <t1-skeleton style="width: 95%;"></t1-skeleton>
-          <t1-skeleton style="width: 80%;"></t1-skeleton>
-          <t1-skeleton style="width: 60%;"></t1-skeleton>
+          <t1-skeleton style="width: 95%"></t1-skeleton>
+          <t1-skeleton style="width: 80%"></t1-skeleton>
+          <t1-skeleton style="width: 60%"></t1-skeleton>
         </div>
       </section>
 
       <section class="section">
         <h2 class="section-title">Effects</h2>
-        <p class="section-desc">There are two built-in effects: <code>sheen</code> and <code>pulse</code>. The default is <code>none</code>, which is static.</p>
-        <div class="demo-box" style="font-size: var(--t1-font-size-small);">
+        <p class="section-desc">
+          There are two built-in effects: <code>sheen</code> and <code>pulse</code>. The default is
+          <code>none</code>, which is static.
+        </p>
+        <div class="demo-box" style="font-size: var(--t1-font-size-small)">
           <div>
             <t1-skeleton effect="none"></t1-skeleton>
-            <span style="display: block; margin-top: 0.25rem; color: var(--t1-color-neutral-500);">None (default)</span>
+            <span style="display: block; margin-top: 0.25rem; color: var(--t1-color-neutral-500)"
+              >None (default)</span
+            >
           </div>
           <div>
             <t1-skeleton effect="sheen"></t1-skeleton>
-            <span style="display: block; margin-top: 0.25rem; color: var(--t1-color-neutral-500);">Sheen</span>
+            <span style="display: block; margin-top: 0.25rem; color: var(--t1-color-neutral-500)"
+              >Sheen</span
+            >
           </div>
           <div>
             <t1-skeleton effect="pulse"></t1-skeleton>
-            <span style="display: block; margin-top: 0.25rem; color: var(--t1-color-neutral-500);">Pulse</span>
+            <span style="display: block; margin-top: 0.25rem; color: var(--t1-color-neutral-500)"
+              >Pulse</span
+            >
           </div>
         </div>
       </section>
@@ -68,46 +145,93 @@
         <p class="section-desc">Use multiple skeletons to simulate paragraphs of text.</p>
         <div class="demo-box">
           <t1-skeleton effect="sheen"></t1-skeleton>
-          <t1-skeleton effect="sheen" style="width: 95%;"></t1-skeleton>
+          <t1-skeleton effect="sheen" style="width: 95%"></t1-skeleton>
           <t1-skeleton effect="sheen"></t1-skeleton>
-          <t1-skeleton effect="sheen" style="width: 90%;"></t1-skeleton>
-          <t1-skeleton effect="sheen" style="width: 50%;"></t1-skeleton>
+          <t1-skeleton effect="sheen" style="width: 90%"></t1-skeleton>
+          <t1-skeleton effect="sheen" style="width: 50%"></t1-skeleton>
         </div>
       </section>
 
       <section class="section">
         <h2 class="section-title">Avatars</h2>
-        <p class="section-desc">Set equal width and height, then use <code>--border-radius</code> to make circle, rounded, or square avatar skeletons.</p>
-        <div class="demo-box" style="flex-direction: row; align-items: center;">
-          <t1-skeleton style="display: inline-block; width: 3rem; height: 3rem; --border-radius: 0;"></t1-skeleton>
-          <t1-skeleton style="display: inline-block; width: 3rem; height: 3rem; --border-radius: var(--t1-border-radius-medium);"></t1-skeleton>
-          <t1-skeleton style="display: inline-block; width: 3rem; height: 3rem; --border-radius: 50%;"></t1-skeleton>
+        <p class="section-desc">
+          Set equal width and height, then use <code>--border-radius</code> to make circle, rounded,
+          or square avatar skeletons.
+        </p>
+        <div class="demo-box" style="flex-direction: row; align-items: center">
+          <t1-skeleton
+            style="display: inline-block; width: 3rem; height: 3rem; --border-radius: 0"
+          ></t1-skeleton>
+          <t1-skeleton
+            style="
+              display: inline-block;
+              width: 3rem;
+              height: 3rem;
+              --border-radius: var(--t1-border-radius-medium);
+            "
+          ></t1-skeleton>
+          <t1-skeleton
+            style="display: inline-block; width: 3rem; height: 3rem; --border-radius: 50%"
+          ></t1-skeleton>
         </div>
       </section>
 
       <section class="section">
         <h2 class="section-title">Custom Shapes</h2>
-        <p class="section-desc">Apply <code>clip-path</code> to the <code>indicator</code> part for custom shapes.</p>
-        <div class="demo-box" style="flex-direction: row; align-items: center; flex-wrap: wrap; gap: 1rem;">
-          <t1-skeleton class="sk-square" style="display: inline-flex; width: 50px; height: 50px;"></t1-skeleton>
-          <t1-skeleton class="sk-circle" style="display: inline-flex; width: 50px; height: 50px;"></t1-skeleton>
-          <t1-skeleton class="sk-triangle" style="display: inline-flex; width: 50px; height: 50px;"></t1-skeleton>
-          <t1-skeleton class="sk-comment" style="display: inline-flex; width: 50px; height: 50px;"></t1-skeleton>
+        <p class="section-desc">
+          Apply <code>clip-path</code> to the <code>indicator</code> part for custom shapes.
+        </p>
+        <div
+          class="demo-box"
+          style="flex-direction: row; align-items: center; flex-wrap: wrap; gap: 1rem"
+        >
+          <t1-skeleton
+            class="sk-square"
+            style="display: inline-flex; width: 50px; height: 50px"
+          ></t1-skeleton>
+          <t1-skeleton
+            class="sk-circle"
+            style="display: inline-flex; width: 50px; height: 50px"
+          ></t1-skeleton>
+          <t1-skeleton
+            class="sk-triangle"
+            style="display: inline-flex; width: 50px; height: 50px"
+          ></t1-skeleton>
+          <t1-skeleton
+            class="sk-comment"
+            style="display: inline-flex; width: 50px; height: 50px"
+          ></t1-skeleton>
         </div>
         <style>
-          .sk-square::part(indicator) { --border-radius: var(--t1-border-radius-medium); }
-          .sk-circle::part(indicator) { --border-radius: 50%; }
-          .sk-triangle::part(indicator) { --border-radius: 0; clip-path: polygon(50% 0, 0 100%, 100% 100%); }
-          .sk-comment::part(indicator) { --border-radius: 0; clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%); }
+          .sk-square::part(indicator) {
+            --border-radius: var(--t1-border-radius-medium);
+          }
+          .sk-circle::part(indicator) {
+            --border-radius: 50%;
+          }
+          .sk-triangle::part(indicator) {
+            --border-radius: 0;
+            clip-path: polygon(50% 0, 0 100%, 100% 100%);
+          }
+          .sk-comment::part(indicator) {
+            --border-radius: 0;
+            clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%);
+          }
         </style>
       </section>
 
       <section class="section">
         <h2 class="section-title">Custom Colors</h2>
-        <p class="section-desc">Set the <code>--color</code> and <code>--sheen-color</code> custom properties to adjust the skeleton's color.</p>
+        <p class="section-desc">
+          Set the <code>--color</code> and <code>--sheen-color</code> custom properties to adjust
+          the skeleton's color.
+        </p>
         <div class="demo-box">
-          <t1-skeleton effect="sheen" style="--color: tomato; --sheen-color: #ffb094;"></t1-skeleton>
-          <t1-skeleton effect="sheen" style="--color: var(--t1-color-primary-200); --sheen-color: var(--t1-color-primary-100);"></t1-skeleton>
+          <t1-skeleton effect="sheen" style="--color: tomato; --sheen-color: #ffb094"></t1-skeleton>
+          <t1-skeleton
+            effect="sheen"
+            style="--color: var(--t1-color-primary-200); --sheen-color: var(--t1-color-primary-100)"
+          ></t1-skeleton>
         </div>
       </section>
     </main>

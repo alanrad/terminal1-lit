@@ -9,9 +9,17 @@ import type T1Popup from '@components/t1-popup/popup.component';
 import type T1Menu from '@components/t1-menu/menu.component';
 
 const componentStyles = css`
-  :host { box-sizing: border-box; }
-  :host *, :host *::before, :host *::after { box-sizing: inherit; }
-  [hidden] { display: none !important; }
+  :host {
+    box-sizing: border-box;
+  }
+  :host *,
+  :host *::before,
+  :host *::after {
+    box-sizing: inherit;
+  }
+  [hidden] {
+    display: none !important;
+  }
 `;
 
 export default class T1Dropdown extends LitElement {
@@ -51,7 +59,8 @@ export default class T1Dropdown extends LitElement {
   /**
    * By default, the dropdown is closed when an item is selected.
    */
-  @property({ attribute: 'stay-open-on-select', type: Boolean, reflect: true }) stayOpenOnSelect = false;
+  @property({ attribute: 'stay-open-on-select', type: Boolean, reflect: true }) stayOpenOnSelect =
+    false;
 
   /**
    * The dropdown will close when the user interacts outside of this element.
@@ -104,9 +113,9 @@ export default class T1Dropdown extends LitElement {
   }
 
   getMenu() {
-    return this.panel.assignedElements({ flatten: true }).find(el => el.tagName.toLowerCase() === 't1-menu') as
-      | T1Menu
-      | undefined;
+    return this.panel
+      .assignedElements({ flatten: true })
+      .find((el) => el.tagName.toLowerCase() === 't1-menu') as T1Menu | undefined;
   }
 
   private handleKeyDown = (event: KeyboardEvent) => {
@@ -221,9 +230,11 @@ export default class T1Dropdown extends LitElement {
     const assignedElements = this.trigger.assignedElements({ flatten: true }) as HTMLElement[];
 
     // Find the first focusable element
-    const accessibleTrigger = assignedElements.find(el => {
+    const accessibleTrigger = assignedElements.find((el) => {
       if (el.tabIndex >= 0) return true;
-      const focusable = el.querySelector<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      const focusable = el.querySelector<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
       return !!focusable;
     });
 
@@ -232,7 +243,8 @@ export default class T1Dropdown extends LitElement {
       let target: HTMLElement | null = null;
       const tagName = accessibleTrigger.tagName.toLowerCase();
       if (tagName === 't1-button' || tagName === 't1-icon-button') {
-        target = (accessibleTrigger as HTMLElement & { button?: HTMLElement }).button ?? accessibleTrigger;
+        target =
+          (accessibleTrigger as HTMLElement & { button?: HTMLElement }).button ?? accessibleTrigger;
       } else {
         target = accessibleTrigger;
       }
@@ -273,7 +285,11 @@ export default class T1Dropdown extends LitElement {
     this.panel.addEventListener('t1-select', this.handlePanelSelect);
     if ('CloseWatcher' in window) {
       this.closeWatcher?.destroy();
-      this.closeWatcher = new (window as unknown as { CloseWatcher: new () => { destroy(): void; onclose: (() => void) | null } }).CloseWatcher();
+      this.closeWatcher = new (
+        window as unknown as {
+          CloseWatcher: new () => { destroy(): void; onclose: (() => void) | null };
+        }
+      ).CloseWatcher();
       this.closeWatcher!.onclose = () => {
         this.hide();
         this.focusOnTrigger();
@@ -344,7 +360,7 @@ export default class T1Dropdown extends LitElement {
         sync=${ifDefined(this.sync ? this.sync : undefined)}
         class=${classMap({
           dropdown: true,
-          'dropdown--open': this.open
+          'dropdown--open': this.open,
         })}
       >
         <slot

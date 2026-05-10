@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach, vi, beforeEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import './index';
 
 type T1AlertEl = HTMLElement & {
@@ -12,7 +12,10 @@ type T1AlertEl = HTMLElement & {
   toast: () => Promise<void>;
 };
 
-function createElement(attrs: Record<string, string | boolean | number> = {}, content = 'Alert message'): T1AlertEl {
+function createElement(
+  attrs: Record<string, string | boolean | number> = {},
+  content = 'Alert message',
+): T1AlertEl {
   const el = document.createElement('t1-alert') as unknown as T1AlertEl;
   Object.entries(attrs).forEach(([k, v]) => {
     if (v === true) el.setAttribute(k, '');
@@ -24,8 +27,8 @@ function createElement(attrs: Record<string, string | boolean | number> = {}, co
 }
 
 afterEach(() => {
-  document.body.querySelectorAll('t1-alert').forEach(el => el.remove());
-  document.body.querySelectorAll('.t1-toast-stack').forEach(el => el.remove());
+  document.body.querySelectorAll('t1-alert').forEach((el) => el.remove());
+  document.body.querySelectorAll('.t1-toast-stack').forEach((el) => el.remove());
 });
 
 describe('t1-alert', () => {
@@ -130,7 +133,7 @@ describe('t1-alert', () => {
   });
 
   describe('variants', () => {
-    (['primary', 'success', 'neutral', 'warning', 'danger'] as const).forEach(variant => {
+    (['primary', 'success', 'neutral', 'warning', 'danger'] as const).forEach((variant) => {
       it(`applies alert--${variant} class for variant="${variant}"`, async () => {
         const el = createElement({ variant, open: true });
         await el.updateComplete;
@@ -213,7 +216,7 @@ describe('t1-alert', () => {
       const el = createElement();
       await el.updateComplete;
 
-      const afterShowPromise = new Promise<void>(resolve => {
+      const afterShowPromise = new Promise<void>((resolve) => {
         el.addEventListener('t1-after-show', () => resolve(), { once: true });
       });
 

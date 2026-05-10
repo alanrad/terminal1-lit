@@ -1,5 +1,5 @@
-import { registerTranslation } from '@shoelace-style/localize';
-import type { Translation } from '../utilities/localize.js';
+import { registerTranslation } from '../src/utils/localize';
+import type { Translation } from '../src/utils/localize';
 
 const translation: Translation = {
   $code: 'id',
@@ -17,7 +17,7 @@ const translation: Translation = {
   hidePassword: 'Sembunyikan sandi',
   loading: 'Memuat',
   nextSlide: 'Slide berikutnya',
-  numOptionsSelected: num => {
+  numOptionsSelected: (num) => {
     if (num === 0) return 'Tidak ada opsi yang dipilih';
     if (num === 1) return '1 opsi yang dipilih';
     return `${num} opsi yang dipilih`;
@@ -30,8 +30,8 @@ const translation: Translation = {
   scrollToStart: 'Gulir ke awal',
   selectAColorFromTheScreen: 'Pilih warna dari layar',
   showPassword: 'Tampilkan sandi',
-  slideNum: slide => `Slide ${slide}`,
-  toggleColorFormat: 'Beralih format warna'
+  slideNum: (slide) => `Slide ${slide}`,
+  toggleColorFormat: 'Beralih format warna',
 };
 
 registerTranslation(translation);

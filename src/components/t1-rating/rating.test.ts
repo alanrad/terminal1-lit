@@ -27,7 +27,7 @@ function createElement(attrs: Record<string, string | boolean> = {}): T1RatingEl
 }
 
 afterEach(() => {
-  document.body.querySelectorAll('t1-rating').forEach(el => el.remove());
+  document.body.querySelectorAll('t1-rating').forEach((el) => el.remove());
 });
 
 describe('t1-rating', () => {
@@ -84,7 +84,9 @@ describe('t1-rating', () => {
       const base = el.shadowRoot!.querySelector('[part~="base"]')!;
       expect(base.getAttribute('aria-valuemax')).toBe('10');
 
-      const symbols = el.shadowRoot!.querySelectorAll('.rating__symbol, .rating__partial-symbol-container');
+      const symbols = el.shadowRoot!.querySelectorAll(
+        '.rating__symbol, .rating__partial-symbol-container',
+      );
       expect(symbols.length).toBe(10);
     });
   });
@@ -213,7 +215,9 @@ describe('t1-rating', () => {
       await el.updateComplete;
 
       const symbols = el.shadowRoot!.querySelectorAll('.rating__symbol');
-      const activeSymbols = [...symbols].filter(s => s.classList.contains('rating__symbol--active'));
+      const activeSymbols = [...symbols].filter((s) =>
+        s.classList.contains('rating__symbol--active'),
+      );
       expect(activeSymbols.length).toBe(3);
     });
   });

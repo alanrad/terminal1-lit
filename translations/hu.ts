@@ -1,5 +1,5 @@
-import { registerTranslation } from '../utilities/localize.js';
-import type { Translation } from '../utilities/localize.js';
+import { registerTranslation } from '../src/utils/localize';
+import type { Translation } from '../src/utils/localize';
 
 const translation: Translation = {
   $code: 'hu',
@@ -17,7 +17,7 @@ const translation: Translation = {
   hidePassword: 'Jelszó elrejtése',
   loading: 'Betöltés',
   nextSlide: 'Következő dia',
-  numOptionsSelected: num => {
+  numOptionsSelected: (num) => {
     if (num === 0) return 'Nincsenek kiválasztva opciók';
     if (num === 1) return '1 lehetőség kiválasztva';
     return `${num} lehetőség kiválasztva`;
@@ -30,8 +30,8 @@ const translation: Translation = {
   scrollToStart: 'Görgessen az elejére',
   selectAColorFromTheScreen: 'Szín választása a képernyőről',
   showPassword: 'Jelszó megjelenítése',
-  slideNum: slide => `${slide}. dia`,
-  toggleColorFormat: 'Színformátum változtatása'
+  slideNum: (slide) => `${slide}. dia`,
+  toggleColorFormat: 'Színformátum változtatása',
 };
 
 registerTranslation(translation);

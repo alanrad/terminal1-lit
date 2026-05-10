@@ -6,9 +6,17 @@ import styles from './avatar.styles';
 import type { CSSResultGroup } from 'lit';
 
 const componentStyles = css`
-  :host { box-sizing: border-box; }
-  :host *, :host *::before, :host *::after { box-sizing: inherit; }
-  [hidden] { display: none !important; }
+  :host {
+    box-sizing: border-box;
+  }
+  :host *,
+  :host *::before,
+  :host *::after {
+    box-sizing: inherit;
+  }
+  [hidden] {
+    display: none !important;
+  }
 `;
 
 export default class T1Avatar extends LitElement {
@@ -56,13 +64,20 @@ export default class T1Avatar extends LitElement {
     let avatarWithoutImage = html``;
 
     if (this.initials) {
-      avatarWithoutImage = html`<div part="initials" class="avatar__initials">${this.initials}</div>`;
+      avatarWithoutImage = html`<div part="initials" class="avatar__initials">
+        ${this.initials}
+      </div>`;
     } else {
       avatarWithoutImage = html`
         <div part="icon" class="avatar__icon" aria-hidden="true">
           <slot name="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-              <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
             </svg>
           </slot>
         </div>

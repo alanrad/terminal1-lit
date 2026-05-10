@@ -13,7 +13,7 @@ function createElement(innerHTML = ''): T1CardEl {
 }
 
 afterEach(() => {
-  document.body.querySelectorAll('t1-card').forEach(el => el.remove());
+  document.body.querySelectorAll('t1-card').forEach((el) => el.remove());
 });
 
 describe('t1-card', () => {
@@ -112,7 +112,7 @@ describe('t1-card', () => {
     it('applies all modifier classes when all slots are filled', async () => {
       const src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
       const el = createElement(
-        `<img slot="image" src="${src}" alt="" /><div slot="header">H</div>Body<div slot="footer">F</div>`
+        `<img slot="image" src="${src}" alt="" /><div slot="header">H</div>Body<div slot="footer">F</div>`,
       );
       await el.updateComplete;
 

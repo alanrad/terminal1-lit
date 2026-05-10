@@ -21,7 +21,8 @@ export default css`
     line-height: var(--t1-line-height-normal);
     letter-spacing: var(--t1-letter-spacing-normal);
     color: var(--t1-color-neutral-700);
-    padding: var(--t1-spacing-x-small) var(--t1-spacing-medium) var(--t1-spacing-x-small) var(--t1-spacing-x-small);
+    padding: var(--t1-spacing-x-small) var(--t1-spacing-medium) var(--t1-spacing-x-small)
+      var(--t1-spacing-x-small);
     transition: var(--t1-transition-fast) fill;
     cursor: pointer;
   }

@@ -22,7 +22,7 @@ function createElement(attrs = '', content = 'Tag'): T1TagEl {
 }
 
 afterEach(() => {
-  document.body.querySelectorAll('t1-tag').forEach(el => el.remove());
+  document.body.querySelectorAll('t1-tag').forEach((el) => el.remove());
 });
 
 describe('t1-tag', () => {
@@ -55,7 +55,7 @@ describe('t1-tag', () => {
   });
 
   describe('variant attribute', () => {
-    (['primary', 'success', 'neutral', 'warning', 'danger', 'text'] as const).forEach(variant => {
+    (['primary', 'success', 'neutral', 'warning', 'danger', 'text'] as const).forEach((variant) => {
       it(`applies tag--${variant} class`, async () => {
         const el = createElement(`variant="${variant}"`);
         await el.updateComplete;
@@ -68,7 +68,7 @@ describe('t1-tag', () => {
   });
 
   describe('size attribute', () => {
-    (['small', 'medium', 'large'] as const).forEach(size => {
+    (['small', 'medium', 'large'] as const).forEach((size) => {
       it(`applies tag--${size} class`, async () => {
         const el = createElement(`size="${size}"`);
         await el.updateComplete;
@@ -110,7 +110,13 @@ describe('t1-tag', () => {
       await el.updateComplete;
 
       let removed = false;
-      el.addEventListener('t1-remove', () => { removed = true; }, { once: true });
+      el.addEventListener(
+        't1-remove',
+        () => {
+          removed = true;
+        },
+        { once: true },
+      );
 
       const removeBtn = el.shadowRoot!.querySelector<HTMLElement>('[part~="remove-button"]')!;
       removeBtn.click();

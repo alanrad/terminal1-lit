@@ -18,22 +18,36 @@ export default class T1FormatNumber extends LitElement {
   @property() currency = 'USD';
 
   /** How to display the currency. */
-  @property({ attribute: 'currency-display' }) currencyDisplay: 'symbol' | 'narrowSymbol' | 'code' | 'name' = 'symbol';
+  @property({ attribute: 'currency-display' }) currencyDisplay:
+    | 'symbol'
+    | 'narrowSymbol'
+    | 'code'
+    | 'name' = 'symbol';
 
   /** Minimum number of integer digits (1–21). */
-  @property({ attribute: 'minimum-integer-digits', type: Number }) minimumIntegerDigits: number | undefined;
+  @property({ attribute: 'minimum-integer-digits', type: Number }) minimumIntegerDigits:
+    | number
+    | undefined;
 
   /** Minimum number of fraction digits (0–20). */
-  @property({ attribute: 'minimum-fraction-digits', type: Number }) minimumFractionDigits: number | undefined;
+  @property({ attribute: 'minimum-fraction-digits', type: Number }) minimumFractionDigits:
+    | number
+    | undefined;
 
   /** Maximum number of fraction digits (0–20). */
-  @property({ attribute: 'maximum-fraction-digits', type: Number }) maximumFractionDigits: number | undefined;
+  @property({ attribute: 'maximum-fraction-digits', type: Number }) maximumFractionDigits:
+    | number
+    | undefined;
 
   /** Minimum number of significant digits (1–21). */
-  @property({ attribute: 'minimum-significant-digits', type: Number }) minimumSignificantDigits: number | undefined;
+  @property({ attribute: 'minimum-significant-digits', type: Number }) minimumSignificantDigits:
+    | number
+    | undefined;
 
   /** Maximum number of significant digits (1–21). */
-  @property({ attribute: 'maximum-significant-digits', type: Number }) maximumSignificantDigits: number | undefined;
+  @property({ attribute: 'maximum-significant-digits', type: Number }) maximumSignificantDigits:
+    | number
+    | undefined;
 
   render() {
     if (isNaN(this.value)) return '';

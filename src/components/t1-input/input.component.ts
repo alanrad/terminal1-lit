@@ -16,7 +16,7 @@ export default class T1Input extends LitElement {
   private _internals: ElementInternals | undefined = (() => {
     try {
       const i = this.attachInternals?.();
-      return (typeof i?.setFormValue === 'function') ? i : undefined;
+      return typeof i?.setFormValue === 'function' ? i : undefined;
     } catch {
       return undefined;
     }
@@ -90,7 +90,14 @@ export default class T1Input extends LitElement {
 
   @property() step: number | 'any' | undefined;
 
-  @property({ attribute: 'autocapitalize' }) inputAutocapitalize: 'off' | 'none' | 'on' | 'sentences' | 'words' | 'characters' | undefined;
+  @property({ attribute: 'autocapitalize' }) inputAutocapitalize:
+    | 'off'
+    | 'none'
+    | 'on'
+    | 'sentences'
+    | 'words'
+    | 'characters'
+    | undefined;
 
   @property({ attribute: 'autocorrect' }) inputAutocorrect: 'off' | 'on' | undefined;
 
@@ -98,7 +105,15 @@ export default class T1Input extends LitElement {
 
   @property({ type: Boolean }) inputAutofocus: boolean | undefined;
 
-  @property() enterkeyhint: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send' | undefined;
+  @property() enterkeyhint:
+    | 'enter'
+    | 'done'
+    | 'go'
+    | 'next'
+    | 'previous'
+    | 'search'
+    | 'send'
+    | undefined;
 
   @property({
     type: Boolean,
@@ -109,7 +124,16 @@ export default class T1Input extends LitElement {
   })
   spellcheck = true;
 
-  @property() inputmode: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url' | undefined;
+  @property() inputmode:
+    | 'none'
+    | 'text'
+    | 'decimal'
+    | 'numeric'
+    | 'tel'
+    | 'search'
+    | 'email'
+    | 'url'
+    | undefined;
 
   get valueAsDate() {
     this.__dateInput.type = this.type;
@@ -148,7 +172,7 @@ export default class T1Input extends LitElement {
         composed: true,
         cancelable: true,
         detail: detail ?? {},
-      })
+      }),
     );
   }
 
@@ -226,11 +250,7 @@ export default class T1Input extends LitElement {
     if (this.disabled) {
       this._internals?.setValidity({});
     } else {
-      this._internals?.setValidity(
-        this.input.validity,
-        this.input.validationMessage,
-        this.input
-      );
+      this._internals?.setValidity(this.input.validity, this.input.validationMessage, this.input);
     }
   }
 
@@ -254,7 +274,7 @@ export default class T1Input extends LitElement {
   setSelectionRange(
     selectionStart: number,
     selectionEnd: number,
-    selectionDirection: 'forward' | 'backward' | 'none' = 'none'
+    selectionDirection: 'forward' | 'backward' | 'none' = 'none',
   ) {
     this.input.setSelectionRange(selectionStart, selectionEnd, selectionDirection);
   }
@@ -263,7 +283,7 @@ export default class T1Input extends LitElement {
     replacement: string,
     start?: number,
     end?: number,
-    selectMode: 'select' | 'start' | 'end' | 'preserve' = 'preserve'
+    selectMode: 'select' | 'start' | 'end' | 'preserve' = 'preserve',
   ) {
     const selectionStart = start ?? this.input.selectionStart!;
     const selectionEnd = end ?? this.input.selectionEnd!;
@@ -314,7 +334,8 @@ export default class T1Input extends LitElement {
     const hasLabel = !!this.label;
     const hasHelpText = !!this.helpText;
     const hasClearIcon = this.clearable && !this.disabled && !this.readonly;
-    const isClearIconVisible = hasClearIcon && (typeof this.value === 'number' || this.value.length > 0);
+    const isClearIconVisible =
+      hasClearIcon && (typeof this.value === 'number' || this.value.length > 0);
 
     return html`
       <div
@@ -415,7 +436,9 @@ export default class T1Input extends LitElement {
                     part="password-toggle-button"
                     class="input__password-toggle"
                     type="button"
-                    aria-label=${this._localize.term(this.passwordVisible ? 'hidePassword' : 'showPassword')}
+                    aria-label=${this._localize.term(
+                      this.passwordVisible ? 'hidePassword' : 'showPassword',
+                    )}
                     @click=${this.handlePasswordToggle}
                     tabindex="-1"
                   >

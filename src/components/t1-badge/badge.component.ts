@@ -5,16 +5,25 @@ import styles from './badge.styles';
 import type { CSSResultGroup } from 'lit';
 
 const componentStyles = css`
-  :host { box-sizing: border-box; }
-  :host *, :host *::before, :host *::after { box-sizing: inherit; }
-  [hidden] { display: none !important; }
+  :host {
+    box-sizing: border-box;
+  }
+  :host *,
+  :host *::before,
+  :host *::after {
+    box-sizing: inherit;
+  }
+  [hidden] {
+    display: none !important;
+  }
 `;
 
 export default class T1Badge extends LitElement {
   static styles: CSSResultGroup = [componentStyles, styles];
 
   /** The badge's theme variant. */
-  @property({ reflect: true }) variant: 'primary' | 'success' | 'neutral' | 'warning' | 'danger' = 'primary';
+  @property({ reflect: true }) variant: 'primary' | 'success' | 'neutral' | 'warning' | 'danger' =
+    'primary';
 
   /** Draws a pill-style badge with rounded edges. */
   @property({ type: Boolean, reflect: true }) pill = false;
@@ -34,7 +43,7 @@ export default class T1Badge extends LitElement {
           'badge--warning': this.variant === 'warning',
           'badge--danger': this.variant === 'danger',
           'badge--pill': this.pill,
-          'badge--pulse': this.pulse
+          'badge--pulse': this.pulse,
         })}
         role="status"
       >

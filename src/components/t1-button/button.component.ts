@@ -10,9 +10,17 @@ import styles from './button.styles';
 import type { CSSResultGroup } from 'lit';
 
 const componentStyles = css`
-  :host { box-sizing: border-box; }
-  :host *, :host *::before, :host *::after { box-sizing: inherit; }
-  [hidden] { display: none !important; }
+  :host {
+    box-sizing: border-box;
+  }
+  :host *,
+  :host *::before,
+  :host *::after {
+    box-sizing: inherit;
+  }
+  [hidden] {
+    display: none !important;
+  }
 `;
 
 export default class T1Button extends LitElement {
@@ -27,7 +35,14 @@ export default class T1Button extends LitElement {
   @property() title = '';
 
   /** The button's theme variant. */
-  @property({ reflect: true }) variant: 'default' | 'primary' | 'success' | 'neutral' | 'warning' | 'danger' | 'text' = 'default';
+  @property({ reflect: true }) variant:
+    | 'default'
+    | 'primary'
+    | 'success'
+    | 'neutral'
+    | 'warning'
+    | 'danger'
+    | 'text' = 'default';
 
   /** The button's size. */
   @property({ reflect: true }) size: 'small' | 'medium' | 'large' = 'medium';
@@ -79,7 +94,11 @@ export default class T1Button extends LitElement {
 
   /** Used to override the form owner's enctype attribute. */
   @property({ attribute: 'formenctype' })
-  formEnctype: 'application/x-www-form-urlencoded' | 'multipart/form-data' | 'text/plain' | undefined;
+  formEnctype:
+    | 'application/x-www-form-urlencoded'
+    | 'multipart/form-data'
+    | 'text/plain'
+    | undefined;
 
   /** Used to override the form owner's method attribute. */
   @property({ attribute: 'formmethod' }) formMethod: 'post' | 'get' | undefined;
@@ -88,7 +107,13 @@ export default class T1Button extends LitElement {
   @property({ attribute: 'formnovalidate', type: Boolean }) formNoValidate: boolean | undefined;
 
   /** Used to override the form owner's target attribute. */
-  @property({ attribute: 'formtarget' }) formTarget: '_self' | '_blank' | '_parent' | '_top' | string | undefined;
+  @property({ attribute: 'formtarget' }) formTarget:
+    | '_self'
+    | '_blank'
+    | '_parent'
+    | '_top'
+    | string
+    | undefined;
 
   private isButton() {
     return !this.href;
@@ -192,7 +217,7 @@ export default class T1Button extends LitElement {
           'button--rtl': this.localize.dir() === 'rtl',
           'button--has-label': this.hasSlotController.test('[default]'),
           'button--has-prefix': this.hasSlotController.test('prefix'),
-          'button--has-suffix': this.hasSlotController.test('suffix')
+          'button--has-suffix': this.hasSlotController.test('suffix'),
         })}
         ?disabled=${ifDefined(isLink ? undefined : this.disabled)}
         type=${ifDefined(isLink ? undefined : this.type)}

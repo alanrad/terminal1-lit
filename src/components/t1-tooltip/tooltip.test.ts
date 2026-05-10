@@ -13,7 +13,10 @@ type T1TooltipEl = HTMLElement & {
   hide: () => Promise<void>;
 };
 
-function createElement(attrs: Record<string, string | boolean> = {}, slotContent = '<button>Hover Me</button>'): T1TooltipEl {
+function createElement(
+  attrs: Record<string, string | boolean> = {},
+  slotContent = '<button>Hover Me</button>',
+): T1TooltipEl {
   const el = document.createElement('t1-tooltip') as unknown as T1TooltipEl;
   Object.entries(attrs).forEach(([k, v]) => {
     if (v === true) el.setAttribute(k, '');
@@ -25,7 +28,7 @@ function createElement(attrs: Record<string, string | boolean> = {}, slotContent
 }
 
 afterEach(() => {
-  document.body.querySelectorAll('t1-tooltip').forEach(el => el.remove());
+  document.body.querySelectorAll('t1-tooltip').forEach((el) => el.remove());
 });
 
 describe('t1-tooltip', () => {

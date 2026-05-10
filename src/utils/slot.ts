@@ -11,7 +11,7 @@ export class HasSlotController implements ReactiveController {
   }
 
   private hasDefaultSlot() {
-    return [...this.host.childNodes].some(node => {
+    return [...this.host.childNodes].some((node) => {
       if (node.nodeType === node.TEXT_NODE && node.textContent!.trim() !== '') {
         return true;
       }
@@ -54,7 +54,10 @@ export class HasSlotController implements ReactiveController {
   private handleSlotChange = (event: Event) => {
     const slot = event.target as HTMLSlotElement;
 
-    if ((this.slotNames.includes('[default]') && !slot.name) || (slot.name && this.slotNames.includes(slot.name))) {
+    if (
+      (this.slotNames.includes('[default]') && !slot.name) ||
+      (slot.name && this.slotNames.includes(slot.name))
+    ) {
       this.host.requestUpdate();
     }
   };
@@ -68,7 +71,7 @@ export function getInnerHTML(slot: HTMLSlotElement): string {
   const nodes = slot.assignedNodes({ flatten: true });
   let html = '';
 
-  [...nodes].forEach(node => {
+  [...nodes].forEach((node) => {
     if (node.nodeType === Node.ELEMENT_NODE) {
       html += (node as HTMLElement).outerHTML;
     }
@@ -92,7 +95,7 @@ export function getTextContent(slot: HTMLSlotElement | undefined | null): string
   const nodes = slot.assignedNodes({ flatten: true });
   let text = '';
 
-  [...nodes].forEach(node => {
+  [...nodes].forEach((node) => {
     if (node.nodeType === Node.TEXT_NODE) {
       text += node.textContent;
     }

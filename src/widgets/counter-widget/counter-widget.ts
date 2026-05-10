@@ -1,8 +1,8 @@
-import { LitElement, html, css } from "lit";
-import { customElement, property } from "lit/decorators.js";
-import { SignalMixin } from "@state/lit-signal";
-import { createCounterState, type CounterState } from "./counter.state";
-import { baseStyles } from "@styles/base";
+import { LitElement, html, css } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { SignalMixin } from '@state/lit-signal';
+import { createCounterState, type CounterState } from './counter.state';
+import { baseStyles } from '@styles/base';
 
 /**
  * <counter-widget> — self-contained counter with signal-driven state.
@@ -20,7 +20,7 @@ import { baseStyles } from "@styles/base";
  * CSS custom properties:
  *   all --t1-* tokens from theme.css
  */
-@customElement("counter-widget")
+@customElement('counter-widget')
 export class CounterWidget extends SignalMixin(LitElement) {
   static styles = [
     baseStyles,
@@ -34,27 +34,27 @@ export class CounterWidget extends SignalMixin(LitElement) {
         box-shadow: var(--t1-shadow-small);
       }
 
-      [part="container"] {
+      [part='container'] {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: var(--t1-spacing-medium);
       }
 
-      [part="value"] {
+      [part='value'] {
         font-size: 2.5rem;
         font-weight: var(--t1-font-weight-bold);
         color: var(--t1-color-primary-600);
         min-width: 5ch;
         text-align: center;
-        transition: color var(--t1-transition-medium) cubic-bezier(.2, 0, 0, 1);
+        transition: color var(--t1-transition-medium) cubic-bezier(0.2, 0, 0, 1);
       }
 
-      [part="value"].negative {
+      [part='value'].negative {
         color: var(--t1-color-danger-600);
       }
 
-      [part="controls"] {
+      [part='controls'] {
         display: flex;
         gap: var(--t1-spacing-x-small);
         align-items: center;
@@ -73,7 +73,7 @@ export class CounterWidget extends SignalMixin(LitElement) {
         border-radius: var(--t1-border-radius-medium);
         border: 1px solid var(--t1-color-primary-600);
         cursor: pointer;
-        transition: background var(--t1-transition-fast) cubic-bezier(.2, 0, 0, 1);
+        transition: background var(--t1-transition-fast) cubic-bezier(0.2, 0, 0, 1);
       }
 
       button.primary {
@@ -81,7 +81,9 @@ export class CounterWidget extends SignalMixin(LitElement) {
         color: #fff;
       }
 
-      button.primary:hover { background: var(--t1-color-primary-700); }
+      button.primary:hover {
+        background: var(--t1-color-primary-700);
+      }
 
       button.secondary {
         background: transparent;
@@ -98,11 +100,13 @@ export class CounterWidget extends SignalMixin(LitElement) {
         border-color: var(--t1-color-neutral-300);
       }
 
-      button.ghost:hover { background: var(--t1-color-neutral-50); }
+      button.ghost:hover {
+        background: var(--t1-color-neutral-50);
+      }
     `,
   ];
 
-  @property({ attribute: "initial-count", type: Number }) initialCount = 0;
+  @property({ attribute: 'initial-count', type: Number }) initialCount = 0;
   @property({ type: Number }) step = 1;
 
   private _state!: CounterState;
@@ -117,7 +121,7 @@ export class CounterWidget extends SignalMixin(LitElement) {
 
   private _emit() {
     this.dispatchEvent(
-      new CustomEvent("w-change", {
+      new CustomEvent('w-change', {
         detail: { count: this._state.count.value },
         bubbles: true,
         composed: true,
@@ -125,9 +129,18 @@ export class CounterWidget extends SignalMixin(LitElement) {
     );
   }
 
-  private _increment() { this._state.increment(); this._emit(); }
-  private _decrement() { this._state.decrement(); this._emit(); }
-  private _reset()     { this._state.reset();     this._emit(); }
+  private _increment() {
+    this._state.increment();
+    this._emit();
+  }
+  private _decrement() {
+    this._state.decrement();
+    this._emit();
+  }
+  private _reset() {
+    this._state.reset();
+    this._emit();
+  }
 
   render() {
     const { count, isNegative, label } = this._state;
@@ -135,7 +148,7 @@ export class CounterWidget extends SignalMixin(LitElement) {
       <div part="container">
         <div
           part="value"
-          class="${isNegative.value ? "negative" : ""}"
+          class="${isNegative.value ? 'negative' : ''}"
           aria-live="polite"
           aria-label="${label.value}"
         >
@@ -143,8 +156,8 @@ export class CounterWidget extends SignalMixin(LitElement) {
         </div>
         <div part="controls">
           <button class="secondary" @click="${this._decrement}">−</button>
-          <button class="ghost"     @click="${this._reset}">Reset</button>
-          <button class="primary"   @click="${this._increment}">+</button>
+          <button class="ghost" @click="${this._reset}">Reset</button>
+          <button class="primary" @click="${this._increment}">+</button>
         </div>
       </div>
     `;
@@ -153,6 +166,6 @@ export class CounterWidget extends SignalMixin(LitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    "counter-widget": CounterWidget;
+    'counter-widget': CounterWidget;
   }
 }

@@ -25,7 +25,7 @@ function createMenu(innerHTML: string): T1MenuEl {
 }
 
 afterEach(() => {
-  document.body.querySelectorAll('div').forEach(el => el.remove());
+  document.body.querySelectorAll('div').forEach((el) => el.remove());
 });
 
 describe('t1-menu', () => {
@@ -57,7 +57,7 @@ describe('t1-menu', () => {
       `);
       await menu.updateComplete;
       // Wait for slot assignment
-      await new Promise(r => requestAnimationFrame(r));
+      await new Promise((r) => requestAnimationFrame(r));
 
       const items = menu.getAllItems();
       expect(items.length).toBe(3);
@@ -70,7 +70,7 @@ describe('t1-menu', () => {
         <t1-menu-item value="3">Item 3</t1-menu-item>
       `);
       await menu.updateComplete;
-      await new Promise(r => requestAnimationFrame(r));
+      await new Promise((r) => requestAnimationFrame(r));
 
       const items = menu.getAllItems();
       expect(items.length).toBe(3);
@@ -88,9 +88,13 @@ describe('t1-menu', () => {
       const [, item2] = menu.querySelectorAll('t1-menu-item') as unknown as T1MenuItemEl[];
       let selectedItem: T1MenuItemEl | null = null;
 
-      menu.addEventListener('t1-select', (e: Event) => {
-        selectedItem = (e as CustomEvent).detail.item;
-      }, { once: true });
+      menu.addEventListener(
+        't1-select',
+        (e: Event) => {
+          selectedItem = (e as CustomEvent).detail.item;
+        },
+        { once: true },
+      );
 
       item2.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
       await menu.updateComplete;
@@ -106,7 +110,9 @@ describe('t1-menu', () => {
       await menu.updateComplete;
 
       let selected = false;
-      menu.addEventListener('t1-select', () => { selected = true; });
+      menu.addEventListener('t1-select', () => {
+        selected = true;
+      });
 
       const [, item2] = menu.querySelectorAll('t1-menu-item') as unknown as T1MenuItemEl[];
       item2.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
@@ -130,7 +136,7 @@ describe('t1-menu', () => {
         <t1-menu-item value="3">Item 3</t1-menu-item>
       `);
       await menu.updateComplete;
-      await new Promise(r => requestAnimationFrame(r));
+      await new Promise((r) => requestAnimationFrame(r));
 
       const items = menu.getAllItems();
       menu.setCurrentItem(items[0]);
@@ -148,7 +154,7 @@ describe('t1-menu', () => {
         <t1-menu-item value="3">Item 3</t1-menu-item>
       `);
       await menu.updateComplete;
-      await new Promise(r => requestAnimationFrame(r));
+      await new Promise((r) => requestAnimationFrame(r));
 
       const items = menu.getAllItems();
       menu.setCurrentItem(items[2]);
@@ -166,7 +172,7 @@ describe('t1-menu', () => {
         <t1-menu-item value="3">Item 3</t1-menu-item>
       `);
       await menu.updateComplete;
-      await new Promise(r => requestAnimationFrame(r));
+      await new Promise((r) => requestAnimationFrame(r));
 
       const items = menu.getAllItems();
       menu.setCurrentItem(items[0]);
@@ -184,7 +190,7 @@ describe('t1-menu', () => {
         <t1-menu-item value="3">Item 3</t1-menu-item>
       `);
       await menu.updateComplete;
-      await new Promise(r => requestAnimationFrame(r));
+      await new Promise((r) => requestAnimationFrame(r));
 
       const items = menu.getAllItems();
       menu.setCurrentItem(items[2]);
@@ -202,7 +208,7 @@ describe('t1-menu', () => {
         <t1-menu-item value="3">Item 3</t1-menu-item>
       `);
       await menu.updateComplete;
-      await new Promise(r => requestAnimationFrame(r));
+      await new Promise((r) => requestAnimationFrame(r));
 
       const items = menu.getAllItems();
       menu.setCurrentItem(items[0]);

@@ -89,7 +89,8 @@ export class SubmenuController implements ReactiveController {
   };
 
   private handleSubmenuEntry(event: KeyboardEvent) {
-    const submenuSlot: HTMLSlotElement | null = this.host.renderRoot.querySelector("slot[name='submenu']");
+    const submenuSlot: HTMLSlotElement | null =
+      this.host.renderRoot.querySelector("slot[name='submenu']");
 
     if (!submenuSlot) {
       console.error('Cannot activate a submenu if no corresponding menuitem can be found.', this);
@@ -162,14 +163,19 @@ export class SubmenuController implements ReactiveController {
       event.stopPropagation();
     } else if (
       event.target instanceof Element &&
-      (event.target.tagName === 't1-menu-item' || event.target.getAttribute('role')?.startsWith('menuitem'))
+      (event.target.tagName === 't1-menu-item' ||
+        event.target.getAttribute('role')?.startsWith('menuitem'))
     ) {
       this.disableSubmenu();
     }
   };
 
   private handleFocusOut = (event: FocusEvent) => {
-    if (event.relatedTarget && event.relatedTarget instanceof Element && this.host.contains(event.relatedTarget)) {
+    if (
+      event.relatedTarget &&
+      event.relatedTarget instanceof Element &&
+      this.host.contains(event.relatedTarget)
+    ) {
       return;
     }
     this.disableSubmenu();
@@ -180,8 +186,11 @@ export class SubmenuController implements ReactiveController {
   };
 
   private handlePopupReposition = () => {
-    const submenuSlot: HTMLSlotElement | null = this.host.renderRoot.querySelector("slot[name='submenu']");
-    const menu = submenuSlot?.assignedElements({ flatten: true }).filter(el => el.localName === 't1-menu')[0];
+    const submenuSlot: HTMLSlotElement | null =
+      this.host.renderRoot.querySelector("slot[name='submenu']");
+    const menu = submenuSlot
+      ?.assignedElements({ flatten: true })
+      .filter((el) => el.localName === 't1-menu')[0];
     const isRtl = getComputedStyle(this.host).direction === 'rtl';
     if (!menu) {
       return;
@@ -189,9 +198,15 @@ export class SubmenuController implements ReactiveController {
 
     const { left, top, width, height } = menu.getBoundingClientRect();
 
-    this.host.style.setProperty('--safe-triangle-submenu-start-x', `${isRtl ? left + width : left}px`);
+    this.host.style.setProperty(
+      '--safe-triangle-submenu-start-x',
+      `${isRtl ? left + width : left}px`,
+    );
     this.host.style.setProperty('--safe-triangle-submenu-start-y', `${top}px`);
-    this.host.style.setProperty('--safe-triangle-submenu-end-x', `${isRtl ? left + width : left}px`);
+    this.host.style.setProperty(
+      '--safe-triangle-submenu-end-x',
+      `${isRtl ? left + width : left}px`,
+    );
     this.host.style.setProperty('--safe-triangle-submenu-end-y', `${top + height}px`);
   };
 

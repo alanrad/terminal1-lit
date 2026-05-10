@@ -1,5 +1,5 @@
-import { registerTranslation } from '../utilities/localize.js';
-import type { Translation } from '../utilities/localize.js';
+import { registerTranslation } from '../src/utils/localize';
+import type { Translation } from '../src/utils/localize';
 
 const translation: Translation = {
   $code: 'de',
@@ -17,7 +17,7 @@ const translation: Translation = {
   hidePassword: 'Passwort verbergen',
   loading: 'Wird geladen',
   nextSlide: 'Nächste Folie',
-  numOptionsSelected: num => {
+  numOptionsSelected: (num) => {
     if (num === 0) return 'Keine Optionen ausgewählt';
     if (num === 1) return '1 Option ausgewählt';
     return `${num} Optionen ausgewählt`;
@@ -30,8 +30,8 @@ const translation: Translation = {
   scrollToStart: 'Zum Anfang scrollen',
   selectAColorFromTheScreen: 'Farbe vom Bildschirm auswählen',
   showPassword: 'Passwort anzeigen',
-  slideNum: slide => `Folie ${slide}`,
-  toggleColorFormat: 'Farbformat umschalten'
+  slideNum: (slide) => `Folie ${slide}`,
+  toggleColorFormat: 'Farbformat umschalten',
 };
 
 registerTranslation(translation);

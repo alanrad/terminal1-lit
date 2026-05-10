@@ -5,16 +5,30 @@ import styles from './tag.styles';
 import type { CSSResultGroup } from 'lit';
 
 const componentStyles = css`
-  :host { box-sizing: border-box; }
-  :host *, :host *::before, :host *::after { box-sizing: inherit; }
-  [hidden] { display: none !important; }
+  :host {
+    box-sizing: border-box;
+  }
+  :host *,
+  :host *::before,
+  :host *::after {
+    box-sizing: inherit;
+  }
+  [hidden] {
+    display: none !important;
+  }
 `;
 
 export default class T1Tag extends LitElement {
   static styles: CSSResultGroup = [componentStyles, styles];
 
   /** The tag's theme variant. */
-  @property({ reflect: true }) variant: 'primary' | 'success' | 'neutral' | 'warning' | 'danger' | 'text' = 'neutral';
+  @property({ reflect: true }) variant:
+    | 'primary'
+    | 'success'
+    | 'neutral'
+    | 'warning'
+    | 'danger'
+    | 'text' = 'neutral';
 
   /** The tag's size. */
   @property({ reflect: true }) size: 'small' | 'medium' | 'large' = 'medium';

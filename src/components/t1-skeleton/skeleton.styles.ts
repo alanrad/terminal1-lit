@@ -24,7 +24,13 @@ export default css`
   }
 
   .skeleton--sheen .skeleton__indicator {
-    background: linear-gradient(270deg, var(--sheen-color), var(--color), var(--color), var(--sheen-color));
+    background: linear-gradient(
+      270deg,
+      var(--sheen-color),
+      var(--color),
+      var(--color),
+      var(--sheen-color)
+    );
     background-size: 400% 100%;
     animation: sheen 8s ease-in-out infinite;
   }
@@ -34,13 +40,23 @@ export default css`
   }
 
   @keyframes sheen {
-    0% { background-position: 200% 0; }
-    to { background-position: -200% 0; }
+    0% {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
   }
 
   @keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.4; }
-    100% { opacity: 1; }
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 `;

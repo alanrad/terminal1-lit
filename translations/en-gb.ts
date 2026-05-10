@@ -1,6 +1,6 @@
-import { registerTranslation } from '../utilities/localize.js';
+import { registerTranslation } from '../src/utils/localize';
 import baseTranslation from './en.js';
-import type { Translation } from '../utilities/localize.js';
+import type { Translation } from '../src/utils/localize';
 
 const translation: Translation = {
   ...baseTranslation,
@@ -8,7 +8,7 @@ const translation: Translation = {
   $name: 'English (United Kingdom)',
 
   selectAColorFromTheScreen: 'Select a colour from the screen',
-  toggleColorFormat: 'Toggle colour format'
+  toggleColorFormat: 'Toggle colour format',
 };
 
 registerTranslation(translation);

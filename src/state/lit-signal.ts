@@ -1,5 +1,5 @@
-import { ReactiveElement } from "@lit/reactive-element";
-import { type Subscribable } from "./signal";
+import { ReactiveElement } from '@lit/reactive-element';
+import { type Subscribable } from './signal';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Constructor<T = object> = new (...args: any[]) => T;
@@ -18,7 +18,7 @@ export interface SignalMixinInterface {
  *   class MyWidget extends SignalMixin(LitElement) { ... }
  */
 export function SignalMixin<Base extends Constructor<ReactiveElement>>(
-  Base: Base
+  Base: Base,
 ): Base & Constructor<SignalMixinInterface> {
   class SignalElement extends Base {
     // Using array index signature avoids TS4094 on private members

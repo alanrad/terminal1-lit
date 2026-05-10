@@ -9,9 +9,17 @@ import styles from './rating.styles';
 import type { CSSResultGroup } from 'lit';
 
 const componentStyles = css`
-  :host { box-sizing: border-box; }
-  :host *, :host *::before, :host *::after { box-sizing: inherit; }
-  [hidden] { display: none !important; }
+  :host {
+    box-sizing: border-box;
+  }
+  :host *,
+  :host *::before,
+  :host *::after {
+    box-sizing: inherit;
+  }
+  [hidden] {
+    display: none !important;
+  }
 `;
 
 const STAR_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>`;
@@ -90,13 +98,21 @@ export default class T1Rating extends LitElement {
 
     if (this.disabled || this.readonly) return;
 
-    if (event.key === 'ArrowDown' || (isLtr && event.key === 'ArrowLeft') || (isRtl && event.key === 'ArrowRight')) {
+    if (
+      event.key === 'ArrowDown' ||
+      (isLtr && event.key === 'ArrowLeft') ||
+      (isRtl && event.key === 'ArrowRight')
+    ) {
       const decrement = event.shiftKey ? 1 : this.precision;
       this.value = Math.max(0, this.value - decrement);
       event.preventDefault();
     }
 
-    if (event.key === 'ArrowUp' || (isLtr && event.key === 'ArrowRight') || (isRtl && event.key === 'ArrowLeft')) {
+    if (
+      event.key === 'ArrowUp' ||
+      (isLtr && event.key === 'ArrowRight') ||
+      (isRtl && event.key === 'ArrowLeft')
+    ) {
       const increment = event.shiftKey ? 1 : this.precision;
       this.value = Math.min(this.max, this.value + increment);
       event.preventDefault();
@@ -160,7 +176,7 @@ export default class T1Rating extends LitElement {
         detail: { phase: 'move', value: this.hoverValue },
         bubbles: true,
         composed: true,
-      })
+      }),
     );
   }
 
@@ -171,7 +187,7 @@ export default class T1Rating extends LitElement {
         detail: { phase: this.isHovering ? 'start' : 'end', value: this.hoverValue },
         bubbles: true,
         composed: true,
-      })
+      }),
     );
   }
 
@@ -223,14 +239,15 @@ export default class T1Rating extends LitElement {
         @touchend=${this.handleTouchEnd}
       >
         <span class="rating__symbols">
-          ${counter.map(index => {
+          ${counter.map((index) => {
             if (displayValue > index && displayValue < index + 1) {
               return html`
                 <span
                   class=${classMap({
                     rating__symbol: true,
                     'rating__partial-symbol-container': true,
-                    'rating__symbol--hover': this.isHovering && Math.ceil(displayValue) === index + 1,
+                    'rating__symbol--hover':
+                      this.isHovering && Math.ceil(displayValue) === index + 1,
                   })}
                   role="presentation"
                 >
