@@ -3,69 +3,239 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Terminal 1 — Dev Sandbox</title>
+    <title>Terminal 1</title>
     <link rel="stylesheet" href="/src/styles/theme.css" />
+    <script type="module" src="/src/components/t1-icon/index.ts"></script>
     <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
       body {
-        font-family: system-ui, sans-serif;
-        background: #f1f3f4;
-        padding: 2rem;
+        font-family: var(--t1-font-sans);
+        background: var(--t1-color-neutral-50);
+        color: var(--t1-color-neutral-900);
+        min-height: 100vh;
+      }
+
+      .sticky-nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header {
+        background: var(--t1-color-neutral-0);
+        border-bottom: 1px solid var(--t1-color-neutral-200);
+        padding: var(--t1-spacing-large) var(--t1-spacing-3x-large);
+        display: flex;
+        align-items: center;
+      }
+
+      .header-link {
+        display: flex;
+        align-items: center;
+        gap: var(--t1-spacing-large);
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .header-logo {
+        flex-shrink: 0;
+        width: 100px;
+        padding-top: 7px;
+        object-fit: contain;
+      }
+
+      .header-text h1 {
+        font-size: var(--t1-font-size-2x-large);
+        font-weight: var(--t1-font-weight-bold);
+        color: var(--t1-color-danger-600);
+        letter-spacing: var(--t1-letter-spacing-dense);
+      }
+
+      .header-text p {
+        margin-top: var(--t1-spacing-2x-small);
+        font-size: var(--t1-font-size-medium);
+        color: var(--t1-color-neutral-500);
+      }
+
+      .main {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: var(--t1-spacing-3x-large) var(--t1-spacing-large);
         display: flex;
         flex-direction: column;
-        gap: 2rem;
-        align-items: flex-start;
+        gap: var(--t1-spacing-3x-large);
       }
 
-      h1 {
-        margin: 0 0 0.5rem;
-      }
-
-      section {
-        background: #fff;
-        border-radius: 12px;
-        padding: 1.5rem;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-        min-width: 300px;
-      }
-
-      h2 {
-        margin: 0 0 1rem;
-        font-size: 1rem;
-        color: #5f6368;
+      .section-label {
+        font-size: var(--t1-font-size-x-small);
+        font-weight: var(--t1-font-weight-semibold);
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: var(--t1-letter-spacing-looser);
+        color: var(--t1-color-neutral-400);
+        margin-bottom: var(--t1-spacing-medium);
       }
 
-      pre {
-        background: #f8f9fa;
-        border-radius: 4px;
-        padding: 0.5rem;
-        font-size: 0.75rem;
-        margin-top: 0.5rem;
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: var(--t1-spacing-medium);
       }
 
-      /* Host-page override demo: change primary color for the counter */
-      #themed-counter counter-widget {
-        --t1-color-primary-600: #7c3aed;
-        --t1-color-primary-700: #5b21b6;
-        --t1-color-danger-600: #dc2626;
+      .section-card {
+        display: flex;
+        flex-direction: column;
+        background: var(--t1-color-neutral-0);
+        border: 1px solid var(--t1-color-neutral-200);
+        border-radius: var(--t1-border-radius-large);
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        transition:
+          box-shadow var(--t1-transition-fast),
+          border-color var(--t1-transition-fast);
+      }
+
+      .section-card:hover {
+        border-color: var(--t1-color-danger-400);
+        box-shadow: var(--t1-shadow-medium);
+      }
+
+      .section-card-preview {
+        background: var(--t1-color-neutral-50);
+        border-bottom: 1px solid var(--t1-color-neutral-100);
+        padding: var(--t1-spacing-3x-large);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--t1-spacing-medium);
+        min-height: 160px;
+      }
+
+      .section-card-body {
+        padding: var(--t1-spacing-large);
+      }
+
+      .section-card-body h2 {
+        font-size: var(--t1-font-size-x-large);
+        font-weight: var(--t1-font-weight-bold);
+        color: var(--t1-color-neutral-900);
+        margin-bottom: var(--t1-spacing-x-small);
+      }
+
+      .section-card-body p {
+        font-size: var(--t1-font-size-small);
+        color: var(--t1-color-neutral-500);
+        line-height: var(--t1-line-height-dense);
+      }
+
+      .count-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3em;
+        font-size: var(--t1-font-size-x-small);
+        font-weight: var(--t1-font-weight-semibold);
+        padding: 0.2em 0.7em;
+        border-radius: var(--t1-border-radius-pill);
+        background: var(--t1-color-danger-100);
+        color: var(--t1-color-danger-700);
+        margin-top: var(--t1-spacing-small);
+      }
+
+      .count-pill-widgets {
+        background: var(--t1-color-warning-100);
+        color: var(--t1-color-warning-700);
+      }
+
+      @media (max-width: 640px) {
+        .header {
+          padding: var(--t1-spacing-small) var(--t1-spacing-large);
+        }
+
+        .header-logo {
+          width: 64px;
+        }
+
+        .header-text h1 {
+          font-size: var(--t1-font-size-x-large);
+        }
+
+        .header-text p {
+          display: none;
+        }
+
+        .main {
+          padding: var(--t1-spacing-2x-large) var(--t1-spacing-medium);
+        }
       }
     </style>
-    <script type="module" src="/src/widgets/counter-widget/index.ts"></script>
   </head>
   <body>
-    <h1>Widget System — Dev Sandbox</h1>
+    <div class="sticky-nav">
+      <header class="header">
+        <a href="/" class="header-link">
+          <img
+            class="header-logo"
+            src="https://terminal1.win/images/terminal-one.png"
+            alt="Terminal 1"
+          />
+          <div class="header-text">
+            <h1>Terminal 1</h1>
+            <p>Web components built with TS, Lit &amp; Vite</p>
+          </div>
+        </a>
+      </header>
+    </div>
 
-    <section>
-      <h2>Counter Widget</h2>
-      <counter-widget initial-count="0"></counter-widget>
-      <pre id="counter-log">events will appear here…</pre>
-    </section>
+    <main class="main">
+      <div>
+        <p class="section-label">Explore</p>
+        <div class="card-grid">
+          <a href="/playground/components/" class="section-card">
+            <div class="section-card-preview">
+              <t1-icon
+                name="layers-half"
+                style="font-size: 3rem; color: var(--t1-color-danger-500)"
+              ></t1-icon>
+              <t1-icon
+                name="layers"
+                style="font-size: 3rem; color: var(--t1-color-danger-300)"
+              ></t1-icon>
+            </div>
+            <div class="section-card-body">
+              <h2>Components</h2>
+              <p>Primitive UI building blocks — buttons, inputs, badges, tooltips, and more.</p>
+              <span class="count-pill">22 components</span>
+            </div>
+          </a>
 
-    <script>
-      document.querySelector('counter-widget').addEventListener('w-change', (e) => {
-        document.querySelector('#counter-log').textContent = JSON.stringify(e.detail, null, 2);
-      });
-    </script>
+          <a href="/playground/widgets/" class="section-card">
+            <div class="section-card-preview">
+              <t1-icon
+                name="gear-wide-connected"
+                style="font-size: 3rem; color: var(--t1-color-danger-500)"
+              ></t1-icon>
+              <t1-icon
+                name="gear-wide"
+                style="font-size: 3rem; color: var(--t1-color-danger-300)"
+              ></t1-icon>
+            </div>
+            <div class="section-card-body">
+              <h2>Widgets</h2>
+              <p>
+                Higher-level feature components composed from primitives, with signal-driven state.
+              </p>
+              <span class="count-pill count-pill-widgets">1 widget</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </main>
   </body>
 </html>
