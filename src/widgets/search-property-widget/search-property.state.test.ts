@@ -166,3 +166,72 @@ test('each factory call returns independent loading state', () => {
   stateA.setLoading(true);
   expect(stateB.loading.value).toBe(false);
 });
+
+test('selectedProperty signal initialises as null', () => {
+  const state = createSearchPropertyState();
+  expect(state.selectedProperty.value).toBeNull();
+});
+
+test('setSelectedProperty stores the given property', () => {
+  const state = createSearchPropertyState();
+  const stub = { id: 1, fullAddress: 'A' } as Parameters<typeof state.setSelectedProperty>[0];
+  state.setSelectedProperty(stub);
+  expect(state.selectedProperty.value).toStrictEqual(stub);
+});
+
+test('clearSelectedProperty resets selectedProperty to null', () => {
+  const state = createSearchPropertyState();
+  const stub = { id: 1, fullAddress: 'A' } as Parameters<typeof state.setSelectedProperty>[0];
+  state.setSelectedProperty(stub);
+  state.clearSelectedProperty();
+  expect(state.selectedProperty.value).toBeNull();
+});
+
+test('clearResults also resets selectedProperty to null', () => {
+  const state = createSearchPropertyState();
+  const stub = { id: 1, fullAddress: 'A' } as Parameters<typeof state.setSelectedProperty>[0];
+  state.setSelectedProperty(stub);
+  state.clearResults();
+  expect(state.selectedProperty.value).toBeNull();
+});
+
+test('each factory call returns independent selectedProperty state', () => {
+  const stateA = createSearchPropertyState();
+  const stateB = createSearchPropertyState();
+  stateA.setSelectedProperty({ id: 1, fullAddress: 'A' } as Parameters<
+    typeof stateA.setSelectedProperty
+  >[0]);
+  expect(stateB.selectedProperty.value).toBeNull();
+});
+
+test('showSkeleton signal initialises as false', () => {
+  const state = createSearchPropertyState();
+  expect(state.showSkeleton.value).toBe(false);
+});
+
+test('setShowSkeleton sets the value to true', () => {
+  const state = createSearchPropertyState();
+  state.setShowSkeleton(true);
+  expect(state.showSkeleton.value).toBe(true);
+});
+
+test('setShowSkeleton can toggle back to false', () => {
+  const state = createSearchPropertyState();
+  state.setShowSkeleton(true);
+  state.setShowSkeleton(false);
+  expect(state.showSkeleton.value).toBe(false);
+});
+
+test('clearResults also resets showSkeleton to false', () => {
+  const state = createSearchPropertyState();
+  state.setShowSkeleton(true);
+  state.clearResults();
+  expect(state.showSkeleton.value).toBe(false);
+});
+
+test('each factory call returns independent showSkeleton state', () => {
+  const stateA = createSearchPropertyState();
+  const stateB = createSearchPropertyState();
+  stateA.setShowSkeleton(true);
+  expect(stateB.showSkeleton.value).toBe(false);
+});

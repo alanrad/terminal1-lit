@@ -14,6 +14,8 @@ import '@components/t1-spinner/index';
 import PropertyService from '@services/property.service';
 import type { TransformedProperty } from '@services/property.service';
 import { findProperty, getPropertyIcon } from './utils';
+import './components/property-card/';
+import './components/property-card-skeleton/';
 
 @customElement('search-property-widget')
 class SearchPropertyWidget extends SignalMixin(LitElement) {
@@ -44,6 +46,7 @@ class SearchPropertyWidget extends SignalMixin(LitElement) {
   private readonly _propertyService = new PropertyService();
   private _state: SearchPropertyState = createSearchPropertyState();
   private _debounceTimer = 0;
+  private _skeletonTimer = 0;
   private _disposeResultsEffect = () => {};
 
   connectedCallback() {
@@ -53,6 +56,8 @@ class SearchPropertyWidget extends SignalMixin(LitElement) {
     this.watchSignal(this._state.results);
     this.watchSignal(this._state.loading);
     this.watchSignal(this._state.popupVisible);
+    this.watchSignal(this._state.selectedProperty);
+    this.watchSignal(this._state.showSkeleton);
     this._disposeResultsEffect = effect(() => {
       console.log(this._state.results.value);
     });
@@ -61,6 +66,7 @@ class SearchPropertyWidget extends SignalMixin(LitElement) {
   disconnectedCallback() {
     super.disconnectedCallback();
     clearTimeout(this._debounceTimer);
+    clearTimeout(this._skeletonTimer);
     this._disposeResultsEffect();
   }
 
@@ -70,6 +76,7 @@ class SearchPropertyWidget extends SignalMixin(LitElement) {
     clearTimeout(this._debounceTimer);
 
     if (value.length < 2) {
+      clearTimeout(this._skeletonTimer);
       this._state.clearResults();
       return;
     }
@@ -90,13 +97,20 @@ class SearchPropertyWidget extends SignalMixin(LitElement) {
     const id = Number((event.detail as { item: { value: string } }).item.value);
     const property = this._state.properties.value?.find((item) => item.id === id);
     if (property) {
+      this._state.setSelectedProperty(property);
       this.onSelect(property);
+      clearTimeout(this._skeletonTimer);
+      this._state.setShowSkeleton(true);
+      this._skeletonTimer = window.setTimeout(() => {
+        this._state.setShowSkeleton(false);
+      }, 2000);
     }
     this._state.hidePopup();
   };
 
   private handleKeydown = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
+      clearTimeout(this._skeletonTimer);
       this._state.clearResults();
       this._inputEl?.focus();
       return;
@@ -136,6 +150,8 @@ class SearchPropertyWidget extends SignalMixin(LitElement) {
   render() {
     const popupVisible = this._state.popupVisible.value;
     const loading = this._state.loading.value;
+    const selectedProperty = this._state.selectedProperty.value;
+    const showSkeleton = this._state.showSkeleton.value;
 
     return html`
       <div class="autocomplete" @keydown=${this.handleKeydown}>
@@ -168,6 +184,11 @@ class SearchPropertyWidget extends SignalMixin(LitElement) {
           </t1-menu>
         </t1-popup>
       </div>
+      ${!popupVisible && showSkeleton
+        ? html`<property-card-skeleton></property-card-skeleton>`
+        : !popupVisible && selectedProperty
+          ? html`<property-card .selectedProperty=${selectedProperty}></property-card>`
+          : ''}
     `;
   }
 }

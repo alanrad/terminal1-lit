@@ -7,6 +7,8 @@ const createSearchPropertyState = () => {
   const results = signal<TransformedProperty[]>([]);
   const loading = signal(false);
   const popupVisible = signal(false);
+  const selectedProperty = signal<TransformedProperty | null>(null);
+  const showSkeleton = signal(false);
 
   return {
     query,
@@ -14,6 +16,8 @@ const createSearchPropertyState = () => {
     results,
     loading,
     popupVisible,
+    selectedProperty,
+    showSkeleton,
     setQuery: (value: string) => {
       query.value = value;
     },
@@ -24,9 +28,14 @@ const createSearchPropertyState = () => {
       results.value = data;
       popupVisible.value = data.length > 0;
     },
+    setShowSkeleton: (value: boolean) => {
+      showSkeleton.value = value;
+    },
     clearResults: () => {
       results.value = [];
       popupVisible.value = false;
+      selectedProperty.value = null;
+      showSkeleton.value = false;
     },
     showPopup: () => {
       popupVisible.value = true;
@@ -36,6 +45,12 @@ const createSearchPropertyState = () => {
     },
     setLoading: (value: boolean) => {
       loading.value = value;
+    },
+    setSelectedProperty: (property: TransformedProperty) => {
+      selectedProperty.value = property;
+    },
+    clearSelectedProperty: () => {
+      selectedProperty.value = null;
     },
   };
 };

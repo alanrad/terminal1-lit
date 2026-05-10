@@ -10,8 +10,17 @@ type SearchPropertyWidgetEl = HTMLElement & {
     results: { value: unknown[] };
     properties: { value: unknown[] | null };
     popupVisible: { value: boolean };
+    loading: { value: boolean };
+    selectedProperty: { value: unknown | null };
+    showSkeleton: { value: boolean };
     setResults: (data: unknown[]) => void;
     setProperties: (data: unknown[]) => void;
+    setLoading: (value: boolean) => void;
+    setSelectedProperty: (property: unknown) => void;
+    setShowSkeleton: (value: boolean) => void;
+    clearResults: () => void;
+    showPopup: () => void;
+    hidePopup: () => void;
   };
 };
 
@@ -290,4 +299,325 @@ test('does not call onSelect when the id does not match any property', async () 
   );
 
   expect(spy).not.toHaveBeenCalled();
+});
+
+// ── Loading spinner ───────────────────────────────────────────────────────────
+
+test('shows spinner while loading', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  el._state.setLoading(true);
+  await el.updateComplete;
+  expect(el.shadowRoot!.querySelector('t1-spinner')).not.toBeNull();
+});
+
+test('hides spinner when not loading', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  expect(el.shadowRoot!.querySelector('t1-spinner')).toBeNull();
+});
+
+// ── Menu item rendering ───────────────────────────────────────────────────────
+
+test('renders one menu item per result', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  el._state.setProperties([makeStub(1), makeStub(2)] as never);
+  el._state.setResults([makeStub(1), makeStub(2)] as never);
+  await el.updateComplete;
+  expect(el.shadowRoot!.querySelectorAll('t1-menu-item').length).toBe(2);
+});
+
+test('menu item text contains fullAddress', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  el._state.setProperties([makeStub(1)] as never);
+  el._state.setResults([makeStub(1)] as never);
+  await el.updateComplete;
+  const item = el.shadowRoot!.querySelector('t1-menu-item')!;
+  expect(item.textContent?.trim()).toContain('1 St, Sydney, NSW, 2000, Australia');
+});
+
+test('menu item prefix icon reflects property type', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  el._state.setProperties([makeStub(1)] as never);
+  el._state.setResults([makeStub(1)] as never);
+  await el.updateComplete;
+  const icon = el.shadowRoot!.querySelector('t1-menu-item t1-icon[slot="prefix"]');
+  expect(icon?.getAttribute('name')).toBe('buildings');
+});
+
+// ── Focus handling ────────────────────────────────────────────────────────────
+
+test('shows popup when input is focused and results exist', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  el._state.setResults([makeStub(1)] as never);
+  el._state.hidePopup();
+
+  el.shadowRoot!.querySelector('t1-input')!.dispatchEvent(
+    new CustomEvent('t1-focus', { bubbles: true, composed: true }),
+  );
+
+  expect(el._state.popupVisible.value).toBe(true);
+});
+
+test('does not open popup when input is focused but results are empty', async () => {
+  const el = createElement();
+  await el.updateComplete;
+
+  el.shadowRoot!.querySelector('t1-input')!.dispatchEvent(
+    new CustomEvent('t1-focus', { bubbles: true, composed: true }),
+  );
+
+  expect(el._state.popupVisible.value).toBe(false);
+});
+
+// ── Escape key ────────────────────────────────────────────────────────────────
+
+test('clears results when Escape is pressed', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  el._state.setResults([makeStub(1)] as never);
+  await el.updateComplete;
+
+  el.shadowRoot!.querySelector('.autocomplete')!.dispatchEvent(
+    new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
+  );
+
+  expect(el._state.results.value).toEqual([]);
+  expect(el._state.popupVisible.value).toBe(false);
+});
+
+// ── Skeleton lifecycle ────────────────────────────────────────────────────────
+
+test('shows property-card-skeleton immediately after selection', async () => {
+  vi.useFakeTimers();
+  const el = createElement();
+  await el.updateComplete;
+  const stub = [makeStub(1)] as never;
+  el._state.setProperties(stub);
+  el._state.setResults(stub);
+  await el.updateComplete;
+
+  el.shadowRoot!.querySelector('t1-menu')!.dispatchEvent(
+    new CustomEvent('t1-select', {
+      detail: { item: { value: '1' } },
+      bubbles: true,
+      composed: true,
+    }),
+  );
+  await el.updateComplete;
+
+  expect(el.shadowRoot!.querySelector('property-card-skeleton')).not.toBeNull();
+  expect(el.shadowRoot!.querySelector('property-card')).toBeNull();
+});
+
+test('replaces skeleton with property-card after 2 seconds', async () => {
+  vi.useFakeTimers();
+  const el = createElement();
+  await el.updateComplete;
+  const stub = [makeStub(1)] as never;
+  el._state.setProperties(stub);
+  el._state.setResults(stub);
+  await el.updateComplete;
+
+  el.shadowRoot!.querySelector('t1-menu')!.dispatchEvent(
+    new CustomEvent('t1-select', {
+      detail: { item: { value: '1' } },
+      bubbles: true,
+      composed: true,
+    }),
+  );
+  await el.updateComplete;
+
+  vi.advanceTimersByTime(2000);
+  await el.updateComplete;
+
+  expect(el.shadowRoot!.querySelector('property-card-skeleton')).toBeNull();
+  expect(el.shadowRoot!.querySelector('property-card')).not.toBeNull();
+});
+
+test('cancels pending skeleton timer when input drops below threshold', async () => {
+  vi.useFakeTimers();
+  const el = createElement();
+  await el.updateComplete;
+  const stub = [makeStub(1)] as never;
+  el._state.setProperties(stub);
+  el._state.setResults(stub);
+  await el.updateComplete;
+
+  el.shadowRoot!.querySelector('t1-menu')!.dispatchEvent(
+    new CustomEvent('t1-select', {
+      detail: { item: { value: '1' } },
+      bubbles: true,
+      composed: true,
+    }),
+  );
+  await el.updateComplete;
+
+  dispatchInput(el, 'a');
+  vi.advanceTimersByTime(2000);
+  await el.updateComplete;
+
+  expect(el._state.showSkeleton.value).toBe(false);
+  expect(el.shadowRoot!.querySelector('property-card-skeleton')).toBeNull();
+});
+
+test('clears skeleton when Escape is pressed', async () => {
+  vi.useFakeTimers();
+  const el = createElement();
+  await el.updateComplete;
+  const stub = [makeStub(1)] as never;
+  el._state.setProperties(stub);
+  el._state.setResults(stub);
+  await el.updateComplete;
+
+  el.shadowRoot!.querySelector('t1-menu')!.dispatchEvent(
+    new CustomEvent('t1-select', {
+      detail: { item: { value: '1' } },
+      bubbles: true,
+      composed: true,
+    }),
+  );
+  await el.updateComplete;
+
+  el.shadowRoot!.querySelector('.autocomplete')!.dispatchEvent(
+    new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
+  );
+  await el.updateComplete;
+
+  expect(el._state.showSkeleton.value).toBe(false);
+  expect(el.shadowRoot!.querySelector('property-card-skeleton')).toBeNull();
+});
+
+test('does not show skeleton or card while popup is open', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  el._state.setShowSkeleton(true);
+  el._state.showPopup();
+  await el.updateComplete;
+
+  expect(el.shadowRoot!.querySelector('property-card-skeleton')).toBeNull();
+  expect(el.shadowRoot!.querySelector('property-card')).toBeNull();
+});
+
+test('shows property-card when showSkeleton is false and selectedProperty is set', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  el._state.setSelectedProperty(makeStub(1));
+  el._state.setShowSkeleton(false);
+  await el.updateComplete;
+
+  expect(el.shadowRoot!.querySelector('property-card')).not.toBeNull();
+  expect(el.shadowRoot!.querySelector('property-card-skeleton')).toBeNull();
+});
+
+// ── Arrow key navigation ──────────────────────────────────────────────────────
+
+test('ArrowDown does nothing when results are empty', async () => {
+  const el = createElement();
+  await el.updateComplete;
+
+  el.shadowRoot!.querySelector('.autocomplete')!.dispatchEvent(
+    new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
+  );
+
+  expect(el._state.results.value).toEqual([]);
+});
+
+test('ArrowDown focuses the first menu item when no item is active', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  el._state.setResults([makeStub(1)] as never);
+  await el.updateComplete;
+
+  const menu = el.shadowRoot!.querySelector('t1-menu') as any;
+  const mockItem = { focus: vi.fn() } as unknown as HTMLElement;
+  menu.getAllItems = vi.fn().mockReturnValue([mockItem]);
+  menu.getCurrentItem = vi.fn().mockReturnValue(null);
+  menu.setCurrentItem = vi.fn();
+
+  el.shadowRoot!.querySelector('.autocomplete')!.dispatchEvent(
+    new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
+  );
+
+  expect(menu.setCurrentItem).toHaveBeenCalledWith(mockItem);
+  expect(mockItem.focus).toHaveBeenCalled();
+});
+
+test('ArrowDown focuses the active item when one already exists', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  el._state.setResults([makeStub(1)] as never);
+  await el.updateComplete;
+
+  const menu = el.shadowRoot!.querySelector('t1-menu') as any;
+  const mockItem = { focus: vi.fn() } as unknown as HTMLElement;
+  const activeItem = { focus: vi.fn() } as unknown as HTMLElement;
+  menu.getAllItems = vi.fn().mockReturnValue([mockItem]);
+  menu.getCurrentItem = vi.fn().mockReturnValue(activeItem);
+  menu.setCurrentItem = vi.fn();
+
+  el.shadowRoot!.querySelector('.autocomplete')!.dispatchEvent(
+    new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
+  );
+
+  expect(menu.setCurrentItem).toHaveBeenCalledWith(activeItem);
+  expect(activeItem.focus).toHaveBeenCalled();
+});
+
+test('ArrowDown does nothing when menu has no items', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  el._state.setResults([makeStub(1)] as never);
+  await el.updateComplete;
+
+  const menu = el.shadowRoot!.querySelector('t1-menu') as any;
+  menu.getAllItems = vi.fn().mockReturnValue([]);
+  menu.setCurrentItem = vi.fn();
+
+  el.shadowRoot!.querySelector('.autocomplete')!.dispatchEvent(
+    new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
+  );
+
+  expect(menu.setCurrentItem).not.toHaveBeenCalled();
+});
+
+test('ArrowUp focuses the last menu item', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  el._state.setResults([makeStub(1), makeStub(2)] as never);
+  await el.updateComplete;
+
+  const menu = el.shadowRoot!.querySelector('t1-menu') as any;
+  const item1 = { focus: vi.fn() } as unknown as HTMLElement;
+  const item2 = { focus: vi.fn() } as unknown as HTMLElement;
+  menu.getAllItems = vi.fn().mockReturnValue([item1, item2]);
+  menu.setCurrentItem = vi.fn();
+
+  el.shadowRoot!.querySelector('.autocomplete')!.dispatchEvent(
+    new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }),
+  );
+
+  expect(menu.setCurrentItem).toHaveBeenCalledWith(item2);
+  expect(item2.focus).toHaveBeenCalled();
+});
+
+test('ArrowUp does nothing when menu has no items', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  el._state.setResults([makeStub(1)] as never);
+  await el.updateComplete;
+
+  const menu = el.shadowRoot!.querySelector('t1-menu') as any;
+  menu.getAllItems = vi.fn().mockReturnValue([]);
+  menu.setCurrentItem = vi.fn();
+
+  el.shadowRoot!.querySelector('.autocomplete')!.dispatchEvent(
+    new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }),
+  );
+
+  expect(menu.setCurrentItem).not.toHaveBeenCalled();
 });
