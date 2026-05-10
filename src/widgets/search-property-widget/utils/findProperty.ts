@@ -1,10 +1,13 @@
-import type { TransformedProperty } from "@services/property.service";
+import type { TransformedProperty } from '@services/property.service';
 
-export function findProperty(
+const findProperty = (
 	properties: TransformedProperty[],
 	searchInput: string,
-): TransformedProperty[] {
+): TransformedProperty[] => {
 	const search = searchInput.toLowerCase();
+	return properties.filter(
+		(property) => property.fullAddress.toLowerCase().includes(search),
+	);
+};
 
-	return properties.filter((p) => p.fullAddress.toLowerCase().includes(search));
-}
+export default findProperty;

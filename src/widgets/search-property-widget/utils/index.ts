@@ -1,1 +1,1 @@
-export { findProperty } from './findProperty';
+export { default as findProperty } from './findProperty';

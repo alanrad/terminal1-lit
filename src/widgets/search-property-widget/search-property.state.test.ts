@@ -1,96 +1,161 @@
-import { describe, it, expect } from 'vitest';
-import { createSearchPropertyState } from './search-property.state';
+import { test, expect } from 'vitest';
+import createSearchPropertyState from './search-property.state';
 
-describe('createSearchPropertyState', () => {
-  it('initialises with an empty query', () => {
-    const s = createSearchPropertyState();
-    expect(s.query.value).toBe('');
-  });
+test('query signal initialises with an empty query', () => {
+	const state = createSearchPropertyState();
+	expect(state.query.value).toBe('');
+});
 
-  it('setQuery updates the query signal', () => {
-    const s = createSearchPropertyState();
-    s.setQuery('Paris');
-    expect(s.query.value).toBe('Paris');
-  });
+test('setQuery updates the query signal', () => {
+	const state = createSearchPropertyState();
+	state.setQuery('Paris');
+	expect(state.query.value).toBe('Paris');
+});
 
-  it('multiple setQuery calls update to the latest value', () => {
-    const s = createSearchPropertyState();
-    s.setQuery('New York');
-    s.setQuery('London');
-    expect(s.query.value).toBe('London');
-  });
+test('multiple setQuery calls update to the latest value', () => {
+	const state = createSearchPropertyState();
+	state.setQuery('New York');
+	state.setQuery('London');
+	expect(state.query.value).toBe('London');
+});
 
-  it('each factory call returns independent state', () => {
-    const a = createSearchPropertyState();
-    const b = createSearchPropertyState();
-    a.setQuery('Tokyo');
-    expect(b.query.value).toBe('');
-  });
+test('each factory call returns independent query state', () => {
+	const stateA = createSearchPropertyState();
+	const stateB = createSearchPropertyState();
+	stateA.setQuery('Tokyo');
+	expect(stateB.query.value).toBe('');
+});
 
-  describe('properties signal', () => {
-    it('initialises as null', () => {
-      const s = createSearchPropertyState();
-      expect(s.properties.value).toBeNull();
-    });
+test('properties signal initialises as null', () => {
+	const state = createSearchPropertyState();
+	expect(state.properties.value).toBeNull();
+});
 
-    it('setProperties stores the given array', () => {
-      const s = createSearchPropertyState();
-      const stub = [{ id: 1, fullAddress: 'A, B, C, D, E' }] as Parameters<typeof s.setProperties>[0];
-      s.setProperties(stub);
-      expect(s.properties.value).toStrictEqual(stub);
-    });
+test('setProperties stores the given array', () => {
+	const state = createSearchPropertyState();
+	const stub = [{ id: 1, fullAddress: 'A, B, C, D, E' }] as Parameters<typeof state.setProperties>[0];
+	state.setProperties(stub);
+	expect(state.properties.value).toStrictEqual(stub);
+});
 
-    it('setProperties replaces any previous value', () => {
-      const s = createSearchPropertyState();
-      const first = [{ id: 1, fullAddress: 'A' }] as Parameters<typeof s.setProperties>[0];
-      const second = [{ id: 2, fullAddress: 'B' }, { id: 3, fullAddress: 'C' }] as Parameters<typeof s.setProperties>[0];
-      s.setProperties(first);
-      s.setProperties(second);
-      expect(s.properties.value).toStrictEqual(second);
-    });
+test('setProperties replaces any previous value', () => {
+	const state = createSearchPropertyState();
+	const first = [{ id: 1, fullAddress: 'A' }] as Parameters<typeof state.setProperties>[0];
+	const second = [{ id: 2, fullAddress: 'B' }, { id: 3, fullAddress: 'C' }] as Parameters<typeof state.setProperties>[0];
+	state.setProperties(first);
+	state.setProperties(second);
+	expect(state.properties.value).toStrictEqual(second);
+});
 
-    it('each factory call has independent properties state', () => {
-      const a = createSearchPropertyState();
-      const b = createSearchPropertyState();
-      a.setProperties([{ id: 99, fullAddress: 'X' }] as Parameters<typeof a.setProperties>[0]);
-      expect(b.properties.value).toBeNull();
-    });
-  });
+test('each factory call returns independent properties state', () => {
+	const stateA = createSearchPropertyState();
+	const stateB = createSearchPropertyState();
+	stateA.setProperties([{ id: 99, fullAddress: 'X' }] as Parameters<typeof stateA.setProperties>[0]);
+	expect(stateB.properties.value).toBeNull();
+});
 
-  describe('results signal', () => {
-    it('initialises as an empty array', () => {
-      const s = createSearchPropertyState();
-      expect(s.results.value).toEqual([]);
-    });
+test('results signal initialises as an empty array', () => {
+	const state = createSearchPropertyState();
+	expect(state.results.value).toEqual([]);
+});
 
-    it('setResults stores the given array', () => {
-      const s = createSearchPropertyState();
-      const stub = [{ id: 1, fullAddress: 'A, B, C, D, E' }] as Parameters<typeof s.setResults>[0];
-      s.setResults(stub);
-      expect(s.results.value).toStrictEqual(stub);
-    });
+test('setResults stores the given array', () => {
+	const state = createSearchPropertyState();
+	const stub = [{ id: 1, fullAddress: 'A, B, C, D, E' }] as Parameters<typeof state.setResults>[0];
+	state.setResults(stub);
+	expect(state.results.value).toStrictEqual(stub);
+});
 
-    it('setResults replaces any previous value', () => {
-      const s = createSearchPropertyState();
-      const first = [{ id: 1, fullAddress: 'A' }] as Parameters<typeof s.setResults>[0];
-      const second = [{ id: 2, fullAddress: 'B' }] as Parameters<typeof s.setResults>[0];
-      s.setResults(first);
-      s.setResults(second);
-      expect(s.results.value).toStrictEqual(second);
-    });
+test('setResults replaces any previous value', () => {
+	const state = createSearchPropertyState();
+	const first = [{ id: 1, fullAddress: 'A' }] as Parameters<typeof state.setResults>[0];
+	const second = [{ id: 2, fullAddress: 'B' }] as Parameters<typeof state.setResults>[0];
+	state.setResults(first);
+	state.setResults(second);
+	expect(state.results.value).toStrictEqual(second);
+});
 
-    it('each factory call has independent results state', () => {
-      const a = createSearchPropertyState();
-      const b = createSearchPropertyState();
-      a.setResults([{ id: 1, fullAddress: 'X' }] as Parameters<typeof a.setResults>[0]);
-      expect(b.results.value).toEqual([]);
-    });
+test('each factory call returns independent results state', () => {
+	const stateA = createSearchPropertyState();
+	const stateB = createSearchPropertyState();
+	stateA.setResults([{ id: 1, fullAddress: 'X' }] as Parameters<typeof stateA.setResults>[0]);
+	expect(stateB.results.value).toEqual([]);
+});
 
-    it('clearResults resets results to an empty array', () => {
-      const s = createSearchPropertyState();
-      s.setResults([{ id: 1, fullAddress: 'A' }] as Parameters<typeof s.setResults>[0]);
-      s.clearResults();
-      expect(s.results.value).toEqual([]);
-    });
-  });
+test('clearResults resets results to an empty array', () => {
+	const state = createSearchPropertyState();
+	state.setResults([{ id: 1, fullAddress: 'A' }] as Parameters<typeof state.setResults>[0]);
+	state.clearResults();
+	expect(state.results.value).toEqual([]);
+});
+
+test('setResults with non-empty data opens the popup', () => {
+	const state = createSearchPropertyState();
+	state.setResults([{ id: 1, fullAddress: 'A' }] as Parameters<typeof state.setResults>[0]);
+	expect(state.popupVisible.value).toBe(true);
+});
+
+test('setResults with an empty array closes the popup', () => {
+	const state = createSearchPropertyState();
+	state.setResults([{ id: 1, fullAddress: 'A' }] as Parameters<typeof state.setResults>[0]);
+	state.setResults([]);
+	expect(state.popupVisible.value).toBe(false);
+});
+
+test('clearResults closes the popup', () => {
+	const state = createSearchPropertyState();
+	state.clearResults();
+	expect(state.popupVisible.value).toBe(false);
+});
+
+test('popupVisible signal initialises as false', () => {
+	const state = createSearchPropertyState();
+	expect(state.popupVisible.value).toBe(false);
+});
+
+test('showPopup sets popupVisible to true', () => {
+	const state = createSearchPropertyState();
+	state.showPopup();
+	expect(state.popupVisible.value).toBe(true);
+});
+
+test('hidePopup sets popupVisible to false without clearing results', () => {
+	const state = createSearchPropertyState();
+	const stub = [{ id: 1, fullAddress: 'A' }] as Parameters<typeof state.setResults>[0];
+	state.setResults(stub);
+	state.hidePopup();
+	expect(state.popupVisible.value).toBe(false);
+	expect(state.results.value).toStrictEqual(stub);
+});
+
+test('each factory call returns independent popupVisible state', () => {
+	const stateA = createSearchPropertyState();
+	const stateB = createSearchPropertyState();
+	stateA.showPopup();
+	expect(stateB.popupVisible.value).toBe(false);
+});
+
+test('loading signal initialises as false', () => {
+	const state = createSearchPropertyState();
+	expect(state.loading.value).toBe(false);
+});
+
+test('setLoading updates the loading signal', () => {
+	const state = createSearchPropertyState();
+	state.setLoading(true);
+	expect(state.loading.value).toBe(true);
+});
+
+test('setLoading can toggle back to false', () => {
+	const state = createSearchPropertyState();
+	state.setLoading(true);
+	state.setLoading(false);
+	expect(state.loading.value).toBe(false);
+});
+
+test('each factory call returns independent loading state', () => {
+	const stateA = createSearchPropertyState();
+	const stateB = createSearchPropertyState();
+	stateA.setLoading(true);
+	expect(stateB.loading.value).toBe(false);
 });
