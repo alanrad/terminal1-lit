@@ -1,5 +1,6 @@
 // Public API — re-exported for consumers who install via npm rather than CDN
 export { CounterWidget } from './widgets/counter-widget';
+export { SearchPropertyWidget } from './widgets/search-property-widget';
 export { default as T1Icon } from './components/t1-icon';
 export { default as T1Input } from './components/t1-input';
 export { registerIconLibrary, unregisterIconLibrary } from './components/t1-icon/icon.library';
