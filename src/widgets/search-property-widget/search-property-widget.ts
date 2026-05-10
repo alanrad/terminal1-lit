@@ -13,7 +13,7 @@ import '@components/t1-menu-item/index';
 import '@components/t1-spinner/index';
 import PropertyService from '@services/property.service';
 import type { TransformedProperty } from '@services/property.service';
-import { findProperty } from './utils';
+import { findProperty, getPropertyIcon } from './utils';
 
 @customElement('search-property-widget')
 class SearchPropertyWidget extends SignalMixin(LitElement) {
@@ -159,7 +159,10 @@ class SearchPropertyWidget extends SignalMixin(LitElement) {
           <t1-menu @t1-select=${this.handleMenuSelect}>
             ${this._state.results.value.map(
               (property) => html`
-                <t1-menu-item .value=${String(property.id)}>${property.name}</t1-menu-item>
+                <t1-menu-item .value=${String(property.id)}>
+                  <t1-icon slot="prefix" name=${getPropertyIcon(property.propertyType)}></t1-icon>
+                  ${property.fullAddress}
+                </t1-menu-item>
               `,
             )}
           </t1-menu>
