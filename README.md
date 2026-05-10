@@ -6,8 +6,10 @@
 widget/
 ├── src/
 │   ├── components/          # Shared primitives (reused across widgets)
-│   │   ├── t1-icon.ts
-│   │   └── t1-input.ts
+│   │   ├── t1-icon/
+│   │   ├── t1-input/
+│   │   ├── t1-button/
+│   │   └── ...              # Other shared UI primitives
 │   ├── services/            # API layer
 │   │   ├── api.service.ts   # Abstract base class
 │   │   └── example.service.ts
@@ -25,15 +27,31 @@ widget/
 │   └── widgets/
 │       ├── counter-widget/  # Signal-driven stateful widget
 │       │   ├── counter.state.ts
+│       │   ├── counter.state.test.ts  # ← tests co-located with source
 │       │   ├── counter-widget.ts
+│       │   ├── counter-widget.test.ts
 │       │   └── index.ts
 │       └── search-property-widget/    # Async data loading widget
+│           ├── search-property.state.ts
+│           ├── search-property.state.test.ts
 │           ├── search-property-widget.ts
+│           ├── search-property-widget.styles.ts
+│           ├── search-property-widget.test.ts
+│           ├── utils/
+│           │   ├── findProperty.ts
+│           │   ├── findProperty.test.ts
+│           │   └── index.ts
 │           └── index.ts
-├── tests/unit/              # Vitest unit tests
-├── public/index.html        # Dev sandbox (all widgets side by side)
+├── translations/            # i18n translation files (29 locales)
+├── playground/              # Dev sandbox pages (one per component)
+├── .husky/
+│   └── pre-commit           # Runs lint-staged + type-check before every commit
+├── .prettierrc              # Prettier formatting rules
+├── .prettierignore
+├── .vscode/settings.json    # Format-on-save for VS Code
 ├── vite.config.ts
 ├── tsconfig.json
+├── tsconfig.check.json      # Extended tsconfig that also checks translations/
 └── package.json
 ```
 
@@ -47,6 +65,8 @@ Install the runtime and all dev dependencies:
 npm init -y
 npm install lit @lit/reactive-element
 npm install -D vite vite-plugin-dts typescript vitest @vitest/ui jsdom
+npm install -D prettier husky lint-staged
+npx husky init
 ```
 
 **Why this stack:**
@@ -54,6 +74,8 @@ npm install -D vite vite-plugin-dts typescript vitest @vitest/ui jsdom
 - **Lit** — the lightest path to standards-based web components with reactive properties and Shadow DOM, no virtual DOM overhead.
 - **Vite** — near-instant dev server and optimised ES module builds; multi-entry lib mode emits one chunk per widget with automatic shared-code splitting.
 - **Vitest** — shares the same Vite config so transforms (decorators, path aliases) work identically in tests and builds.
+- **Prettier** — enforces consistent formatting across all TS, JS, HTML, CSS, JSON, and Markdown files.
+- **Husky + lint-staged** — runs Prettier and TypeScript type-checking automatically on every commit so formatting and type issues never reach the repo.
 
 ---
 
@@ -160,26 +182,28 @@ export function createCounterState(initial = 0) {
 
 ## Step 5 — Shared Components
 
-`w-button` and `w-spinner` are registered custom elements that any widget can use in its template without re-implementing common UI patterns.
+Shared components live in `src/components/` and are registered custom elements that any widget can use in its template without re-implementing common UI patterns.
 
-**`w-button`** exposes:
+**`t1-button`** exposes:
 
-- `variant` attribute: `primary | secondary | ghost`
-- `size` attribute: `sm | md | lg`
+- `variant` attribute: `default | primary | success | neutral | warning | danger | text`
+- `size` attribute: `small | medium | large`
 - `disabled` boolean attribute
-- `::part(button)` for host-page CSS overrides
-- `w-click` custom event (bubbles, composed)
+- `::part(base)` for host-page CSS overrides
 
-**`w-spinner`** exposes:
+**`t1-spinner`** exposes:
 
-- `label` attribute for accessible text
-- `--w-spinner-size` CSS custom property for sizing
+- `--t1-spinner-size` CSS custom property for sizing
+
+**`t1-icon`** — fetches and caches SVG icons; supports named icon libraries via `registerIconLibrary()`. Emits `t1-load` / `t1-error` events.
+
+**`t1-input`** — fully form-associated (`ElementInternals`); supports all standard `<input>` types, clearable mode, and password toggle.
 
 Host pages can style internals without piercing Shadow DOM:
 
 ```css
-counter-widget::part(value) {
-  font-size: 3rem;
+search-property-widget::part(input) {
+  border-radius: 12px;
 }
 ```
 
@@ -284,7 +308,7 @@ The CDN base URL is inferred from `import.meta.url` automatically, so the loader
 
 ## Step 9 — Testing
 
-Tests are co-located under `tests/unit/` and run with Vitest in a jsdom environment (configured in `vite.config.ts`).
+Tests are co-located with their source files under `src/` (e.g., `src/widgets/counter-widget/counter.state.test.ts`) and discovered via `src/**/*.test.ts`. They run with Vitest in a jsdom environment (configured in `vite.config.ts`).
 
 ```bash
 npm test              # single run, CI mode
@@ -296,14 +320,16 @@ npm run test:ui       # Vitest browser UI at localhost:51204
 **State tests** (`counter.state.test.ts`) run in plain Node — no browser APIs needed because state is framework-free:
 
 ```ts
-it('resets to initial value', () => {
-  const s = createCounterState(3);
-  s.increment();
-  s.increment();
-  s.reset();
-  expect(s.count.value).toBe(3);
+test('resets to initial value', () => {
+  const state = createCounterState(3);
+  state.increment();
+  state.increment();
+  state.reset();
+  expect(state.count.value).toBe(3);
 });
 ```
+
+Tests use a flat `test()` structure (no `describe`/`it` nesting) for consistency across the project.
 
 **Utility tests** (`fetch.test.ts`) use `vi.stubGlobal("fetch", vi.fn())` to mock the global fetch without any network calls:
 
@@ -319,24 +345,73 @@ For widget rendering tests (Shadow DOM assertions), add `@open-wc/testing` helpe
 
 ---
 
-## Step 10 — Scripts Reference
+## Step 10 — Code Quality
 
-| Command                 | Purpose                                                       |
-| ----------------------- | ------------------------------------------------------------- |
-| `npm run dev`           | Vite dev server on :3000 with HMR, serves `public/index.html` |
-| `npm run build`         | Type-check (`tsc --noEmit`) then production build → `dist/`   |
-| `npm run build:watch`   | Rebuild on every file save (useful for linked local testing)  |
-| `npm run preview`       | Serve `dist/` locally to verify the production build          |
-| `npm test`              | Vitest single run (used in CI)                                |
-| `npm run test:watch`    | Vitest in watch mode                                          |
-| `npm run test:ui`       | Vitest browser UI                                             |
-| `npm run test:coverage` | Coverage report under `coverage/`                             |
-| `npm run type-check`    | TypeScript type-check only, no emit                           |
-| `npm run release`       | Build + `npm publish --access public`                         |
+### Prettier
+
+Formatting rules are declared in `.prettierrc`:
+
+```json
+{
+  "printWidth": 100,
+  "tabWidth": 2,
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "arrowParens": "always"
+}
+```
+
+Format the entire project manually:
+
+```bash
+npm run format          # write formatting changes in-place
+npm run format:check    # check without writing (CI-safe)
+```
+
+`.prettierignore` excludes `dist/`, `node_modules/`, and `coverage/`.
+
+### Format on save (VS Code)
+
+`.vscode/settings.json` enables format-on-save automatically for TypeScript, JavaScript, JSON, and HTML files when the Prettier VS Code extension is installed.
+
+### Pre-commit hook
+
+`.husky/pre-commit` runs two checks before every `git commit`:
+
+```sh
+npx lint-staged      # formats staged files with Prettier
+npm run type-check   # full TypeScript check including translations/
+```
+
+`lint-staged` is configured in `package.json` to run Prettier on any staged `*.ts`, `*.js`, `*.html`, `*.css`, `*.json`, or `*.md` file — only touching files in the commit, not the whole project.
+
+### TypeScript check
+
+`npm run type-check` uses `tsconfig.check.json`, which extends the main `tsconfig.json` but also includes the `translations/` directory. This ensures translation files are type-checked despite living outside `src/`. The build script (`tsc --noEmit && vite build`) continues to use the main `tsconfig.json` so the build scope is unaffected.
 
 ---
 
-## Step 11 — Publishing to CDN
+## Step 11 — Scripts Reference
+
+| Command                 | Purpose                                                                        |
+| ----------------------- | ------------------------------------------------------------------------------ |
+| `npm run dev`           | Vite dev server on :3000 with HMR, serves `playground/`                        |
+| `npm run build`         | Type-check (`tsc --noEmit`) then production build → `dist/`                    |
+| `npm run build:watch`   | Rebuild on every file save (useful for linked local testing)                   |
+| `npm run preview`       | Serve `dist/` locally to verify the production build                           |
+| `npm test`              | Vitest single run (used in CI)                                                 |
+| `npm run test:watch`    | Vitest in watch mode                                                           |
+| `npm run test:ui`       | Vitest browser UI                                                              |
+| `npm run test:coverage` | Coverage report under `coverage/`                                              |
+| `npm run type-check`    | TypeScript check via `tsconfig.check.json` — covers `src/` and `translations/` |
+| `npm run format`        | Run Prettier across the entire project (writes in-place)                       |
+| `npm run format:check`  | Check formatting without writing (suitable for CI)                             |
+| `npm run release`       | Build + `npm publish --access public`                                          |
+
+---
+
+## Step 12 — Publishing to CDN
 
 After running `npm run build`, the `dist/` folder is self-contained:
 
@@ -378,7 +453,7 @@ npm run release   # runs: tsc --noEmit && vite build && npm publish --access pub
 
 ---
 
-## Step 12 — Adding a New Widget (Checklist)
+## Step 13 — Adding a New Widget (Checklist)
 
 Follow these steps every time you add a widget to the library:
 
@@ -471,10 +546,11 @@ const WIDGET_REGISTRY: Record<string, string> = {
 export { MyWidget } from './widgets/my-widget/index.js';
 ```
 
-**7. Write unit tests:**
+**7. Write unit tests (co-located with source):**
 
 ```bash
-touch tests/unit/my-widget.state.test.ts
+touch src/widgets/my-widget/my-widget.state.test.ts
+touch src/widgets/my-widget/my-widget.test.ts
 ```
 
 **8. Add to the dev sandbox** (`public/index.html`):
@@ -491,9 +567,10 @@ touch tests/unit/my-widget.state.test.ts
 **9. Verify:**
 
 ```bash
-npm run type-check   # no errors
-npm test             # all tests pass
-npm run build        # dist/ emits widgets/my-widget.js automatically
+npm run type-check      # no TypeScript errors (covers src/ + translations/)
+npm run format:check    # no Prettier formatting violations
+npm test                # all tests pass
+npm run build           # dist/ emits widgets/my-widget.js automatically
 ```
 
 Vite's `discoverWidgets()` picks up the new entry automatically — no manual config change required.
