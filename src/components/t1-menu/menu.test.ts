@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { expect, afterEach, test } from 'vitest';
 import '../t1-menu-item/index';
 import './index';
 
@@ -28,212 +28,216 @@ afterEach(() => {
   document.body.querySelectorAll('div').forEach((el) => el.remove());
 });
 
-describe('t1-menu', () => {
-  describe('default structure', () => {
-    it('has role="menu" on the host', async () => {
-      const menu = createMenu('<t1-menu-item>Item 1</t1-menu-item>');
-      await menu.updateComplete;
+test('has role="menu" on the host', async () => {
+  const menu = createMenu('<t1-menu-item>Item 1</t1-menu-item>');
+  await menu.updateComplete;
 
-      expect(menu.getAttribute('role')).toBe('menu');
-    });
+  expect(menu.getAttribute('role')).toBe('menu');
+});
 
-    it('renders slotted menu items', async () => {
-      const menu = createMenu(`
-        <t1-menu-item value="a">Item A</t1-menu-item>
-        <t1-menu-item value="b">Item B</t1-menu-item>
-      `);
-      await menu.updateComplete;
+test('renders slotted menu items', async () => {
+  const menu = createMenu(`
+    <t1-menu-item value="a">Item A</t1-menu-item>
+    <t1-menu-item value="b">Item B</t1-menu-item>
+  `);
+  await menu.updateComplete;
 
-      expect(menu.querySelectorAll('t1-menu-item').length).toBe(2);
-    });
+  expect(menu.querySelectorAll('t1-menu-item').length).toBe(2);
+});
+
+test('getAllItems returns all enabled menu items', async () => {
+  const menu = createMenu(`
+    <t1-menu-item value="1">Item 1</t1-menu-item>
+    <t1-menu-item value="2">Item 2</t1-menu-item>
+    <t1-menu-item value="3">Item 3</t1-menu-item>
+  `);
+  await menu.updateComplete;
+  await new Promise((r) => requestAnimationFrame(r));
+
+  const items = menu.getAllItems();
+  expect(items.length).toBe(3);
+});
+
+test('getAllItems includes disabled items (only inert items excluded)', async () => {
+  const menu = createMenu(`
+    <t1-menu-item value="1">Item 1</t1-menu-item>
+    <t1-menu-item value="2" disabled>Item 2</t1-menu-item>
+    <t1-menu-item value="3">Item 3</t1-menu-item>
+  `);
+  await menu.updateComplete;
+  await new Promise((r) => requestAnimationFrame(r));
+
+  const items = menu.getAllItems();
+  expect(items.length).toBe(3);
+});
+
+test('emits t1-select with the clicked item in detail', async () => {
+  const menu = createMenu(`
+    <t1-menu-item value="item-1">Item 1</t1-menu-item>
+    <t1-menu-item value="item-2">Item 2</t1-menu-item>
+  `);
+  await menu.updateComplete;
+
+  const [, item2] = menu.querySelectorAll('t1-menu-item') as unknown as T1MenuItemEl[];
+  let selectedItem: T1MenuItemEl | null = null;
+
+  menu.addEventListener(
+    't1-select',
+    (e: Event) => {
+      selectedItem = (e as CustomEvent).detail.item;
+    },
+    { once: true },
+  );
+
+  item2.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+  await menu.updateComplete;
+
+  expect(selectedItem).toBe(item2);
+});
+
+test('does not emit t1-select for disabled items', async () => {
+  const menu = createMenu(`
+    <t1-menu-item value="item-1">Item 1</t1-menu-item>
+    <t1-menu-item value="item-2" disabled>Item 2</t1-menu-item>
+  `);
+  await menu.updateComplete;
+
+  let selected = false;
+  menu.addEventListener('t1-select', () => {
+    selected = true;
   });
 
-  describe('getAllItems()', () => {
-    it('returns all enabled menu items', async () => {
-      const menu = createMenu(`
-        <t1-menu-item value="1">Item 1</t1-menu-item>
-        <t1-menu-item value="2">Item 2</t1-menu-item>
-        <t1-menu-item value="3">Item 3</t1-menu-item>
-      `);
-      await menu.updateComplete;
-      // Wait for slot assignment
-      await new Promise((r) => requestAnimationFrame(r));
+  const [, item2] = menu.querySelectorAll('t1-menu-item') as unknown as T1MenuItemEl[];
+  item2.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+  await menu.updateComplete;
 
-      const items = menu.getAllItems();
-      expect(items.length).toBe(3);
-    });
+  expect(selected).toBe(false);
+});
 
-    it('includes disabled items (only inert items are excluded)', async () => {
-      const menu = createMenu(`
-        <t1-menu-item value="1">Item 1</t1-menu-item>
-        <t1-menu-item value="2" disabled>Item 2</t1-menu-item>
-        <t1-menu-item value="3">Item 3</t1-menu-item>
-      `);
-      await menu.updateComplete;
-      await new Promise((r) => requestAnimationFrame(r));
+function dispatchKey(menu: T1MenuEl, key: string) {
+  const slot = menu.shadowRoot!.querySelector('slot')!;
+  slot.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
+}
 
-      const items = menu.getAllItems();
-      expect(items.length).toBe(3);
-    });
-  });
+test('moves focus down on ArrowDown', async () => {
+  const menu = createMenu(`
+    <t1-menu-item value="1">Item 1</t1-menu-item>
+    <t1-menu-item value="2">Item 2</t1-menu-item>
+    <t1-menu-item value="3">Item 3</t1-menu-item>
+  `);
+  await menu.updateComplete;
+  await new Promise((r) => requestAnimationFrame(r));
 
-  describe('t1-select event', () => {
-    it('emits t1-select with the clicked item in detail', async () => {
-      const menu = createMenu(`
-        <t1-menu-item value="item-1">Item 1</t1-menu-item>
-        <t1-menu-item value="item-2">Item 2</t1-menu-item>
-      `);
-      await menu.updateComplete;
+  const items = menu.getAllItems();
+  menu.setCurrentItem(items[0]);
 
-      const [, item2] = menu.querySelectorAll('t1-menu-item') as unknown as T1MenuItemEl[];
-      let selectedItem: T1MenuItemEl | null = null;
+  dispatchKey(menu, 'ArrowDown');
+  await menu.updateComplete;
 
-      menu.addEventListener(
-        't1-select',
-        (e: Event) => {
-          selectedItem = (e as CustomEvent).detail.item;
-        },
-        { once: true },
-      );
+  expect(menu.getCurrentItem()).toBe(items[1]);
+});
 
-      item2.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
-      await menu.updateComplete;
+test('wraps focus to first item when ArrowDown on last item', async () => {
+  const menu = createMenu(`
+    <t1-menu-item value="1">Item 1</t1-menu-item>
+    <t1-menu-item value="2">Item 2</t1-menu-item>
+    <t1-menu-item value="3">Item 3</t1-menu-item>
+  `);
+  await menu.updateComplete;
+  await new Promise((r) => requestAnimationFrame(r));
 
-      expect(selectedItem).toBe(item2);
-    });
+  const items = menu.getAllItems();
+  menu.setCurrentItem(items[items.length - 1]);
 
-    it('does not emit t1-select for disabled items', async () => {
-      const menu = createMenu(`
-        <t1-menu-item value="item-1">Item 1</t1-menu-item>
-        <t1-menu-item value="item-2" disabled>Item 2</t1-menu-item>
-      `);
-      await menu.updateComplete;
+  dispatchKey(menu, 'ArrowDown');
+  await menu.updateComplete;
 
-      let selected = false;
-      menu.addEventListener('t1-select', () => {
-        selected = true;
-      });
+  expect(menu.getCurrentItem()).toBe(items[0]);
+});
 
-      const [, item2] = menu.querySelectorAll('t1-menu-item') as unknown as T1MenuItemEl[];
-      item2.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
-      await menu.updateComplete;
+test('moves focus up on ArrowUp', async () => {
+  const menu = createMenu(`
+    <t1-menu-item value="1">Item 1</t1-menu-item>
+    <t1-menu-item value="2">Item 2</t1-menu-item>
+    <t1-menu-item value="3">Item 3</t1-menu-item>
+  `);
+  await menu.updateComplete;
+  await new Promise((r) => requestAnimationFrame(r));
 
-      expect(selected).toBe(false);
-    });
-  });
+  const items = menu.getAllItems();
+  menu.setCurrentItem(items[2]);
 
-  describe('keyboard navigation', () => {
-    function dispatchKey(menu: T1MenuEl, key: string) {
-      // The @keydown listener lives on the <slot> inside shadow DOM; dispatch directly there.
-      const slot = menu.shadowRoot!.querySelector('slot')!;
-      slot.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
-    }
+  dispatchKey(menu, 'ArrowUp');
+  await menu.updateComplete;
 
-    it('moves focus down on ArrowDown', async () => {
-      const menu = createMenu(`
-        <t1-menu-item value="1">Item 1</t1-menu-item>
-        <t1-menu-item value="2">Item 2</t1-menu-item>
-        <t1-menu-item value="3">Item 3</t1-menu-item>
-      `);
-      await menu.updateComplete;
-      await new Promise((r) => requestAnimationFrame(r));
+  expect(menu.getCurrentItem()).toBe(items[1]);
+});
 
-      const items = menu.getAllItems();
-      menu.setCurrentItem(items[0]);
+test('wraps focus to last item when ArrowUp on first item', async () => {
+  const menu = createMenu(`
+    <t1-menu-item value="1">Item 1</t1-menu-item>
+    <t1-menu-item value="2">Item 2</t1-menu-item>
+    <t1-menu-item value="3">Item 3</t1-menu-item>
+  `);
+  await menu.updateComplete;
+  await new Promise((r) => requestAnimationFrame(r));
 
-      dispatchKey(menu, 'ArrowDown');
-      await menu.updateComplete;
+  const items = menu.getAllItems();
+  menu.setCurrentItem(items[0]);
 
-      expect(menu.getCurrentItem()).toBe(items[1]);
-    });
+  dispatchKey(menu, 'ArrowUp');
+  await menu.updateComplete;
 
-    it('moves focus up on ArrowUp', async () => {
-      const menu = createMenu(`
-        <t1-menu-item value="1">Item 1</t1-menu-item>
-        <t1-menu-item value="2">Item 2</t1-menu-item>
-        <t1-menu-item value="3">Item 3</t1-menu-item>
-      `);
-      await menu.updateComplete;
-      await new Promise((r) => requestAnimationFrame(r));
+  expect(menu.getCurrentItem()).toBe(items[items.length - 1]);
+});
 
-      const items = menu.getAllItems();
-      menu.setCurrentItem(items[2]);
+test('moves focus to first item on Home', async () => {
+  const menu = createMenu(`
+    <t1-menu-item value="1">Item 1</t1-menu-item>
+    <t1-menu-item value="2">Item 2</t1-menu-item>
+    <t1-menu-item value="3">Item 3</t1-menu-item>
+  `);
+  await menu.updateComplete;
+  await new Promise((r) => requestAnimationFrame(r));
 
-      dispatchKey(menu, 'ArrowUp');
-      await menu.updateComplete;
+  const items = menu.getAllItems();
+  menu.setCurrentItem(items[2]);
 
-      expect(menu.getCurrentItem()).toBe(items[1]);
-    });
+  dispatchKey(menu, 'Home');
+  await menu.updateComplete;
 
-    it('wraps focus to last item when ArrowUp on first item', async () => {
-      const menu = createMenu(`
-        <t1-menu-item value="1">Item 1</t1-menu-item>
-        <t1-menu-item value="2">Item 2</t1-menu-item>
-        <t1-menu-item value="3">Item 3</t1-menu-item>
-      `);
-      await menu.updateComplete;
-      await new Promise((r) => requestAnimationFrame(r));
+  expect(menu.getCurrentItem()).toBe(items[0]);
+});
 
-      const items = menu.getAllItems();
-      menu.setCurrentItem(items[0]);
+test('moves focus to last item on End', async () => {
+  const menu = createMenu(`
+    <t1-menu-item value="1">Item 1</t1-menu-item>
+    <t1-menu-item value="2">Item 2</t1-menu-item>
+    <t1-menu-item value="3">Item 3</t1-menu-item>
+  `);
+  await menu.updateComplete;
+  await new Promise((r) => requestAnimationFrame(r));
 
-      dispatchKey(menu, 'ArrowUp');
-      await menu.updateComplete;
+  const items = menu.getAllItems();
+  menu.setCurrentItem(items[0]);
 
-      expect(menu.getCurrentItem()).toBe(items[items.length - 1]);
-    });
+  dispatchKey(menu, 'End');
+  await menu.updateComplete;
 
-    it('moves focus to first item on Home', async () => {
-      const menu = createMenu(`
-        <t1-menu-item value="1">Item 1</t1-menu-item>
-        <t1-menu-item value="2">Item 2</t1-menu-item>
-        <t1-menu-item value="3">Item 3</t1-menu-item>
-      `);
-      await menu.updateComplete;
-      await new Promise((r) => requestAnimationFrame(r));
+  expect(menu.getCurrentItem()).toBe(items[items.length - 1]);
+});
 
-      const items = menu.getAllItems();
-      menu.setCurrentItem(items[2]);
+test('toggles checked state on click for checkbox menu items', async () => {
+  const menu = createMenu(`
+    <t1-menu-item type="checkbox" value="opt">Option</t1-menu-item>
+  `);
+  await menu.updateComplete;
 
-      dispatchKey(menu, 'Home');
-      await menu.updateComplete;
+  const item = menu.querySelector('t1-menu-item') as unknown as T1MenuItemEl;
+  const initialChecked = item.checked;
 
-      expect(menu.getCurrentItem()).toBe(items[0]);
-    });
+  item.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+  await menu.updateComplete;
 
-    it('moves focus to last item on End', async () => {
-      const menu = createMenu(`
-        <t1-menu-item value="1">Item 1</t1-menu-item>
-        <t1-menu-item value="2">Item 2</t1-menu-item>
-        <t1-menu-item value="3">Item 3</t1-menu-item>
-      `);
-      await menu.updateComplete;
-      await new Promise((r) => requestAnimationFrame(r));
-
-      const items = menu.getAllItems();
-      menu.setCurrentItem(items[0]);
-
-      dispatchKey(menu, 'End');
-      await menu.updateComplete;
-
-      expect(menu.getCurrentItem()).toBe(items[items.length - 1]);
-    });
-  });
-
-  describe('checkbox menu items', () => {
-    it('toggles checked state on click', async () => {
-      const menu = createMenu(`
-        <t1-menu-item type="checkbox" value="opt">Option</t1-menu-item>
-      `);
-      await menu.updateComplete;
-
-      const item = menu.querySelector('t1-menu-item') as unknown as T1MenuItemEl;
-      const initialChecked = item.checked;
-
-      item.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
-      await menu.updateComplete;
-
-      expect(item.checked).toBe(!initialChecked);
-    });
-  });
+  expect(item.checked).toBe(!initialChecked);
 });

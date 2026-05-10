@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { expect, afterEach, test } from 'vitest';
 import '../t1-menu/index';
 import '../t1-menu-item/index';
 import './index';
@@ -36,240 +36,258 @@ afterEach(() => {
   document.body.querySelectorAll('div').forEach((el) => el.remove());
 });
 
-describe('t1-dropdown', () => {
-  describe('default properties', () => {
-    it('has correct default values', async () => {
-      const el = createDropdown();
-      await el.updateComplete;
+test('has correct default values', async () => {
+  const el = createDropdown();
+  await el.updateComplete;
 
-      expect(el.open).toBe(false);
-      expect(el.placement).toBe('bottom-start');
-      expect(el.disabled).toBe(false);
-      expect(el.stayOpenOnSelect).toBe(false);
-      expect(el.distance).toBe(0);
-      expect(el.skidding).toBe(0);
-      expect(el.hoist).toBe(false);
-    });
+  expect(el.open).toBe(false);
+  expect(el.placement).toBe('bottom-start');
+  expect(el.disabled).toBe(false);
+  expect(el.stayOpenOnSelect).toBe(false);
+  expect(el.distance).toBe(0);
+  expect(el.skidding).toBe(0);
+  expect(el.hoist).toBe(false);
+});
 
-    it('panel is hidden by default', async () => {
-      const el = createDropdown();
-      await el.updateComplete;
+test('panel is hidden by default', async () => {
+  const el = createDropdown();
+  await el.updateComplete;
 
-      const panel = el.shadowRoot!.querySelector<HTMLElement>('[part~="panel"]')!;
-      expect(panel.hidden).toBe(true);
-    });
-  });
+  const panel = el.shadowRoot!.querySelector<HTMLElement>('[part~="panel"]')!;
+  expect(panel.hidden).toBe(true);
+});
 
-  describe('when open attribute is set', () => {
-    it('panel is visible', async () => {
-      const el = createDropdown('open');
-      await el.updateComplete;
+test('panel is visible when open attribute is set', async () => {
+  const el = createDropdown('open');
+  await el.updateComplete;
 
-      const panel = el.shadowRoot!.querySelector<HTMLElement>('[part~="panel"]')!;
-      expect(panel.hidden).toBe(false);
-    });
+  const panel = el.shadowRoot!.querySelector<HTMLElement>('[part~="panel"]')!;
+  expect(panel.hidden).toBe(false);
+});
 
-    it('reflects open attribute', async () => {
-      const el = createDropdown('open');
-      await el.updateComplete;
+test('reflects open attribute', async () => {
+  const el = createDropdown('open');
+  await el.updateComplete;
 
-      expect(el.getAttribute('open')).not.toBeNull();
-    });
-  });
+  expect(el.getAttribute('open')).not.toBeNull();
+});
 
-  describe('show()', () => {
-    it('sets open to true', async () => {
-      const el = createDropdown();
-      await el.updateComplete;
+test('show() sets open to true', async () => {
+  const el = createDropdown();
+  await el.updateComplete;
 
-      el.show();
-      await el.updateComplete;
+  el.show();
+  await el.updateComplete;
 
-      expect(el.open).toBe(true);
-    });
+  expect(el.open).toBe(true);
+});
 
-    it('makes the panel visible', async () => {
-      const el = createDropdown();
-      await el.updateComplete;
+test('show() makes the panel visible', async () => {
+  const el = createDropdown();
+  await el.updateComplete;
 
-      el.show();
-      await el.updateComplete;
+  el.show();
+  await el.updateComplete;
 
-      const panel = el.shadowRoot!.querySelector<HTMLElement>('[part~="panel"]')!;
-      expect(panel.hidden).toBe(false);
-    });
+  const panel = el.shadowRoot!.querySelector<HTMLElement>('[part~="panel"]')!;
+  expect(panel.hidden).toBe(false);
+});
 
-    it('emits t1-show', async () => {
-      const el = createDropdown();
-      await el.updateComplete;
+test('show() emits t1-show', async () => {
+  const el = createDropdown();
+  await el.updateComplete;
 
-      let shown = false;
-      el.addEventListener(
-        't1-show',
-        () => {
-          shown = true;
-        },
-        { once: true },
-      );
-      el.show();
-      await el.updateComplete;
+  let shown = false;
+  el.addEventListener(
+    't1-show',
+    () => {
+      shown = true;
+    },
+    { once: true },
+  );
+  el.show();
+  await el.updateComplete;
 
-      expect(shown).toBe(true);
-    });
+  expect(shown).toBe(true);
+});
 
-    it('emits t1-after-show after update', async () => {
-      const el = createDropdown();
-      await el.updateComplete;
+test('show() emits t1-after-show after update', async () => {
+  const el = createDropdown();
+  await el.updateComplete;
 
-      const afterShowPromise = new Promise<void>((resolve) =>
-        el.addEventListener('t1-after-show', () => resolve(), { once: true }),
-      );
-      el.show();
-      await afterShowPromise;
+  const afterShowPromise = new Promise<void>((resolve) =>
+    el.addEventListener('t1-after-show', () => resolve(), { once: true }),
+  );
+  el.show();
+  await afterShowPromise;
 
-      expect(el.open).toBe(true);
-    });
+  expect(el.open).toBe(true);
+});
 
-    it('is a no-op when already open', async () => {
-      const el = createDropdown('open');
-      await el.updateComplete;
+test('show() is a no-op when already open', async () => {
+  const el = createDropdown('open');
+  await el.updateComplete;
 
-      let count = 0;
-      el.addEventListener('t1-show', () => count++);
-      el.show();
-      await el.updateComplete;
+  let count = 0;
+  el.addEventListener('t1-show', () => count++);
+  el.show();
+  await el.updateComplete;
 
-      expect(count).toBe(0);
-    });
-  });
+  expect(count).toBe(0);
+});
 
-  describe('hide()', () => {
-    it('sets open to false', async () => {
-      const el = createDropdown('open');
-      await el.updateComplete;
+test('hide() sets open to false', async () => {
+  const el = createDropdown('open');
+  await el.updateComplete;
 
-      el.hide();
-      await el.updateComplete;
+  el.hide();
+  await el.updateComplete;
 
-      expect(el.open).toBe(false);
-    });
+  expect(el.open).toBe(false);
+});
 
-    it('hides the panel', async () => {
-      const el = createDropdown('open');
-      await el.updateComplete;
+test('hide() hides the panel', async () => {
+  const el = createDropdown('open');
+  await el.updateComplete;
 
-      el.hide();
-      await el.updateComplete;
+  el.hide();
+  await el.updateComplete;
 
-      const panel = el.shadowRoot!.querySelector<HTMLElement>('[part~="panel"]')!;
-      expect(panel.hidden).toBe(true);
-    });
+  const panel = el.shadowRoot!.querySelector<HTMLElement>('[part~="panel"]')!;
+  expect(panel.hidden).toBe(true);
+});
 
-    it('emits t1-hide', async () => {
-      const el = createDropdown('open');
-      await el.updateComplete;
+test('hide() emits t1-hide', async () => {
+  const el = createDropdown('open');
+  await el.updateComplete;
 
-      let hidden = false;
-      el.addEventListener(
-        't1-hide',
-        () => {
-          hidden = true;
-        },
-        { once: true },
-      );
-      el.hide();
-      await el.updateComplete;
+  let hidden = false;
+  el.addEventListener(
+    't1-hide',
+    () => {
+      hidden = true;
+    },
+    { once: true },
+  );
+  el.hide();
+  await el.updateComplete;
 
-      expect(hidden).toBe(true);
-    });
+  expect(hidden).toBe(true);
+});
 
-    it('emits t1-after-hide after update', async () => {
-      const el = createDropdown('open');
-      await el.updateComplete;
+test('hide() emits t1-after-hide after update', async () => {
+  const el = createDropdown('open');
+  await el.updateComplete;
 
-      const afterHidePromise = new Promise<void>((resolve) =>
-        el.addEventListener('t1-after-hide', () => resolve(), { once: true }),
-      );
-      el.hide();
-      await afterHidePromise;
+  const afterHidePromise = new Promise<void>((resolve) =>
+    el.addEventListener('t1-after-hide', () => resolve(), { once: true }),
+  );
+  el.hide();
+  await afterHidePromise;
 
-      expect(el.open).toBe(false);
-    });
+  expect(el.open).toBe(false);
+});
 
-    it('is a no-op when already closed', async () => {
-      const el = createDropdown();
-      await el.updateComplete;
+test('hide() is a no-op when already closed', async () => {
+  const el = createDropdown();
+  await el.updateComplete;
 
-      let count = 0;
-      el.addEventListener('t1-hide', () => count++);
-      el.hide();
-      await el.updateComplete;
+  let count = 0;
+  el.addEventListener('t1-hide', () => count++);
+  el.hide();
+  await el.updateComplete;
 
-      expect(count).toBe(0);
-    });
-  });
+  expect(count).toBe(0);
+});
 
-  describe('when disabled', () => {
-    it('does not open when show() is called', async () => {
-      const el = createDropdown('disabled');
-      await el.updateComplete;
+test('does not open when show() is called while disabled', async () => {
+  const el = createDropdown('disabled');
+  await el.updateComplete;
 
-      el.show();
-      await el.updateComplete;
+  el.show();
+  await el.updateComplete;
 
-      expect(el.open).toBe(false);
-    });
-  });
+  expect(el.open).toBe(false);
+});
 
-  describe('when a menu item is selected', () => {
-    it('closes the dropdown by default', async () => {
-      const el = createDropdown('open');
-      await el.updateComplete;
+test('closes the dropdown by default when a menu item is selected', async () => {
+  const el = createDropdown('open');
+  await el.updateComplete;
 
-      const menu = el.querySelector('t1-menu')!;
-      menu.dispatchEvent(
-        new CustomEvent('t1-select', { bubbles: true, composed: true, detail: { item: {} } }),
-      );
-      await el.updateComplete;
+  const menu = el.querySelector('t1-menu')!;
+  menu.dispatchEvent(
+    new CustomEvent('t1-select', { bubbles: true, composed: true, detail: { item: {} } }),
+  );
+  await el.updateComplete;
 
-      expect(el.open).toBe(false);
-    });
+  expect(el.open).toBe(false);
+});
 
-    it('stays open when stayOpenOnSelect is set', async () => {
-      const el = createDropdown('open stay-open-on-select');
-      await el.updateComplete;
+test('stays open when stayOpenOnSelect is set', async () => {
+  const el = createDropdown('open stay-open-on-select');
+  await el.updateComplete;
 
-      const menu = el.querySelector('t1-menu')!;
-      menu.dispatchEvent(
-        new CustomEvent('t1-select', { bubbles: true, composed: true, detail: { item: {} } }),
-      );
-      await el.updateComplete;
+  const menu = el.querySelector('t1-menu')!;
+  menu.dispatchEvent(
+    new CustomEvent('t1-select', { bubbles: true, composed: true, detail: { item: {} } }),
+  );
+  await el.updateComplete;
 
-      expect(el.open).toBe(true);
-    });
-  });
+  expect(el.open).toBe(true);
+});
 
-  describe('closing on outside click', () => {
-    it('closes when a mousedown fires outside the dropdown', async () => {
-      const el = createDropdown('open');
-      await el.updateComplete;
+test('closes when a mousedown fires outside the dropdown', async () => {
+  const el = createDropdown('open');
+  await el.updateComplete;
 
-      document.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
-      await el.updateComplete;
+  document.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+  await el.updateComplete;
 
-      expect(el.open).toBe(false);
-    });
-  });
+  expect(el.open).toBe(false);
+});
 
-  describe('keyboard handling', () => {
-    it('closes on Escape key', async () => {
-      const el = createDropdown('open');
-      await el.updateComplete;
+test('closes on Escape key', async () => {
+  const el = createDropdown('open');
+  await el.updateComplete;
 
-      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
-      await el.updateComplete;
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+  await el.updateComplete;
 
-      expect(el.open).toBe(false);
-    });
-  });
+  expect(el.open).toBe(false);
+});
+
+test('closes on Tab key when a menu item is focused', async () => {
+  const el = createDropdown('open');
+  await el.updateComplete;
+
+  const item = el.querySelector<HTMLElement>('t1-menu-item')!;
+  item.setAttribute('tabindex', '0');
+  item.focus();
+
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
+  await el.updateComplete;
+
+  expect(el.open).toBe(false);
+});
+
+test('opens when trigger button is clicked via Space key', async () => {
+  const el = createDropdown();
+  await el.updateComplete;
+
+  const trigger = el.shadowRoot!.querySelector('[part="trigger"]')!;
+  trigger.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
+  await el.updateComplete;
+
+  expect(el.open).toBe(true);
+});
+
+test('opens when trigger button is clicked via Enter key', async () => {
+  const el = createDropdown();
+  await el.updateComplete;
+
+  const trigger = el.shadowRoot!.querySelector('[part="trigger"]')!;
+  trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+  await el.updateComplete;
+
+  expect(el.open).toBe(true);
 });

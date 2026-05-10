@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { expect, afterEach, test } from 'vitest';
 import './index';
 
 type T1IconButtonEl = HTMLElement & {
@@ -33,187 +33,187 @@ afterEach(() => {
   document.body.querySelectorAll('t1-icon-button').forEach((el) => el.remove());
 });
 
-describe('t1-icon-button', () => {
-  describe('default properties', () => {
-    it('has correct default values', async () => {
-      const el = createElement();
-      await el.updateComplete;
+test('has correct default values', async () => {
+  const el = createElement();
+  await el.updateComplete;
 
-      expect(el.name).toBeUndefined();
-      expect(el.library).toBeUndefined();
-      expect(el.src).toBeUndefined();
-      expect(el.href).toBeUndefined();
-      expect(el.target).toBeUndefined();
-      expect(el.download).toBeUndefined();
-      expect(el.label).toBe('');
-      expect(el.disabled).toBe(false);
-    });
+  expect(el.name).toBeUndefined();
+  expect(el.library).toBeUndefined();
+  expect(el.src).toBeUndefined();
+  expect(el.href).toBeUndefined();
+  expect(el.target).toBeUndefined();
+  expect(el.download).toBeUndefined();
+  expect(el.label).toBe('');
+  expect(el.disabled).toBe(false);
+});
 
-    it('renders as a <button> by default', async () => {
-      const el = createElement();
-      await el.updateComplete;
+test('renders as a <button> by default', async () => {
+  const el = createElement();
+  await el.updateComplete;
 
-      expect(el.shadowRoot!.querySelector('button')).not.toBeNull();
-      expect(el.shadowRoot!.querySelector('a')).toBeNull();
-    });
+  expect(el.shadowRoot!.querySelector('button')).not.toBeNull();
+  expect(el.shadowRoot!.querySelector('a')).toBeNull();
+});
 
-    it('always renders a t1-icon inside', async () => {
-      const el = createElement();
-      await el.updateComplete;
+test('always renders a t1-icon inside', async () => {
+  const el = createElement();
+  await el.updateComplete;
 
-      expect(el.shadowRoot!.querySelector('t1-icon')).not.toBeNull();
-    });
+  expect(el.shadowRoot!.querySelector('t1-icon')).not.toBeNull();
+});
+
+test('forwards name to t1-icon', async () => {
+  const el = createElement('name="check"');
+  await el.updateComplete;
+
+  const icon = el.shadowRoot!.querySelector('t1-icon')!;
+  expect(icon.getAttribute('name')).toBe('check');
+});
+
+test('forwards library to t1-icon', async () => {
+  const el = createElement('library="system" name="check"');
+  await el.updateComplete;
+
+  const icon = el.shadowRoot!.querySelector('t1-icon')!;
+  expect(icon.getAttribute('library')).toBe('system');
+});
+
+test('renders as an <a> when href is present', async () => {
+  const el = createElement('href="some/path"');
+  await el.updateComplete;
+
+  expect(el.shadowRoot!.querySelector('a')).not.toBeNull();
+  expect(el.shadowRoot!.querySelector('button')).toBeNull();
+});
+
+test('does not set rel when no target', async () => {
+  const el = createElement('href="some/path"');
+  await el.updateComplete;
+
+  expect(el.shadowRoot!.querySelector('a[rel]')).toBeNull();
+});
+
+(['_blank', '_parent', '_self', '_top'] as const).forEach((target) => {
+  test(`sets target="${target}" on the anchor`, async () => {
+    const el = createElement(`href="some/path" target="${target}"`);
+    await el.updateComplete;
+
+    expect(el.shadowRoot!.querySelector(`a[target="${target}"]`)).not.toBeNull();
   });
 
-  describe('when icon attributes are set', () => {
-    it('forwards name to t1-icon', async () => {
-      const el = createElement('name="check"');
-      await el.updateComplete;
+  test(`sets rel="noreferrer noopener" when target="${target}"`, async () => {
+    const el = createElement(`href="some/path" target="${target}"`);
+    await el.updateComplete;
 
-      const icon = el.shadowRoot!.querySelector('t1-icon')!;
-      expect(icon.getAttribute('name')).toBe('check');
-    });
-
-    it('forwards library to t1-icon', async () => {
-      const el = createElement('library="system" name="check"');
-      await el.updateComplete;
-
-      const icon = el.shadowRoot!.querySelector('t1-icon')!;
-      expect(icon.getAttribute('library')).toBe('system');
-    });
+    expect(el.shadowRoot!.querySelector('a[rel="noreferrer noopener"]')).not.toBeNull();
   });
+});
 
-  describe('when href is present', () => {
-    it('renders as an <a>', async () => {
-      const el = createElement('href="some/path"');
-      await el.updateComplete;
+test('sets the download attribute on the anchor', async () => {
+  const el = createElement('href="some/path" download="file.pdf"');
+  await el.updateComplete;
 
-      expect(el.shadowRoot!.querySelector('a')).not.toBeNull();
-      expect(el.shadowRoot!.querySelector('button')).toBeNull();
-    });
+  expect(el.shadowRoot!.querySelector('a[download="file.pdf"]')).not.toBeNull();
+});
 
-    it('does not set rel when no target', async () => {
-      const el = createElement('href="some/path"');
-      await el.updateComplete;
+test('sets aria-label on the button when label is set', async () => {
+  const el = createElement('label="close"');
+  await el.updateComplete;
 
-      expect(el.shadowRoot!.querySelector('a[rel]')).toBeNull();
-    });
+  expect(el.shadowRoot!.querySelector('button[aria-label="close"]')).not.toBeNull();
+});
 
-    describe('with target', () => {
-      (['_blank', '_parent', '_self', '_top'] as const).forEach((target) => {
-        it(`sets target="${target}" on the anchor`, async () => {
-          const el = createElement(`href="some/path" target="${target}"`);
-          await el.updateComplete;
+test('sets aria-label on the anchor when label is set', async () => {
+  const el = createElement('href="some/path" label="close"');
+  await el.updateComplete;
 
-          expect(el.shadowRoot!.querySelector(`a[target="${target}"]`)).not.toBeNull();
-        });
+  expect(el.shadowRoot!.querySelector('a[aria-label="close"]')).not.toBeNull();
+});
 
-        it(`sets rel="noreferrer noopener" when target="${target}"`, async () => {
-          const el = createElement(`href="some/path" target="${target}"`);
-          await el.updateComplete;
+test('the button has disabled attribute when disabled', async () => {
+  const el = createElement('disabled');
+  await el.updateComplete;
 
-          expect(el.shadowRoot!.querySelector('a[rel="noreferrer noopener"]')).not.toBeNull();
-        });
-      });
-    });
+  expect(el.shadowRoot!.querySelector('button[disabled]')).not.toBeNull();
+});
 
-    it('sets the download attribute on the anchor', async () => {
-      const el = createElement('href="some/path" download="file.pdf"');
-      await el.updateComplete;
+test('the anchor has aria-disabled="true" when href and disabled', async () => {
+  const el = createElement('href="some/path" disabled');
+  await el.updateComplete;
 
-      expect(el.shadowRoot!.querySelector('a[download="file.pdf"]')).not.toBeNull();
-    });
-  });
+  expect(el.shadowRoot!.querySelector('a[aria-disabled="true"]')).not.toBeNull();
+});
 
-  describe('when label is set', () => {
-    it('sets aria-label on the button', async () => {
-      const el = createElement('label="close"');
-      await el.updateComplete;
+test('emits t1-focus when focused', async () => {
+  const el = createElement();
+  await el.updateComplete;
 
-      expect(el.shadowRoot!.querySelector('button[aria-label="close"]')).not.toBeNull();
-    });
+  let focused = false;
+  el.addEventListener(
+    't1-focus',
+    () => {
+      focused = true;
+    },
+    { once: true },
+  );
+  el.focus();
+  await el.updateComplete;
 
-    it('sets aria-label on the anchor', async () => {
-      const el = createElement('href="some/path" label="close"');
-      await el.updateComplete;
+  expect(focused).toBe(true);
+});
 
-      expect(el.shadowRoot!.querySelector('a[aria-label="close"]')).not.toBeNull();
-    });
-  });
+test('emits t1-blur when blurred', async () => {
+  const el = createElement();
+  await el.updateComplete;
 
-  describe('when disabled', () => {
-    it('the button has disabled attribute', async () => {
-      const el = createElement('disabled');
-      await el.updateComplete;
+  el.focus();
+  await el.updateComplete;
 
-      expect(el.shadowRoot!.querySelector('button[disabled]')).not.toBeNull();
-    });
+  let blurred = false;
+  el.addEventListener(
+    't1-blur',
+    () => {
+      blurred = true;
+    },
+    { once: true },
+  );
+  el.blur();
+  await el.updateComplete;
 
-    it('the anchor has aria-disabled="true"', async () => {
-      const el = createElement('href="some/path" disabled');
-      await el.updateComplete;
+  expect(blurred).toBe(true);
+});
 
-      expect(el.shadowRoot!.querySelector('a[aria-disabled="true"]')).not.toBeNull();
-    });
-  });
+test('emits a click event when .click() is called', async () => {
+  const el = createElement();
+  await el.updateComplete;
 
-  describe('focus and blur events', () => {
-    it('emits t1-focus when focused', async () => {
-      const el = createElement();
-      await el.updateComplete;
+  let clicked = false;
+  el.addEventListener(
+    'click',
+    () => {
+      clicked = true;
+    },
+    { once: true },
+  );
+  el.click();
 
-      let focused = false;
-      el.addEventListener(
-        't1-focus',
-        () => {
-          focused = true;
-        },
-        { once: true },
-      );
-      el.focus();
-      await el.updateComplete;
+  expect(clicked).toBe(true);
+});
 
-      expect(focused).toBe(true);
-    });
+test('click() on enabled button triggers handleClick', async () => {
+  const el = createElement('label="test"');
+  await el.updateComplete;
 
-    it('emits t1-blur when blurred', async () => {
-      const el = createElement();
-      await el.updateComplete;
+  const button = el.shadowRoot!.querySelector<HTMLButtonElement>('button')!;
+  let nativeClicked = false;
+  button.addEventListener(
+    'click',
+    () => {
+      nativeClicked = true;
+    },
+    { once: true },
+  );
+  el.click();
 
-      el.focus();
-      await el.updateComplete;
-
-      let blurred = false;
-      el.addEventListener(
-        't1-blur',
-        () => {
-          blurred = true;
-        },
-        { once: true },
-      );
-      el.blur();
-      await el.updateComplete;
-
-      expect(blurred).toBe(true);
-    });
-  });
-
-  describe('click delegation', () => {
-    it('emits a click event when .click() is called', async () => {
-      const el = createElement();
-      await el.updateComplete;
-
-      let clicked = false;
-      el.addEventListener(
-        'click',
-        () => {
-          clicked = true;
-        },
-        { once: true },
-      );
-      el.click();
-
-      expect(clicked).toBe(true);
-    });
-  });
+  expect(nativeClicked).toBe(true);
 });

@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { expect, afterEach, test } from 'vitest';
 import './index';
 
 type T1OptionEl = HTMLElement & {
@@ -26,143 +26,154 @@ afterEach(() => {
   document.body.querySelectorAll('t1-option').forEach((el) => el.remove());
 });
 
-describe('t1-option', () => {
-  describe('default properties', () => {
-    it('has correct default values', async () => {
-      const el = createElement();
-      await el.updateComplete;
+test('has correct default values', async () => {
+  const el = createElement();
+  await el.updateComplete;
 
-      expect(el.value).toBe('');
-      expect(el.disabled).toBe(false);
-      expect(el.selected).toBe(false);
-      expect(el.current).toBe(false);
-    });
+  expect(el.value).toBe('');
+  expect(el.disabled).toBe(false);
+  expect(el.selected).toBe(false);
+  expect(el.current).toBe(false);
+});
 
-    it('has role="option"', async () => {
-      const el = createElement();
-      await el.updateComplete;
+test('has role="option"', async () => {
+  const el = createElement();
+  await el.updateComplete;
 
-      expect(el.getAttribute('role')).toBe('option');
-    });
+  expect(el.getAttribute('role')).toBe('option');
+});
 
-    it('has aria-selected="false" by default', async () => {
-      const el = createElement();
-      await el.updateComplete;
+test('has aria-selected="false" by default', async () => {
+  const el = createElement();
+  await el.updateComplete;
 
-      expect(el.getAttribute('aria-selected')).toBe('false');
-    });
-  });
+  expect(el.getAttribute('aria-selected')).toBe('false');
+});
 
-  describe('when disabled', () => {
-    it('sets aria-disabled="true"', async () => {
-      const el = createElement('disabled');
-      await el.updateComplete;
+test('sets aria-disabled="true" when disabled', async () => {
+  const el = createElement('disabled');
+  await el.updateComplete;
 
-      expect(el.getAttribute('aria-disabled')).toBe('true');
-    });
+  expect(el.getAttribute('aria-disabled')).toBe('true');
+});
 
-    it('applies option--disabled class', async () => {
-      const el = createElement('disabled');
-      await el.updateComplete;
+test('applies option--disabled class when disabled', async () => {
+  const el = createElement('disabled');
+  await el.updateComplete;
 
-      const base = el.shadowRoot!.querySelector('[part~="base"]')!;
-      expect(base.classList.contains('option--disabled')).toBe(true);
-    });
-  });
+  const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+  expect(base.classList.contains('option--disabled')).toBe(true);
+});
 
-  describe('when selected', () => {
-    it('sets aria-selected="true" when selected is true', async () => {
-      const el = createElement();
-      el.selected = true;
-      await el.updateComplete;
+test('sets aria-selected="true" when selected is true', async () => {
+  const el = createElement();
+  el.selected = true;
+  await el.updateComplete;
 
-      expect(el.getAttribute('aria-selected')).toBe('true');
-    });
+  expect(el.getAttribute('aria-selected')).toBe('true');
+});
 
-    it('shows the check icon when selected', async () => {
-      const el = createElement();
-      el.selected = true;
-      await el.updateComplete;
+test('applies option--selected class when selected', async () => {
+  const el = createElement();
+  el.selected = true;
+  await el.updateComplete;
 
-      const base = el.shadowRoot!.querySelector('[part~="base"]')!;
-      expect(base.classList.contains('option--selected')).toBe(true);
-    });
-  });
+  const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+  expect(base.classList.contains('option--selected')).toBe(true);
+});
 
-  describe('when current', () => {
-    it('applies option--current class', async () => {
-      const el = createElement();
-      el.current = true;
-      await el.updateComplete;
+test('applies option--current class when current', async () => {
+  const el = createElement();
+  el.current = true;
+  await el.updateComplete;
 
-      const base = el.shadowRoot!.querySelector('[part~="base"]')!;
-      expect(base.classList.contains('option--current')).toBe(true);
-    });
-  });
+  const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+  expect(base.classList.contains('option--current')).toBe(true);
+});
 
-  describe('value attribute', () => {
-    it('reflects the value attribute', async () => {
-      const el = createElement('value="hello"');
-      await el.updateComplete;
+test('reflects the value attribute', async () => {
+  const el = createElement('value="hello"');
+  await el.updateComplete;
 
-      expect(el.value).toBe('hello');
-    });
+  expect(el.value).toBe('hello');
+});
 
-    it('converts non-string values to string', async () => {
-      const el = createElement();
-      await el.updateComplete;
+test('converts non-string values to string', async () => {
+  const el = createElement();
+  await el.updateComplete;
 
-      (el as unknown as { value: unknown }).value = 42;
-      await el.updateComplete;
+  (el as unknown as { value: unknown }).value = 42;
+  await el.updateComplete;
 
-      expect(el.value).toBe('42');
-    });
+  expect(el.value).toBe('42');
+});
 
-    it('replaces spaces in value with underscores', async () => {
-      const el = createElement();
-      await el.updateComplete;
+test('replaces spaces in value with underscores', async () => {
+  const el = createElement();
+  await el.updateComplete;
 
-      el.value = 'hello world';
-      await el.updateComplete;
+  el.value = 'hello world';
+  await el.updateComplete;
 
-      expect(el.value).toBe('hello_world');
-    });
-  });
+  expect(el.value).toBe('hello_world');
+});
 
-  describe('getTextLabel()', () => {
-    it('returns the text content of the label slot', async () => {
-      const el = createElement('', 'Save File');
-      await el.updateComplete;
+test('getTextLabel returns the text content of the label slot', async () => {
+  const el = createElement('', 'Save File');
+  await el.updateComplete;
 
-      expect(el.getTextLabel()).toBe('Save File');
-    });
+  expect(el.getTextLabel()).toBe('Save File');
+});
 
-    it('strips HTML element text from slotted elements', async () => {
-      const wrapper = document.createElement('div');
-      wrapper.innerHTML = '<t1-option><strong>Bold Option</strong></t1-option>';
-      document.body.appendChild(wrapper);
-      const el = wrapper.querySelector('t1-option') as unknown as T1OptionEl;
-      await el.updateComplete;
+test('getTextLabel strips HTML element text from slotted elements', async () => {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = '<t1-option><strong>Bold Option</strong></t1-option>';
+  document.body.appendChild(wrapper);
+  const el = wrapper.querySelector('t1-option') as unknown as T1OptionEl;
+  await el.updateComplete;
 
-      expect(el.getTextLabel()).toBe('Bold Option');
-      wrapper.remove();
-    });
+  expect(el.getTextLabel()).toBe('Bold Option');
+  wrapper.remove();
+});
 
-    it('excludes prefix/suffix slot text from label', async () => {
-      const wrapper = document.createElement('div');
-      wrapper.innerHTML = `
-        <t1-option>
-          <span slot="prefix">★</span>
-          Label Text
-          <span slot="suffix">⌘</span>
-        </t1-option>
-      `;
-      document.body.appendChild(wrapper);
-      const el = wrapper.querySelector('t1-option') as unknown as T1OptionEl;
-      await el.updateComplete;
+test('getTextLabel excludes prefix/suffix slot text from label', async () => {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = `
+    <t1-option>
+      <span slot="prefix">★</span>
+      Label Text
+      <span slot="suffix">⌘</span>
+    </t1-option>
+  `;
+  document.body.appendChild(wrapper);
+  const el = wrapper.querySelector('t1-option') as unknown as T1OptionEl;
+  await el.updateComplete;
 
-      expect(el.getTextLabel()).toBe('Label Text');
-      wrapper.remove();
-    });
-  });
+  expect(el.getTextLabel()).toBe('Label Text');
+  wrapper.remove();
+});
+
+test('applies option--hover class on mouseenter', async () => {
+  const el = createElement();
+  await el.updateComplete;
+
+  const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+  base.dispatchEvent(new MouseEvent('mouseenter'));
+  await el.updateComplete;
+
+  expect(base.classList.contains('option--hover')).toBe(true);
+});
+
+test('removes option--hover class on mouseleave', async () => {
+  const el = createElement();
+  await el.updateComplete;
+
+  const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+  base.dispatchEvent(new MouseEvent('mouseenter'));
+  await el.updateComplete;
+
+  base.dispatchEvent(new MouseEvent('mouseleave'));
+  await el.updateComplete;
+
+  expect(base.classList.contains('option--hover')).toBe(false);
 });

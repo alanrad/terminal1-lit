@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { expect, afterEach, test } from 'vitest';
 import './index';
 
 type T1TagEl = HTMLElement & {
@@ -25,112 +25,98 @@ afterEach(() => {
   document.body.querySelectorAll('t1-tag').forEach((el) => el.remove());
 });
 
-describe('t1-tag', () => {
-  describe('default properties', () => {
-    it('has correct defaults', async () => {
-      const el = createElement();
-      await el.updateComplete;
+test('has correct defaults', async () => {
+  const el = createElement();
+  await el.updateComplete;
 
-      expect(el.variant).toBe('neutral');
-      expect(el.size).toBe('medium');
-      expect(el.pill).toBe(false);
-      expect(el.removable).toBe(false);
-    });
+  expect(el.variant).toBe('neutral');
+  expect(el.size).toBe('medium');
+  expect(el.pill).toBe(false);
+  expect(el.removable).toBe(false);
+});
 
-    it('renders base span with tag--neutral and tag--medium classes', async () => {
-      const el = createElement();
-      await el.updateComplete;
+test('renders base span with tag--neutral and tag--medium classes', async () => {
+  const el = createElement();
+  await el.updateComplete;
 
-      const base = el.shadowRoot!.querySelector('[part~="base"]')!;
-      expect(base.classList.contains('tag--neutral')).toBe(true);
-      expect(base.classList.contains('tag--medium')).toBe(true);
-    });
+  const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+  expect(base.classList.contains('tag--neutral')).toBe(true);
+  expect(base.classList.contains('tag--medium')).toBe(true);
+});
 
-    it('does not render a remove button by default', async () => {
-      const el = createElement();
-      await el.updateComplete;
+test('does not render a remove button by default', async () => {
+  const el = createElement();
+  await el.updateComplete;
 
-      expect(el.shadowRoot!.querySelector('[part~="remove-button"]')).toBeNull();
-    });
+  expect(el.shadowRoot!.querySelector('[part~="remove-button"]')).toBeNull();
+});
+
+(['primary', 'success', 'neutral', 'warning', 'danger', 'text'] as const).forEach((variant) => {
+  test(`applies tag--${variant} class for variant="${variant}"`, async () => {
+    const el = createElement(`variant="${variant}"`);
+    await el.updateComplete;
+
+    const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+    expect(base.classList.contains(`tag--${variant}`)).toBe(true);
+    expect(el.getAttribute('variant')).toBe(variant);
   });
+});
 
-  describe('variant attribute', () => {
-    (['primary', 'success', 'neutral', 'warning', 'danger', 'text'] as const).forEach((variant) => {
-      it(`applies tag--${variant} class`, async () => {
-        const el = createElement(`variant="${variant}"`);
-        await el.updateComplete;
+(['small', 'medium', 'large'] as const).forEach((size) => {
+  test(`applies tag--${size} class for size="${size}"`, async () => {
+    const el = createElement(`size="${size}"`);
+    await el.updateComplete;
 
-        const base = el.shadowRoot!.querySelector('[part~="base"]')!;
-        expect(base.classList.contains(`tag--${variant}`)).toBe(true);
-        expect(el.getAttribute('variant')).toBe(variant);
-      });
-    });
+    const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+    expect(base.classList.contains(`tag--${size}`)).toBe(true);
   });
+});
 
-  describe('size attribute', () => {
-    (['small', 'medium', 'large'] as const).forEach((size) => {
-      it(`applies tag--${size} class`, async () => {
-        const el = createElement(`size="${size}"`);
-        await el.updateComplete;
+test('applies tag--pill class when pill is set', async () => {
+  const el = createElement('pill');
+  await el.updateComplete;
 
-        const base = el.shadowRoot!.querySelector('[part~="base"]')!;
-        expect(base.classList.contains(`tag--${size}`)).toBe(true);
-      });
-    });
-  });
+  const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+  expect(base.classList.contains('tag--pill')).toBe(true);
+});
 
-  describe('pill attribute', () => {
-    it('applies tag--pill class when pill is set', async () => {
-      const el = createElement('pill');
-      await el.updateComplete;
+test('renders the remove button when removable', async () => {
+  const el = createElement('removable');
+  await el.updateComplete;
 
-      const base = el.shadowRoot!.querySelector('[part~="base"]')!;
-      expect(base.classList.contains('tag--pill')).toBe(true);
-    });
-  });
+  expect(el.shadowRoot!.querySelector('[part~="remove-button"]')).not.toBeNull();
+});
 
-  describe('removable attribute', () => {
-    it('renders the remove button when removable', async () => {
-      const el = createElement('removable');
-      await el.updateComplete;
+test('applies tag--removable class when removable', async () => {
+  const el = createElement('removable');
+  await el.updateComplete;
 
-      expect(el.shadowRoot!.querySelector('[part~="remove-button"]')).not.toBeNull();
-    });
+  const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+  expect(base.classList.contains('tag--removable')).toBe(true);
+});
 
-    it('applies tag--removable class when removable', async () => {
-      const el = createElement('removable');
-      await el.updateComplete;
+test('emits t1-remove when remove button is clicked', async () => {
+  const el = createElement('removable');
+  await el.updateComplete;
 
-      const base = el.shadowRoot!.querySelector('[part~="base"]')!;
-      expect(base.classList.contains('tag--removable')).toBe(true);
-    });
+  let removed = false;
+  el.addEventListener(
+    't1-remove',
+    () => {
+      removed = true;
+    },
+    { once: true },
+  );
 
-    it('emits t1-remove when remove button is clicked', async () => {
-      const el = createElement('removable');
-      await el.updateComplete;
+  const removeBtn = el.shadowRoot!.querySelector<HTMLElement>('[part~="remove-button"]')!;
+  removeBtn.click();
 
-      let removed = false;
-      el.addEventListener(
-        't1-remove',
-        () => {
-          removed = true;
-        },
-        { once: true },
-      );
+  expect(removed).toBe(true);
+});
 
-      const removeBtn = el.shadowRoot!.querySelector<HTMLElement>('[part~="remove-button"]')!;
-      removeBtn.click();
+test('renders slotted text', async () => {
+  const el = createElement('', 'Hello World');
+  await el.updateComplete;
 
-      expect(removed).toBe(true);
-    });
-  });
-
-  describe('slot content', () => {
-    it('renders slotted text', async () => {
-      const el = createElement('', 'Hello World');
-      await el.updateComplete;
-
-      expect(el.textContent).toBe('Hello World');
-    });
-  });
+  expect(el.textContent).toBe('Hello World');
 });

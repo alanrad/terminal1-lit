@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { expect, afterEach, test } from 'vitest';
 import './index';
 
 type T1SkeletonEl = HTMLElement & {
@@ -17,72 +17,62 @@ afterEach(() => {
   document.body.querySelectorAll('t1-skeleton').forEach((el) => el.remove());
 });
 
-describe('t1-skeleton', () => {
-  describe('default', () => {
-    it('has effect="none" by default', async () => {
-      const el = createElement();
-      await el.updateComplete;
-      expect(el.effect).toBe('none');
-    });
+test('has effect="none" by default', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  expect(el.effect).toBe('none');
+});
 
-    it('base part has skeleton class only with no effect', async () => {
-      const el = createElement();
-      await el.updateComplete;
-      const base = el.shadowRoot!.querySelector('[part~="base"]')!;
-      expect(base.classList.contains('skeleton')).toBe(true);
-      expect(base.classList.contains('skeleton--pulse')).toBe(false);
-      expect(base.classList.contains('skeleton--sheen')).toBe(false);
-    });
+test('base part has skeleton class only with no effect', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+  expect(base.classList.contains('skeleton')).toBe(true);
+  expect(base.classList.contains('skeleton--pulse')).toBe(false);
+  expect(base.classList.contains('skeleton--sheen')).toBe(false);
+});
 
-    it('renders the indicator part', async () => {
-      const el = createElement();
-      await el.updateComplete;
-      const indicator = el.shadowRoot!.querySelector('[part~="indicator"]');
-      expect(indicator).not.toBeNull();
-      expect(indicator!.classList.contains('skeleton__indicator')).toBe(true);
-    });
-  });
+test('renders the indicator part', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  const indicator = el.shadowRoot!.querySelector('[part~="indicator"]');
+  expect(indicator).not.toBeNull();
+  expect(indicator!.classList.contains('skeleton__indicator')).toBe(true);
+});
 
-  describe('pulse effect', () => {
-    it('applies skeleton--pulse class', async () => {
-      const el = createElement({ effect: 'pulse' });
-      await el.updateComplete;
-      const base = el.shadowRoot!.querySelector('[part~="base"]')!;
-      expect(base.classList.contains('skeleton--pulse')).toBe(true);
-      expect(base.classList.contains('skeleton--sheen')).toBe(false);
-    });
-  });
+test('applies skeleton--pulse class for pulse effect', async () => {
+  const el = createElement({ effect: 'pulse' });
+  await el.updateComplete;
+  const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+  expect(base.classList.contains('skeleton--pulse')).toBe(true);
+  expect(base.classList.contains('skeleton--sheen')).toBe(false);
+});
 
-  describe('sheen effect', () => {
-    it('applies skeleton--sheen class', async () => {
-      const el = createElement({ effect: 'sheen' });
-      await el.updateComplete;
-      const base = el.shadowRoot!.querySelector('[part~="base"]')!;
-      expect(base.classList.contains('skeleton--sheen')).toBe(true);
-      expect(base.classList.contains('skeleton--pulse')).toBe(false);
-    });
-  });
+test('applies skeleton--sheen class for sheen effect', async () => {
+  const el = createElement({ effect: 'sheen' });
+  await el.updateComplete;
+  const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+  expect(base.classList.contains('skeleton--sheen')).toBe(true);
+  expect(base.classList.contains('skeleton--pulse')).toBe(false);
+});
 
-  describe('effect property changes', () => {
-    it('updates class when effect changes programmatically', async () => {
-      const el = createElement();
-      await el.updateComplete;
+test('updates class when effect changes programmatically', async () => {
+  const el = createElement();
+  await el.updateComplete;
 
-      el.effect = 'sheen';
-      await el.updateComplete;
+  el.effect = 'sheen';
+  await el.updateComplete;
 
-      const base = el.shadowRoot!.querySelector('[part~="base"]')!;
-      expect(base.classList.contains('skeleton--sheen')).toBe(true);
+  const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+  expect(base.classList.contains('skeleton--sheen')).toBe(true);
 
-      el.effect = 'pulse';
-      await el.updateComplete;
-      expect(base.classList.contains('skeleton--pulse')).toBe(true);
-      expect(base.classList.contains('skeleton--sheen')).toBe(false);
+  el.effect = 'pulse';
+  await el.updateComplete;
+  expect(base.classList.contains('skeleton--pulse')).toBe(true);
+  expect(base.classList.contains('skeleton--sheen')).toBe(false);
 
-      el.effect = 'none';
-      await el.updateComplete;
-      expect(base.classList.contains('skeleton--pulse')).toBe(false);
-      expect(base.classList.contains('skeleton--sheen')).toBe(false);
-    });
-  });
+  el.effect = 'none';
+  await el.updateComplete;
+  expect(base.classList.contains('skeleton--pulse')).toBe(false);
+  expect(base.classList.contains('skeleton--sheen')).toBe(false);
 });

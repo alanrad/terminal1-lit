@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { expect, afterEach, test } from 'vitest';
 import './index';
 
 type T1BadgeEl = HTMLElement & {
@@ -29,82 +29,70 @@ afterEach(() => {
   document.body.querySelectorAll('t1-badge').forEach((el) => el.remove());
 });
 
-describe('t1-badge', () => {
-  describe('default properties', () => {
-    it('has correct default values', async () => {
-      const el = createElement();
-      await el.updateComplete;
+test('has correct default values', async () => {
+  const el = createElement();
+  await el.updateComplete;
 
-      expect(el.variant).toBe('primary');
-      expect(el.pill).toBe(false);
-      expect(el.pulse).toBe(false);
-    });
+  expect(el.variant).toBe('primary');
+  expect(el.pill).toBe(false);
+  expect(el.pulse).toBe(false);
+});
 
-    it('base part has role="status"', async () => {
-      const el = createElement();
-      await el.updateComplete;
+test('base part has role="status"', async () => {
+  const el = createElement();
+  await el.updateComplete;
 
-      const base = el.shadowRoot!.querySelector('[part~="base"]')!;
-      expect(base.getAttribute('role')).toBe('status');
-    });
+  const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+  expect(base.getAttribute('role')).toBe('status');
+});
 
-    it('applies badge--primary class by default', async () => {
-      const el = createElement();
-      await el.updateComplete;
+test('applies badge--primary class by default', async () => {
+  const el = createElement();
+  await el.updateComplete;
 
-      const base = el.shadowRoot!.querySelector('[part~="base"]')!;
-      expect(base.classList.contains('badge--primary')).toBe(true);
-    });
+  const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+  expect(base.classList.contains('badge--primary')).toBe(true);
+});
+
+test('applies badge--pill class when pill is set', async () => {
+  const el = createElement('pill');
+  await el.updateComplete;
+
+  const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+  expect(base.classList.contains('badge--pill')).toBe(true);
+});
+
+test('applies badge--pulse class when pulse is set', async () => {
+  const el = createElement('pulse');
+  await el.updateComplete;
+
+  const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+  expect(base.classList.contains('badge--pulse')).toBe(true);
+});
+
+(['primary', 'success', 'neutral', 'warning', 'danger'] as const).forEach((variant) => {
+  test(`applies badge--${variant} class for variant="${variant}"`, async () => {
+    const el = createElement(`variant="${variant}"`);
+    await el.updateComplete;
+
+    const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+    expect(base.classList.contains(`badge--${variant}`)).toBe(true);
+    expect(el.getAttribute('variant')).toBe(variant);
   });
+});
 
-  describe('when pill is set', () => {
-    it('applies badge--pill class', async () => {
-      const el = createElement('pill');
-      await el.updateComplete;
+test('does not apply other variant classes when a specific variant is set', async () => {
+  const el = createElement('variant="success"');
+  await el.updateComplete;
 
-      const base = el.shadowRoot!.querySelector('[part~="base"]')!;
-      expect(base.classList.contains('badge--pill')).toBe(true);
-    });
-  });
+  const base = el.shadowRoot!.querySelector('[part~="base"]')!;
+  expect(base.classList.contains('badge--primary')).toBe(false);
+  expect(base.classList.contains('badge--success')).toBe(true);
+});
 
-  describe('when pulse is set', () => {
-    it('applies badge--pulse class', async () => {
-      const el = createElement('pulse');
-      await el.updateComplete;
+test('renders slotted text', async () => {
+  const el = createElement('', 'Test Label');
+  await el.updateComplete;
 
-      const base = el.shadowRoot!.querySelector('[part~="base"]')!;
-      expect(base.classList.contains('badge--pulse')).toBe(true);
-    });
-  });
-
-  describe('variant attribute', () => {
-    (['primary', 'success', 'neutral', 'warning', 'danger'] as const).forEach((variant) => {
-      it(`applies badge--${variant} class for variant="${variant}"`, async () => {
-        const el = createElement(`variant="${variant}"`);
-        await el.updateComplete;
-
-        const base = el.shadowRoot!.querySelector('[part~="base"]')!;
-        expect(base.classList.contains(`badge--${variant}`)).toBe(true);
-        expect(el.getAttribute('variant')).toBe(variant);
-      });
-    });
-
-    it('does not apply other variant classes when a specific variant is set', async () => {
-      const el = createElement('variant="success"');
-      await el.updateComplete;
-
-      const base = el.shadowRoot!.querySelector('[part~="base"]')!;
-      expect(base.classList.contains('badge--primary')).toBe(false);
-      expect(base.classList.contains('badge--success')).toBe(true);
-    });
-  });
-
-  describe('slot content', () => {
-    it('renders slotted text', async () => {
-      const el = createElement('', 'Test Label');
-      await el.updateComplete;
-
-      expect(el.textContent).toBe('Test Label');
-    });
-  });
+  expect(el.textContent).toBe('Test Label');
 });
