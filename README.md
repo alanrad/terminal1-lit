@@ -1,4 +1,4 @@
-<table>
+<table style="border: none;"> 
   <tr>
     <td width="150">
       <img src="https://terminal1.win/images/terminal-one.png" alt="Alt text" width="200"/>
