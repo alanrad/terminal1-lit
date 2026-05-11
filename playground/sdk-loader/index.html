@@ -242,11 +242,13 @@
   <body>
     <header class="header">
       <div class="header-left">
-        <img
-          class="header-logo"
-          src="https://terminal1.win/images/terminal-one.png"
-          alt="Terminal 1"
-        />
+        <a href="/playground/" class="header-link">
+          <img
+            class="header-logo"
+            src="https://terminal1.win/images/terminal-one.png"
+            alt="Terminal 1"
+          />
+        </a>
         <div>
           <div class="header-title">Terminal 1</div>
           <div class="header-subtitle">CDN Integration Test</div>
@@ -270,29 +272,26 @@
         </div>
 
         <div>
-          <p class="sidebar-section-label">Widget</p>
+          <p class="sidebar-section-label">Widgets</p>
           <div class="sidebar-item" style="gap: 0.5rem">
-            <span class="sidebar-item-label">Tag</span>
+            <span class="sidebar-item-label">HTML Tag</span>
             <span class="sidebar-item-value">search-property-widget</span>
-          </div>
-          <div class="sidebar-item" style="margin-top: var(--t1-spacing-small)">
+            <br />
             <span class="sidebar-item-label">Status</span>
             <span class="sidebar-item-value" id="widget-status">
-              <span class="status-dot" id="status-dot"></span>
-              <span id="status-text">pending</span>
+              <span class="status-dot" id="status-dot-1"></span>
+              <span id="status-text-1">pending</span>
             </span>
           </div>
-        </div>
-
-        <div>
-          <p class="sidebar-section-label">Attributes</p>
-          <div class="sidebar-item">
-            <span class="sidebar-item-label">label</span>
-            <span class="sidebar-item-value">Search Hotels</span>
-          </div>
           <div class="sidebar-item" style="margin-top: var(--t1-spacing-small)">
-            <span class="sidebar-item-label">placeholder</span>
-            <span class="sidebar-item-value">Where would you like to go?</span>
+            <span class="sidebar-item-label">HTML Tag</span>
+            <span class="sidebar-item-value">counter-widget</span>
+            <br />
+            <span class="sidebar-item-label">Status</span>
+            <span class="sidebar-item-value" id="widget-status">
+              <span class="status-dot" id="status-dot-2"></span>
+              <span id="status-text-2">pending</span>
+            </span>
           </div>
         </div>
       </aside>
@@ -301,11 +300,17 @@
         <div>
           <h2 class="section-heading">search-property-widget</h2>
           <div class="widget-frame">
-            <!-- loader scans the DOM, finds any known widget tag, imports it -->
             <search-property-widget
               label="Search Hotels"
               placeholder="Where would you like to go?"
             ></search-property-widget>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="section-heading">counter-widget</h2>
+          <div class="widget-frame">
+            <counter-widget></counter-widget>
           </div>
         </div>
 
@@ -316,18 +321,18 @@
             <span class="code-tag">&lt;script</span> <span class="code-attr">type</span>=<span
               class="code-string"
               >"module"</span
-            >
-            <span class="code-attr">src</span>=<span class="code-string"
+            ><span class="code-attr"> src</span>=<span class="code-string"
               >"https://terminal1.win/cdn/lit/sdk/loader.js"</span
             ><span class="code-tag">&gt;&lt;/script&gt;</span>
 
             <span class="code-comment">&lt;!-- 2. Drop the widget anywhere in the page --&gt;</span>
-            <span class="code-tag">&lt;search-property-widget</span>
-            <span class="code-attr">label</span>=<span class="code-string">"Search Hotels"</span>
-            <span class="code-attr">placeholder</span>=<span class="code-string"
+            <span class="code-tag">&lt;search-property-widget</span
+            ><span class="code-attr"> label</span>=<span class="code-string">"Search Hotels"</span
+            ><span class="code-attr"> placeholder</span>=<span class="code-string"
               >"Where would you like to go?"</span
-            >
-            <span class="code-tag">&gt;&lt;/search-property-widget&gt;</span>
+            ><span class="code-tag">&gt;&lt;/search-property-widget&gt;</span>
+
+            <span class="code-tag">&lt;counter-widget&gt;&lt;/counter-widget&gt;</span>
           </div>
         </div>
       </main>
@@ -338,17 +343,26 @@
 
     <script>
       // Update sidebar status based on custom element registration
-      const dot = document.getElementById('status-dot');
-      const text = document.getElementById('status-text');
+      const dot1 = document.getElementById('status-dot-1');
+      const text1 = document.getElementById('status-text-1');
+      const dot2 = document.getElementById('status-dot-2');
+      const text2 = document.getElementById('status-text-2');
       const badge = document.getElementById('loader-badge');
 
       function checkRegistration() {
         if (customElements.get('search-property-widget')) {
-          dot.classList.add('loaded');
-          text.textContent = 'registered';
+          dot1.classList.add('loaded');
+          text1.textContent = 'registered';
           badge.textContent = 'Loader active';
           badge.style.background = 'var(--t1-color-success-100)';
           badge.style.color = 'var(--t1-color-success-700)';
+        } else {
+          setTimeout(checkRegistration, 200);
+        }
+
+        if (customElements.get('counter-widget')) {
+          dot2.classList.add('loaded');
+          text2.textContent = 'registered';
         } else {
           setTimeout(checkRegistration, 200);
         }
