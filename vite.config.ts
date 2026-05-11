@@ -20,6 +20,8 @@ function discoverWidgets(dir: string): Record<string, string> {
 const widgetsDir = resolve(__dirname, 'src/widgets');
 
 export default defineConfig(({ mode }) => ({
+  publicDir: false,
+
   resolve: {
     alias: {
       '@widgets': resolve(__dirname, 'src/widgets'),
