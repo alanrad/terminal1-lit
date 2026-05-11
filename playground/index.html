@@ -158,6 +158,27 @@
         color: var(--t1-color-warning-700);
       }
 
+      .header-sdk-link {
+        margin-left: auto;
+        font-size: var(--t1-font-size-x-small);
+        font-weight: var(--t1-font-weight-bold);
+        letter-spacing: var(--t1-letter-spacing-looser);
+        text-transform: uppercase;
+        color: var(--t1-color-danger-600);
+        text-decoration: none;
+        padding: 0.3em 0.8em;
+        border: 1px solid var(--t1-color-danger-300);
+        border-radius: var(--t1-border-radius-medium);
+        transition:
+          background var(--t1-transition-fast),
+          border-color var(--t1-transition-fast);
+      }
+
+      .header-sdk-link:hover {
+        background: var(--t1-color-danger-50);
+        border-color: var(--t1-color-danger-400);
+      }
+
       @media (max-width: 640px) {
         .header {
           padding: var(--t1-spacing-small) var(--t1-spacing-large);
@@ -195,6 +216,7 @@
             <p>Web components built with TS, Lit & Vite</p>
           </div>
         </a>
+        <a href="/playground/sdk-loader/" class="header-sdk-link">SDK Loader</a>
       </header>
     </div>
 
