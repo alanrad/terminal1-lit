@@ -1,6 +1,22 @@
-# Terminal 1
+<table>
+  <tr>
+    <td width="150">
+      <img src="https://terminal1.win/images/terminal-one.png" alt="Alt text" width="200"/>
+    </td>
+    <td>
+      <h1>Terminal 1</h1>
+      <p>Web components built with TS, Lit & Vite</p>
+    </td>
+  </tr>
+</table>
 
-<img src="https://terminal1.win/images/terminal-one.png" alt="Alt text" width="200"/>
+- A modern UI library offering configurable components and host-agnostic widgets
+- Components and widgets are built using Lit and Web Components
+- SDK delivered through the Cloudflare CDN
+- The design system is influenced by Bootstrap principles and patterns
+- The color system follows Tailwind CSS design primitives
+- Iconography is powered by Bootstrap Icons
+- Ships with a number of translations
 
 ## Project Structure
 
@@ -61,7 +77,7 @@ widget/
 
 ## Step 1 — Project Initialization
 
-Install the runtime and all dev dependencies:
+Install project dependencies:
 
 ```bash
 npm yarn install
