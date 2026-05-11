@@ -87,6 +87,23 @@ Install project dependencies:
 npm yarn install
 ```
 
+## Scripts Reference
+
+| Command                 | Purpose                                                                        |
+| ----------------------- | ------------------------------------------------------------------------------ |
+| `npm run dev`           | Vite dev server on :3000 with HMR, serves `playground/`                        |
+| `npm run build`         | Type-check (`tsc --noEmit`) then production build → `dist/`                    |
+| `npm run build:watch`   | Rebuild on every file save (useful for linked local testing)                   |
+| `npm run preview`       | Serve `dist/` locally to verify the production build                           |
+| `npm test`              | Vitest single run (used in CI)                                                 |
+| `npm run test:watch`    | Vitest in watch mode                                                           |
+| `npm run test:ui`       | Vitest browser UI                                                              |
+| `npm run test:coverage` | Coverage report under `coverage/`                                              |
+| `npm run type-check`    | TypeScript check via `tsconfig.check.json` — covers `src/` and `translations/` |
+| `npm run format`        | Run Prettier across the entire project (writes in-place)                       |
+| `npm run format:check`  | Check formatting without writing (suitable for CI)                             |
+| `npm run release`       | Build + `npm publish --access public` (manual process)                         |
+
 **Why this stack:**
 
 - **Lit** — the lightest path to standards-based web components with reactive properties and Shadow DOM, no virtual DOM overhead.
@@ -410,26 +427,7 @@ npm run type-check   # full TypeScript check including translations/
 
 ---
 
-## Step 11 — Scripts Reference
-
-| Command                 | Purpose                                                                        |
-| ----------------------- | ------------------------------------------------------------------------------ |
-| `npm run dev`           | Vite dev server on :3000 with HMR, serves `playground/`                        |
-| `npm run build`         | Type-check (`tsc --noEmit`) then production build → `dist/`                    |
-| `npm run build:watch`   | Rebuild on every file save (useful for linked local testing)                   |
-| `npm run preview`       | Serve `dist/` locally to verify the production build                           |
-| `npm test`              | Vitest single run (used in CI)                                                 |
-| `npm run test:watch`    | Vitest in watch mode                                                           |
-| `npm run test:ui`       | Vitest browser UI                                                              |
-| `npm run test:coverage` | Coverage report under `coverage/`                                              |
-| `npm run type-check`    | TypeScript check via `tsconfig.check.json` — covers `src/` and `translations/` |
-| `npm run format`        | Run Prettier across the entire project (writes in-place)                       |
-| `npm run format:check`  | Check formatting without writing (suitable for CI)                             |
-| `npm run release`       | Build + `npm publish --access public`                                          |
-
----
-
-## Step 12 — Publishing to CDN
+## Step 11 — Publishing to CDN
 
 After each push to the `main` branch, GitHub Actions will automatically build the package and deploy it to CDN.
 
@@ -475,7 +473,7 @@ https://playground.terminal1.win
 
 ---
 
-## Step 13 — Adding a New Widget (Checklist)
+## Step 12 — Adding a New Widget (Checklist)
 
 Follow these steps every time you add a widget to the library:
 
