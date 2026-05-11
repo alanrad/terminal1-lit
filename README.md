@@ -1,10 +1,14 @@
-<table style="border: none;"> 
-  <tr>
-    <td width="150">
-      <img src="https://terminal1.win/images/terminal-one.png" alt="Alt text" width="200"/>
+<table> 
+  <tr style="border: none;">
+    <td width="200" style="border: none;">
+      <a href="https://playground.terminal1.win" style="color: #dc2626" target="_blank">
+        <img src="https://terminal1.win/images/terminal-one.png" alt="Terminal 1" width="200"/>
+      </a>
     </td>
-    <td>
-      <h1>Terminal 1</h1>
+    <td style="border: none;">
+      <a href="https://playground.terminal1.win" style="color: #dc2626" target="_blank">
+        <h2>Terminal 1</h2>
+      </a>
       <p>Web components built with TS, Lit & Vite</p>
     </td>
   </tr>
@@ -427,7 +431,7 @@ npm run type-check   # full TypeScript check including translations/
 
 ## Step 12 — Publishing to CDN
 
-After each push to the `main` branch, GitHub Actions will automatically build the package and deploy it to the Cloudflare CDN.
+After each push to the `main` branch, GitHub Actions will automatically build the package and deploy it to CDN.
 
 **Publish to CDN:**
 
@@ -443,7 +447,7 @@ https://terminal1.win/cdn/lit/...
 
 **Publish to Cloudflare Pages:**
 
-The playground web application, used to showcase the library capabilities, is built and hosted using Cloudflare Pages.
+The T1 playground showcases the library capabilities. It's built and deployed after each push to the `main` branch.
 
 https://playground.terminal1.win
 

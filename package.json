@@ -1,7 +1,7 @@
 {
   "name": "terminal-1-lit-web-components",
-  "version": "0.1.0",
-  "description": "Web component widget library built with Lit + Vite",
+  "version": "1.0.0",
+  "description": "Web component widget library built with TS, Lit & Vite",
   "type": "module",
   "main": "dist/sdk/loader.js",
   "module": "dist/sdk/loader.js",
