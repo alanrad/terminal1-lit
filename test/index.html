@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CDN Integration Test — Terminal 1</title>
+    <link rel="stylesheet" href="/src/styles/theme.css" />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: var(--t1-font-sans);
+        background: var(--t1-color-neutral-100);
+        color: var(--t1-color-neutral-900);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ── Header ── */
+      .header {
+        background: var(--t1-color-neutral-0);
+        border-bottom: 1px solid var(--t1-color-neutral-200);
+        padding: var(--t1-spacing-medium) var(--t1-spacing-3x-large);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--t1-spacing-large);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: var(--t1-spacing-large);
+      }
+
+      .header-logo {
+        width: 80px;
+        padding-top: 5px;
+        object-fit: contain;
+        flex-shrink: 0;
+      }
+
+      .header-title {
+        font-size: var(--t1-font-size-large);
+        font-weight: var(--t1-font-weight-bold);
+        color: var(--t1-color-danger-600);
+        letter-spacing: var(--t1-letter-spacing-dense);
+      }
+
+      .header-subtitle {
+        font-size: var(--t1-font-size-small);
+        color: var(--t1-color-neutral-500);
+        margin-top: 2px;
+      }
+
+      .header-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4em;
+        font-size: var(--t1-font-size-x-small);
+        font-weight: var(--t1-font-weight-semibold);
+        padding: 0.25em 0.75em;
+        border-radius: var(--t1-border-radius-pill);
+        background: var(--t1-color-success-100);
+        color: var(--t1-color-success-700);
+      }
+
+      .header-badge::before {
+        content: '';
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--t1-color-success-500);
+      }
+
+      /* ── Layout ── */
+      .layout {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        min-height: 0;
+      }
+
+      /* ── Sidebar ── */
+      .sidebar {
+        background: var(--t1-color-neutral-0);
+        border-right: 1px solid var(--t1-color-neutral-200);
+        padding: var(--t1-spacing-2x-large) var(--t1-spacing-large);
+        display: flex;
+        flex-direction: column;
+        gap: var(--t1-spacing-2x-large);
+      }
+
+      .sidebar-section-label {
+        font-size: var(--t1-font-size-x-small);
+        font-weight: var(--t1-font-weight-semibold);
+        text-transform: uppercase;
+        letter-spacing: var(--t1-letter-spacing-looser);
+        color: var(--t1-color-neutral-400);
+        margin-bottom: var(--t1-spacing-small);
+      }
+
+      .sidebar-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        padding: var(--t1-spacing-small);
+        border-radius: var(--t1-border-radius-medium);
+        border: 1px solid var(--t1-color-neutral-200);
+        background: var(--t1-color-neutral-50);
+      }
+
+      .sidebar-item-label {
+        font-size: var(--t1-font-size-x-small);
+        font-weight: var(--t1-font-weight-semibold);
+        color: var(--t1-color-neutral-500);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .sidebar-item-value {
+        font-size: var(--t1-font-size-small);
+        color: var(--t1-color-neutral-800);
+        font-family: var(--t1-font-mono);
+        word-break: break-all;
+      }
+
+      .sidebar-item-value a {
+        color: var(--t1-color-danger-600);
+        text-decoration: none;
+      }
+
+      .sidebar-item-value a:hover {
+        text-decoration: underline;
+      }
+
+      .status-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--t1-color-neutral-300);
+        vertical-align: middle;
+        margin-right: 0.3em;
+        transition: background 0.3s;
+      }
+
+      .status-dot.loaded {
+        background: var(--t1-color-success-500);
+      }
+
+      .status-dot.error {
+        background: var(--t1-color-danger-500);
+      }
+
+      /* ── Main content ── */
+      .main {
+        padding: var(--t1-spacing-3x-large) var(--t1-spacing-2x-large);
+        display: flex;
+        flex-direction: column;
+        gap: var(--t1-spacing-2x-large);
+        min-width: 0;
+      }
+
+      .section-heading {
+        font-size: var(--t1-font-size-large);
+        font-weight: var(--t1-font-weight-semibold);
+        color: var(--t1-color-neutral-900);
+        padding-bottom: var(--t1-spacing-x-small);
+        border-bottom: 1px solid var(--t1-color-neutral-200);
+        margin-bottom: var(--t1-spacing-medium);
+      }
+
+      .widget-frame {
+        background: var(--t1-color-neutral-0);
+        border: 1px solid var(--t1-color-neutral-200);
+        border-radius: var(--t1-border-radius-large);
+        padding: var(--t1-spacing-2x-large);
+      }
+
+      .code-block {
+        background: var(--t1-color-neutral-900);
+        color: var(--t1-color-neutral-100);
+        font-family: var(--t1-font-mono);
+        font-size: var(--t1-font-size-x-small);
+        line-height: 1.7;
+        padding: var(--t1-spacing-large);
+        border-radius: var(--t1-border-radius-medium);
+        overflow-x: auto;
+        white-space: pre;
+      }
+
+      .code-comment {
+        color: var(--t1-color-neutral-500);
+      }
+      .code-tag {
+        color: #7dd3fc;
+      }
+      .code-attr {
+        color: #86efac;
+      }
+      .code-string {
+        color: #fcd34d;
+      }
+
+      @media (max-width: 768px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          border-right: none;
+          border-bottom: 1px solid var(--t1-color-neutral-200);
+          padding: var(--t1-spacing-large);
+        }
+
+        .header {
+          padding: var(--t1-spacing-small) var(--t1-spacing-large);
+        }
+
+        .header-badge {
+          display: none;
+        }
+
+        .main {
+          padding: var(--t1-spacing-2x-large) var(--t1-spacing-large);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-left">
+        <img
+          class="header-logo"
+          src="https://terminal1.win/images/terminal-one.png"
+          alt="Terminal 1"
+        />
+        <div>
+          <div class="header-title">Terminal 1</div>
+          <div class="header-subtitle">CDN Integration Test</div>
+        </div>
+      </div>
+      <span class="header-badge" id="loader-badge">Waiting for loader…</span>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <div>
+          <p class="sidebar-section-label">Loader</p>
+          <div class="sidebar-item">
+            <span class="sidebar-item-label">Script</span>
+            <span class="sidebar-item-value">
+              <a href="https://terminal1.win/cdn/lit/sdk/loader.js" target="_blank">
+                sdk/loader.js
+              </a>
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <p class="sidebar-section-label">Widget</p>
+          <div class="sidebar-item" style="gap: 0.5rem">
+            <span class="sidebar-item-label">Tag</span>
+            <span class="sidebar-item-value">search-property-widget</span>
+          </div>
+          <div class="sidebar-item" style="margin-top: var(--t1-spacing-small)">
+            <span class="sidebar-item-label">Status</span>
+            <span class="sidebar-item-value" id="widget-status">
+              <span class="status-dot" id="status-dot"></span>
+              <span id="status-text">pending</span>
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <p class="sidebar-section-label">Attributes</p>
+          <div class="sidebar-item">
+            <span class="sidebar-item-label">label</span>
+            <span class="sidebar-item-value">Destination</span>
+          </div>
+          <div class="sidebar-item" style="margin-top: var(--t1-spacing-small)">
+            <span class="sidebar-item-label">placeholder</span>
+            <span class="sidebar-item-value">Where would you like to go?</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div>
+          <h2 class="section-heading">search-property-widget</h2>
+          <div class="widget-frame">
+            <!-- loader scans the DOM, finds any known widget tag, imports it -->
+            <search-property-widget
+              label="Search hotels"
+              placeholder="Where would you like to go?"
+            ></search-property-widget>
+          </div>
+        </div>
+
+        <div style="margin-top: var(--t1-spacing-3x-large)">
+          <h2 class="section-heading">Usage snippet</h2>
+          <div class="code-block">
+            <span class="code-comment">&lt;!-- 1. Load the SDK once --&gt;</span>
+            <span class="code-tag">&lt;script</span> <span class="code-attr">type</span>=<span
+              class="code-string"
+              >"module"</span
+            >
+            <span class="code-attr">src</span>=<span class="code-string"
+              >"https://terminal1.win/cdn/lit/sdk/loader.js"</span
+            ><span class="code-tag">&gt;&lt;/script&gt;</span>
+
+            <span class="code-comment">&lt;!-- 2. Drop the widget anywhere in the page --&gt;</span>
+            <span class="code-tag">&lt;search-property-widget</span>
+            <span class="code-attr">label</span>=<span class="code-string">"Destination"</span>
+            <span class="code-attr">placeholder</span>=<span class="code-string"
+              >"Where would you like to go?"</span
+            >
+            <span class="code-tag">&gt;&lt;/search-property-widget&gt;</span>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- CDN loader — scans the DOM, finds known widget tags, imports them -->
+    <script type="module" src="https://terminal1.win/cdn/lit/sdk/loader.js"></script>
+
+    <script>
+      // Update sidebar status based on custom element registration
+      const dot = document.getElementById('status-dot');
+      const text = document.getElementById('status-text');
+      const badge = document.getElementById('loader-badge');
+
+      function checkRegistration() {
+        if (customElements.get('search-property-widget')) {
+          dot.classList.add('loaded');
+          text.textContent = 'registered';
+          badge.textContent = 'Loader active';
+          badge.style.background = 'var(--t1-color-success-100)';
+          badge.style.color = 'var(--t1-color-success-700)';
+        } else {
+          setTimeout(checkRegistration, 200);
+        }
+      }
+
+      checkRegistration();
+    </script>
+  </body>
+</html>

@@ -3,7 +3,8 @@ import '.';
 
 type SearchPropertyWidgetEl = HTMLElement & {
   updateComplete: Promise<boolean>;
-  debounce: number;
+  label: string;
+  placeholder: string;
   search: (term: string) => void;
   onSelect: (property: unknown) => void;
   _state: {
@@ -62,11 +63,34 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-test('renders a t1-input with the correct placeholder', async () => {
+// ── Input rendering ───────────────────────────────────────────────────────────
+
+test('renders a t1-input with the default placeholder', async () => {
   const el = createElement();
   await el.updateComplete;
-  const input = el.shadowRoot!.querySelector('t1-input')!;
-  expect(input.getAttribute('placeholder')).toBe('Where would you like to go?');
+  const input = el.shadowRoot!.querySelector('t1-input') as any;
+  expect(input.placeholder).toBe('Where would you like to go?');
+});
+
+test('renders a custom placeholder when placeholder attribute is provided', async () => {
+  const el = createElement({ placeholder: 'Search by city or address' });
+  await el.updateComplete;
+  const input = el.shadowRoot!.querySelector('t1-input') as any;
+  expect(input.placeholder).toBe('Search by city or address');
+});
+
+test('renders no label on the input by default', async () => {
+  const el = createElement();
+  await el.updateComplete;
+  const input = el.shadowRoot!.querySelector('t1-input') as any;
+  expect(input.label).toBe('');
+});
+
+test('renders a label on the input when label attribute is provided', async () => {
+  const el = createElement({ label: 'Destination' });
+  await el.updateComplete;
+  const input = el.shadowRoot!.querySelector('t1-input') as any;
+  expect(input.label).toBe('Destination');
 });
 
 test('renders a t1-icon with slot prefix and name search', async () => {
@@ -83,6 +107,8 @@ test('has clearable attribute on the input', async () => {
   const input = el.shadowRoot!.querySelector('t1-input')!;
   expect(input.hasAttribute('clearable')).toBe(true);
 });
+
+// ── Debounce ──────────────────────────────────────────────────────────────────
 
 test('does not call search when input is empty', async () => {
   vi.useFakeTimers();
@@ -171,7 +197,7 @@ test('cancels any pending debounce timer when input drops below 2 characters', a
   expect(spy).not.toHaveBeenCalled();
 });
 
-test('does not call search before the debounce delay elapses', async () => {
+test('does not call search before the 500ms debounce delay elapses', async () => {
   vi.useFakeTimers();
   const el = createElement();
   await el.updateComplete;
@@ -179,18 +205,18 @@ test('does not call search before the debounce delay elapses', async () => {
   el.search = spy;
   dispatchInput(el, 'Paris');
   expect(spy).not.toHaveBeenCalled();
-  vi.advanceTimersByTime(999);
+  vi.advanceTimersByTime(499);
   expect(spy).not.toHaveBeenCalled();
 });
 
-test('calls search after the default 1s debounce delay', async () => {
+test('calls search after the default 500ms debounce delay', async () => {
   vi.useFakeTimers();
   const el = createElement();
   await el.updateComplete;
   const spy = vi.fn();
   el.search = spy;
   dispatchInput(el, 'Paris');
-  vi.advanceTimersByTime(1000);
+  vi.advanceTimersByTime(500);
   expect(spy).toHaveBeenCalledOnce();
 });
 
@@ -206,18 +232,7 @@ test('debounces rapid input and only calls search once with the last value', asy
   expect(spy).toHaveBeenCalledWith('Paris F');
 });
 
-test('respects a custom debounce attribute value', async () => {
-  vi.useFakeTimers();
-  const el = createElement({ debounce: 500 });
-  await el.updateComplete;
-  const spy = vi.fn();
-  el.search = spy;
-  dispatchInput(el, 'Paris');
-  vi.advanceTimersByTime(499);
-  expect(spy).not.toHaveBeenCalled();
-  vi.advanceTimersByTime(1);
-  expect(spy).toHaveBeenCalledOnce();
-});
+// ── Menu item selection ───────────────────────────────────────────────────────
 
 test('hides the popup when a menu item is selected', async () => {
   const el = createElement();
@@ -299,22 +314,6 @@ test('does not call onSelect when the id does not match any property', async () 
   );
 
   expect(spy).not.toHaveBeenCalled();
-});
-
-// ── Loading spinner ───────────────────────────────────────────────────────────
-
-test('shows spinner while loading', async () => {
-  const el = createElement();
-  await el.updateComplete;
-  el._state.setLoading(true);
-  await el.updateComplete;
-  expect(el.shadowRoot!.querySelector('t1-spinner')).not.toBeNull();
-});
-
-test('hides spinner when not loading', async () => {
-  const el = createElement();
-  await el.updateComplete;
-  expect(el.shadowRoot!.querySelector('t1-spinner')).toBeNull();
 });
 
 // ── Menu item rendering ───────────────────────────────────────────────────────
@@ -711,7 +710,6 @@ test('search loads properties from service when none are cached', async () => {
 
   expect(getSpy).toHaveBeenCalledOnce();
   expect(el._state.properties.value).toStrictEqual(mockData);
-  expect(el._state.loading.value).toBe(false);
   expect(el._state.results.value).toHaveLength(2);
 });
 
@@ -731,7 +729,7 @@ test('search uses cached properties without calling the service again', async ()
   expect(el._state.results.value).toHaveLength(2);
 });
 
-test('search clears loading even when the service throws', async () => {
+test('search rejects when the service throws', async () => {
   const el = createElement();
   await el.updateComplete;
 
@@ -740,7 +738,6 @@ test('search clears loading even when the service throws', async () => {
   };
 
   await expect(el.search('Sydney')).rejects.toThrow('Network error');
-  expect(el._state.loading.value).toBe(false);
 });
 
 // ── Lifecycle ─────────────────────────────────────────────────────────────────
