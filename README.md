@@ -1,4 +1,6 @@
-# Production-Grade Widget System — Complete Guide
+# Terminal 1
+
+<img src="https://terminal1.win/images/terminal-one.png" alt="Alt text" width="200"/>
 
 ## Project Structure
 
@@ -43,7 +45,7 @@ widget/
 │           │   └── index.ts
 │           └── index.ts
 ├── translations/            # i18n translation files (29 locales)
-├── playground/              # Dev sandbox pages (one per component)
+├── playground/              # library showcase
 ├── .husky/
 │   └── pre-commit           # Runs lint-staged + type-check before every commit
 ├── .prettierrc              # Prettier formatting rules
@@ -62,11 +64,7 @@ widget/
 Install the runtime and all dev dependencies:
 
 ```bash
-npm init -y
-npm install lit @lit/reactive-element
-npm install -D vite vite-plugin-dts typescript vitest @vitest/ui jsdom
-npm install -D prettier husky lint-staged
-npx husky init
+npm yarn install
 ```
 
 **Why this stack:**
@@ -413,7 +411,9 @@ npm run type-check   # full TypeScript check including translations/
 
 ## Step 12 — Publishing to CDN
 
-After running `npm run build`, the `dist/` folder is self-contained:
+After each push to the `main` branch, GitHub Actions will automatically build the package and deploy it to the Cloudflare CDN.
+
+**Publish to CDN:**
 
 ```
 dist/
@@ -423,18 +423,20 @@ dist/
 └── chunks/decorate-[hash].js   ← shared Lit internals (loaded once)
 ```
 
-**Publish to npm:**
+https://terminal1.win/cdn/lit/...
 
-```bash
-npm run release   # runs: tsc --noEmit && vite build && npm publish --access public
-```
+**Publish to Cloudflare Pages:**
+
+The playground web application, used to showcase the library capabilities, is built and hosted using Cloudflare Pages.
+
+https://playground.terminal1.win
 
 **Use from jsDelivr (auto-serves any npm package):**
 
 ```html
 <script
   type="module"
-  src="https://cdn.jsdelivr.net/npm/@myorg/widgets@0.1.0/dist/sdk/loader.js"
+  src="https://terminal1.win/cdn/lit/sdk/loader.js"
   data-widgets="counter-widget"
 ></script>
 ```
@@ -444,7 +446,7 @@ npm run release   # runs: tsc --noEmit && vite build && npm publish --access pub
 ```html
 <script
   type="module"
-  src="https://unpkg.com/@myorg/widgets@0.1.0/dist/sdk/loader.js"
+  src="https://terminal1.win/cdn/lit/sdk/loader.js"
   data-widgets="search-property-widget"
 ></script>
 ```
