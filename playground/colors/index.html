@@ -1,0 +1,1755 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>Colors — Terminal 1</title>
+    <link rel="stylesheet" href="/src/styles/theme.css" />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: var(--t1-font-sans);
+        background: var(--t1-color-neutral-50);
+        color: var(--t1-color-neutral-900);
+        min-height: 100vh;
+      }
+
+      .sticky-nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header {
+        background: var(--t1-color-neutral-0);
+        border-bottom: 1px solid var(--t1-color-neutral-200);
+        padding: var(--t1-spacing-large) var(--t1-spacing-3x-large);
+        display: flex;
+        align-items: center;
+      }
+
+      .header-link {
+        display: flex;
+        align-items: center;
+        gap: var(--t1-spacing-large);
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .header-logo {
+        flex-shrink: 0;
+        width: 100px;
+        padding-top: 7px;
+        object-fit: contain;
+      }
+
+      .header-text h1 {
+        font-size: var(--t1-font-size-2x-large);
+        font-weight: var(--t1-font-weight-bold);
+        color: var(--t1-color-primary-600);
+        letter-spacing: var(--t1-letter-spacing-dense);
+      }
+
+      .header-text p {
+        margin-top: var(--t1-spacing-2x-small);
+        font-size: var(--t1-font-size-medium);
+        color: var(--t1-color-neutral-500);
+      }
+
+      .breadcrumb {
+        background: var(--t1-color-neutral-0);
+        border-bottom: 1px solid var(--t1-color-neutral-100);
+        padding: var(--t1-spacing-x-small) var(--t1-spacing-3x-large);
+        display: flex;
+        align-items: center;
+        gap: var(--t1-spacing-small);
+        font-size: var(--t1-font-size-small);
+      }
+
+      .breadcrumb a {
+        color: var(--t1-color-primary-600);
+        text-decoration: none;
+      }
+
+      .breadcrumb a:hover {
+        text-decoration: underline;
+      }
+
+      .breadcrumb-sep {
+        color: var(--t1-color-neutral-300);
+      }
+
+      .breadcrumb-current {
+        color: var(--t1-color-neutral-500);
+      }
+
+      .main {
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: var(--t1-spacing-3x-large) var(--t1-spacing-large);
+        display: flex;
+        flex-direction: column;
+        gap: var(--t1-spacing-3x-large);
+      }
+
+      .page-intro {
+        display: flex;
+        flex-direction: column;
+        gap: var(--t1-spacing-x-small);
+      }
+
+      .page-title {
+        font-size: var(--t1-font-size-2x-large);
+        font-weight: var(--t1-font-weight-bold);
+        color: var(--t1-color-neutral-900);
+        letter-spacing: var(--t1-letter-spacing-dense);
+      }
+
+      .page-desc {
+        font-size: var(--t1-font-size-medium);
+        color: var(--t1-color-neutral-500);
+        line-height: var(--t1-line-height-dense);
+      }
+
+      .token-hint {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--t1-spacing-x-small);
+        margin-top: var(--t1-spacing-x-small);
+        font-size: var(--t1-font-size-small);
+        color: var(--t1-color-neutral-500);
+      }
+
+      .token-hint code {
+        font-family: var(--t1-font-mono);
+        font-size: var(--t1-font-size-x-small);
+        background: var(--t1-color-neutral-100);
+        padding: 0.2em 0.5em;
+        border-radius: var(--t1-border-radius-small);
+        color: var(--t1-color-neutral-700);
+      }
+
+      .section-label {
+        font-size: var(--t1-font-size-x-small);
+        font-weight: var(--t1-font-weight-semibold);
+        text-transform: uppercase;
+        letter-spacing: var(--t1-letter-spacing-looser);
+        color: var(--t1-color-neutral-400);
+        margin-bottom: var(--t1-spacing-large);
+      }
+
+      .palette-stack {
+        display: flex;
+        flex-direction: column;
+        gap: var(--t1-spacing-medium);
+      }
+
+      .palette-row {
+        display: flex;
+        flex-direction: column;
+        gap: var(--t1-spacing-x-small);
+      }
+
+      .palette-row-header {
+        display: flex;
+        align-items: baseline;
+        gap: var(--t1-spacing-small);
+      }
+
+      .palette-name {
+        font-size: var(--t1-font-size-small);
+        font-weight: var(--t1-font-weight-semibold);
+        color: var(--t1-color-neutral-800);
+        text-transform: capitalize;
+        min-width: 60px;
+      }
+
+      .palette-token-pattern {
+        font-family: var(--t1-font-mono);
+        font-size: var(--t1-font-size-x-small);
+        color: var(--t1-color-neutral-400);
+      }
+
+      .swatch-strip {
+        display: grid;
+        grid-template-columns: repeat(11, 1fr);
+        border-radius: var(--t1-border-radius-large);
+        overflow: hidden;
+        border: 1px solid var(--t1-color-neutral-200);
+        height: 80px;
+      }
+
+      .swatch {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        padding-bottom: var(--t1-spacing-x-small);
+        cursor: default;
+        transition: filter var(--t1-transition-fast);
+      }
+
+      .swatch:hover {
+        filter: brightness(1.1);
+        z-index: 1;
+      }
+
+      .swatch-shade {
+        font-size: 10px;
+        font-weight: var(--t1-font-weight-semibold);
+        letter-spacing: 0.02em;
+        line-height: 1;
+        pointer-events: none;
+      }
+
+      .swatch-shade-light {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .swatch-shade-dark {
+        color: rgba(0, 0, 0, 0.4);
+      }
+
+      /* Hover tooltip showing token name + computed value */
+      .swatch::after {
+        content: attr(data-token);
+        position: absolute;
+        bottom: calc(100% + 6px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--t1-color-neutral-900);
+        color: var(--t1-color-neutral-0);
+        font-family: var(--t1-font-mono);
+        font-size: 10px;
+        white-space: nowrap;
+        padding: 0.25em 0.5em;
+        border-radius: var(--t1-border-radius-small);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity var(--t1-transition-fast);
+        z-index: 10;
+      }
+
+      .swatch:hover::after {
+        opacity: 1;
+      }
+
+      /* Neutral strip: wider because it has 0 and 1000 */
+      .swatch-strip-neutral {
+        grid-template-columns: repeat(13, 1fr);
+      }
+
+      .divider {
+        border: none;
+        border-top: 1px solid var(--t1-color-neutral-200);
+      }
+
+      @media (max-width: 640px) {
+        .header {
+          padding: var(--t1-spacing-small) var(--t1-spacing-large);
+        }
+
+        .header-logo {
+          width: 64px;
+        }
+
+        .header-text h1 {
+          font-size: var(--t1-font-size-x-large);
+        }
+
+        .header-text p {
+          display: none;
+        }
+
+        .breadcrumb {
+          padding: var(--t1-spacing-x-small) var(--t1-spacing-large);
+        }
+
+        .main {
+          padding: var(--t1-spacing-2x-large) var(--t1-spacing-medium);
+        }
+
+        .swatch-strip {
+          height: 56px;
+        }
+
+        .swatch-shade {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sticky-nav">
+      <header class="header">
+        <a href="/playground/" class="header-link">
+          <img
+            class="header-logo"
+            src="https://terminal1.win/images/terminal-one.png"
+            alt="Terminal 1"
+          />
+          <div class="header-text">
+            <h1>Terminal 1</h1>
+            <p>Web components built with TS, Lit & Vite</p>
+          </div>
+        </a>
+      </header>
+      <nav class="breadcrumb">
+        <a href="/playground/">Home</a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Colors</span>
+      </nav>
+    </div>
+
+    <main class="main">
+      <div class="page-intro">
+        <h1 class="page-title">Color Tokens</h1>
+        <p class="page-desc">
+          Semantic color tokens that drive every component and surface in the design system.
+          Override any token on
+          <code
+            style="
+              font-family: var(--t1-font-mono);
+              font-size: 0.875em;
+              background: var(--t1-color-neutral-100);
+              padding: 0.1em 0.4em;
+              border-radius: 3px;
+            "
+            >:root</code
+          >
+          or a component's host element to customise the theme.
+        </p>
+        <p class="token-hint">Usage: <code>var(--t1-color-{name}-{shade})</code></p>
+      </div>
+
+      <!-- Semantic colors -->
+      <div>
+        <p class="section-label">Semantic</p>
+        <div class="palette-stack">
+          <!-- Primary -->
+          <div class="palette-row">
+            <div class="palette-row-header">
+              <span class="palette-name">Primary</span>
+              <span class="palette-token-pattern">--t1-color-primary-{shade}</span>
+            </div>
+            <div class="swatch-strip">
+              <div
+                class="swatch"
+                style="background: var(--t1-color-primary-50)"
+                data-token="--t1-color-primary-50"
+              >
+                <span class="swatch-shade swatch-shade-dark">50</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-primary-100)"
+                data-token="--t1-color-primary-100"
+              >
+                <span class="swatch-shade swatch-shade-dark">100</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-primary-200)"
+                data-token="--t1-color-primary-200"
+              >
+                <span class="swatch-shade swatch-shade-dark">200</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-primary-300)"
+                data-token="--t1-color-primary-300"
+              >
+                <span class="swatch-shade swatch-shade-dark">300</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-primary-400)"
+                data-token="--t1-color-primary-400"
+              >
+                <span class="swatch-shade swatch-shade-dark">400</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-primary-500)"
+                data-token="--t1-color-primary-500"
+              >
+                <span class="swatch-shade swatch-shade-light">500</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-primary-600)"
+                data-token="--t1-color-primary-600"
+              >
+                <span class="swatch-shade swatch-shade-light">600</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-primary-700)"
+                data-token="--t1-color-primary-700"
+              >
+                <span class="swatch-shade swatch-shade-light">700</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-primary-800)"
+                data-token="--t1-color-primary-800"
+              >
+                <span class="swatch-shade swatch-shade-light">800</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-primary-900)"
+                data-token="--t1-color-primary-900"
+              >
+                <span class="swatch-shade swatch-shade-light">900</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-primary-950)"
+                data-token="--t1-color-primary-950"
+              >
+                <span class="swatch-shade swatch-shade-light">950</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Info -->
+          <div class="palette-row">
+            <div class="palette-row-header">
+              <span class="palette-name">Info</span>
+              <span class="palette-token-pattern">--t1-color-info-{shade}</span>
+            </div>
+            <div class="swatch-strip">
+              <div
+                class="swatch"
+                style="background: var(--t1-color-info-50)"
+                data-token="--t1-color-info-50"
+              >
+                <span class="swatch-shade swatch-shade-dark">50</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-info-100)"
+                data-token="--t1-color-info-100"
+              >
+                <span class="swatch-shade swatch-shade-dark">100</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-info-200)"
+                data-token="--t1-color-info-200"
+              >
+                <span class="swatch-shade swatch-shade-dark">200</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-info-300)"
+                data-token="--t1-color-info-300"
+              >
+                <span class="swatch-shade swatch-shade-dark">300</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-info-400)"
+                data-token="--t1-color-info-400"
+              >
+                <span class="swatch-shade swatch-shade-dark">400</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-info-500)"
+                data-token="--t1-color-info-500"
+              >
+                <span class="swatch-shade swatch-shade-light">500</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-info-600)"
+                data-token="--t1-color-info-600"
+              >
+                <span class="swatch-shade swatch-shade-light">600</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-info-700)"
+                data-token="--t1-color-info-700"
+              >
+                <span class="swatch-shade swatch-shade-light">700</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-info-800)"
+                data-token="--t1-color-info-800"
+              >
+                <span class="swatch-shade swatch-shade-light">800</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-info-900)"
+                data-token="--t1-color-info-900"
+              >
+                <span class="swatch-shade swatch-shade-light">900</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-info-950)"
+                data-token="--t1-color-info-950"
+              >
+                <span class="swatch-shade swatch-shade-light">950</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Success -->
+          <div class="palette-row">
+            <div class="palette-row-header">
+              <span class="palette-name">Success</span>
+              <span class="palette-token-pattern">--t1-color-success-{shade}</span>
+            </div>
+            <div class="swatch-strip">
+              <div
+                class="swatch"
+                style="background: var(--t1-color-success-50)"
+                data-token="--t1-color-success-50"
+              >
+                <span class="swatch-shade swatch-shade-dark">50</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-success-100)"
+                data-token="--t1-color-success-100"
+              >
+                <span class="swatch-shade swatch-shade-dark">100</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-success-200)"
+                data-token="--t1-color-success-200"
+              >
+                <span class="swatch-shade swatch-shade-dark">200</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-success-300)"
+                data-token="--t1-color-success-300"
+              >
+                <span class="swatch-shade swatch-shade-dark">300</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-success-400)"
+                data-token="--t1-color-success-400"
+              >
+                <span class="swatch-shade swatch-shade-dark">400</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-success-500)"
+                data-token="--t1-color-success-500"
+              >
+                <span class="swatch-shade swatch-shade-light">500</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-success-600)"
+                data-token="--t1-color-success-600"
+              >
+                <span class="swatch-shade swatch-shade-light">600</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-success-700)"
+                data-token="--t1-color-success-700"
+              >
+                <span class="swatch-shade swatch-shade-light">700</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-success-800)"
+                data-token="--t1-color-success-800"
+              >
+                <span class="swatch-shade swatch-shade-light">800</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-success-900)"
+                data-token="--t1-color-success-900"
+              >
+                <span class="swatch-shade swatch-shade-light">900</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-success-950)"
+                data-token="--t1-color-success-950"
+              >
+                <span class="swatch-shade swatch-shade-light">950</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Warning -->
+          <div class="palette-row">
+            <div class="palette-row-header">
+              <span class="palette-name">Warning</span>
+              <span class="palette-token-pattern">--t1-color-warning-{shade}</span>
+            </div>
+            <div class="swatch-strip">
+              <div
+                class="swatch"
+                style="background: var(--t1-color-warning-50)"
+                data-token="--t1-color-warning-50"
+              >
+                <span class="swatch-shade swatch-shade-dark">50</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-warning-100)"
+                data-token="--t1-color-warning-100"
+              >
+                <span class="swatch-shade swatch-shade-dark">100</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-warning-200)"
+                data-token="--t1-color-warning-200"
+              >
+                <span class="swatch-shade swatch-shade-dark">200</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-warning-300)"
+                data-token="--t1-color-warning-300"
+              >
+                <span class="swatch-shade swatch-shade-dark">300</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-warning-400)"
+                data-token="--t1-color-warning-400"
+              >
+                <span class="swatch-shade swatch-shade-dark">400</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-warning-500)"
+                data-token="--t1-color-warning-500"
+              >
+                <span class="swatch-shade swatch-shade-dark">500</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-warning-600)"
+                data-token="--t1-color-warning-600"
+              >
+                <span class="swatch-shade swatch-shade-light">600</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-warning-700)"
+                data-token="--t1-color-warning-700"
+              >
+                <span class="swatch-shade swatch-shade-light">700</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-warning-800)"
+                data-token="--t1-color-warning-800"
+              >
+                <span class="swatch-shade swatch-shade-light">800</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-warning-900)"
+                data-token="--t1-color-warning-900"
+              >
+                <span class="swatch-shade swatch-shade-light">900</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-warning-950)"
+                data-token="--t1-color-warning-950"
+              >
+                <span class="swatch-shade swatch-shade-light">950</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Danger -->
+          <div class="palette-row">
+            <div class="palette-row-header">
+              <span class="palette-name">Danger</span>
+              <span class="palette-token-pattern">--t1-color-danger-{shade}</span>
+            </div>
+            <div class="swatch-strip">
+              <div
+                class="swatch"
+                style="background: var(--t1-color-danger-50)"
+                data-token="--t1-color-danger-50"
+              >
+                <span class="swatch-shade swatch-shade-dark">50</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-danger-100)"
+                data-token="--t1-color-danger-100"
+              >
+                <span class="swatch-shade swatch-shade-dark">100</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-danger-200)"
+                data-token="--t1-color-danger-200"
+              >
+                <span class="swatch-shade swatch-shade-dark">200</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-danger-300)"
+                data-token="--t1-color-danger-300"
+              >
+                <span class="swatch-shade swatch-shade-dark">300</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-danger-400)"
+                data-token="--t1-color-danger-400"
+              >
+                <span class="swatch-shade swatch-shade-dark">400</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-danger-500)"
+                data-token="--t1-color-danger-500"
+              >
+                <span class="swatch-shade swatch-shade-light">500</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-danger-600)"
+                data-token="--t1-color-danger-600"
+              >
+                <span class="swatch-shade swatch-shade-light">600</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-danger-700)"
+                data-token="--t1-color-danger-700"
+              >
+                <span class="swatch-shade swatch-shade-light">700</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-danger-800)"
+                data-token="--t1-color-danger-800"
+              >
+                <span class="swatch-shade swatch-shade-light">800</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-danger-900)"
+                data-token="--t1-color-danger-900"
+              >
+                <span class="swatch-shade swatch-shade-light">900</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-danger-950)"
+                data-token="--t1-color-danger-950"
+              >
+                <span class="swatch-shade swatch-shade-light">950</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Neutral -->
+          <div class="palette-row">
+            <div class="palette-row-header">
+              <span class="palette-name">Neutral</span>
+              <span class="palette-token-pattern">--t1-color-neutral-{shade}</span>
+            </div>
+            <div class="swatch-strip swatch-strip-neutral">
+              <div
+                class="swatch"
+                style="
+                  background: var(--t1-color-neutral-0);
+                  border-right: 1px solid var(--t1-color-neutral-100);
+                "
+                data-token="--t1-color-neutral-0"
+              >
+                <span class="swatch-shade swatch-shade-dark">0</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-neutral-50)"
+                data-token="--t1-color-neutral-50"
+              >
+                <span class="swatch-shade swatch-shade-dark">50</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-neutral-100)"
+                data-token="--t1-color-neutral-100"
+              >
+                <span class="swatch-shade swatch-shade-dark">100</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-neutral-200)"
+                data-token="--t1-color-neutral-200"
+              >
+                <span class="swatch-shade swatch-shade-dark">200</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-neutral-300)"
+                data-token="--t1-color-neutral-300"
+              >
+                <span class="swatch-shade swatch-shade-dark">300</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-neutral-400)"
+                data-token="--t1-color-neutral-400"
+              >
+                <span class="swatch-shade swatch-shade-dark">400</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-neutral-500)"
+                data-token="--t1-color-neutral-500"
+              >
+                <span class="swatch-shade swatch-shade-light">500</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-neutral-600)"
+                data-token="--t1-color-neutral-600"
+              >
+                <span class="swatch-shade swatch-shade-light">600</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-neutral-700)"
+                data-token="--t1-color-neutral-700"
+              >
+                <span class="swatch-shade swatch-shade-light">700</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-neutral-800)"
+                data-token="--t1-color-neutral-800"
+              >
+                <span class="swatch-shade swatch-shade-light">800</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-neutral-900)"
+                data-token="--t1-color-neutral-900"
+              >
+                <span class="swatch-shade swatch-shade-light">900</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-neutral-950)"
+                data-token="--t1-color-neutral-950"
+              >
+                <span class="swatch-shade swatch-shade-light">950</span>
+              </div>
+              <div
+                class="swatch"
+                style="
+                  background: var(--t1-color-neutral-1000);
+                  border-left: 1px solid rgba(255, 255, 255, 0.08);
+                "
+                data-token="--t1-color-neutral-1000"
+              >
+                <span class="swatch-shade swatch-shade-light">1000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Primitive palette reference -->
+      <div>
+        <p class="section-label">Primitive Palette</p>
+        <div class="palette-stack">
+          <div class="palette-row">
+            <div class="palette-row-header">
+              <span class="palette-name">Red</span>
+              <span class="palette-token-pattern">--t1-color-red-{shade}</span>
+            </div>
+            <div class="swatch-strip">
+              <div
+                class="swatch"
+                style="background: var(--t1-color-red-50)"
+                data-token="--t1-color-red-50"
+              >
+                <span class="swatch-shade swatch-shade-dark">50</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-red-100)"
+                data-token="--t1-color-red-100"
+              >
+                <span class="swatch-shade swatch-shade-dark">100</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-red-200)"
+                data-token="--t1-color-red-200"
+              >
+                <span class="swatch-shade swatch-shade-dark">200</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-red-300)"
+                data-token="--t1-color-red-300"
+              >
+                <span class="swatch-shade swatch-shade-dark">300</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-red-400)"
+                data-token="--t1-color-red-400"
+              >
+                <span class="swatch-shade swatch-shade-dark">400</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-red-500)"
+                data-token="--t1-color-red-500"
+              >
+                <span class="swatch-shade swatch-shade-light">500</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-red-600)"
+                data-token="--t1-color-red-600"
+              >
+                <span class="swatch-shade swatch-shade-light">600</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-red-700)"
+                data-token="--t1-color-red-700"
+              >
+                <span class="swatch-shade swatch-shade-light">700</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-red-800)"
+                data-token="--t1-color-red-800"
+              >
+                <span class="swatch-shade swatch-shade-light">800</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-red-900)"
+                data-token="--t1-color-red-900"
+              >
+                <span class="swatch-shade swatch-shade-light">900</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-red-950)"
+                data-token="--t1-color-red-950"
+              >
+                <span class="swatch-shade swatch-shade-light">950</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="palette-row">
+            <div class="palette-row-header">
+              <span class="palette-name">Orange</span>
+              <span class="palette-token-pattern">--t1-color-orange-{shade}</span>
+            </div>
+            <div class="swatch-strip">
+              <div
+                class="swatch"
+                style="background: var(--t1-color-orange-50)"
+                data-token="--t1-color-orange-50"
+              >
+                <span class="swatch-shade swatch-shade-dark">50</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-orange-100)"
+                data-token="--t1-color-orange-100"
+              >
+                <span class="swatch-shade swatch-shade-dark">100</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-orange-200)"
+                data-token="--t1-color-orange-200"
+              >
+                <span class="swatch-shade swatch-shade-dark">200</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-orange-300)"
+                data-token="--t1-color-orange-300"
+              >
+                <span class="swatch-shade swatch-shade-dark">300</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-orange-400)"
+                data-token="--t1-color-orange-400"
+              >
+                <span class="swatch-shade swatch-shade-dark">400</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-orange-500)"
+                data-token="--t1-color-orange-500"
+              >
+                <span class="swatch-shade swatch-shade-light">500</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-orange-600)"
+                data-token="--t1-color-orange-600"
+              >
+                <span class="swatch-shade swatch-shade-light">600</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-orange-700)"
+                data-token="--t1-color-orange-700"
+              >
+                <span class="swatch-shade swatch-shade-light">700</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-orange-800)"
+                data-token="--t1-color-orange-800"
+              >
+                <span class="swatch-shade swatch-shade-light">800</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-orange-900)"
+                data-token="--t1-color-orange-900"
+              >
+                <span class="swatch-shade swatch-shade-light">900</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-orange-950)"
+                data-token="--t1-color-orange-950"
+              >
+                <span class="swatch-shade swatch-shade-light">950</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="palette-row">
+            <div class="palette-row-header">
+              <span class="palette-name">Amber</span>
+              <span class="palette-token-pattern">--t1-color-amber-{shade}</span>
+            </div>
+            <div class="swatch-strip">
+              <div
+                class="swatch"
+                style="background: var(--t1-color-amber-50)"
+                data-token="--t1-color-amber-50"
+              >
+                <span class="swatch-shade swatch-shade-dark">50</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-amber-100)"
+                data-token="--t1-color-amber-100"
+              >
+                <span class="swatch-shade swatch-shade-dark">100</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-amber-200)"
+                data-token="--t1-color-amber-200"
+              >
+                <span class="swatch-shade swatch-shade-dark">200</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-amber-300)"
+                data-token="--t1-color-amber-300"
+              >
+                <span class="swatch-shade swatch-shade-dark">300</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-amber-400)"
+                data-token="--t1-color-amber-400"
+              >
+                <span class="swatch-shade swatch-shade-dark">400</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-amber-500)"
+                data-token="--t1-color-amber-500"
+              >
+                <span class="swatch-shade swatch-shade-dark">500</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-amber-600)"
+                data-token="--t1-color-amber-600"
+              >
+                <span class="swatch-shade swatch-shade-light">600</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-amber-700)"
+                data-token="--t1-color-amber-700"
+              >
+                <span class="swatch-shade swatch-shade-light">700</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-amber-800)"
+                data-token="--t1-color-amber-800"
+              >
+                <span class="swatch-shade swatch-shade-light">800</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-amber-900)"
+                data-token="--t1-color-amber-900"
+              >
+                <span class="swatch-shade swatch-shade-light">900</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-amber-950)"
+                data-token="--t1-color-amber-950"
+              >
+                <span class="swatch-shade swatch-shade-light">950</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="palette-row">
+            <div class="palette-row-header">
+              <span class="palette-name">Green</span>
+              <span class="palette-token-pattern">--t1-color-green-{shade}</span>
+            </div>
+            <div class="swatch-strip">
+              <div
+                class="swatch"
+                style="background: var(--t1-color-green-50)"
+                data-token="--t1-color-green-50"
+              >
+                <span class="swatch-shade swatch-shade-dark">50</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-green-100)"
+                data-token="--t1-color-green-100"
+              >
+                <span class="swatch-shade swatch-shade-dark">100</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-green-200)"
+                data-token="--t1-color-green-200"
+              >
+                <span class="swatch-shade swatch-shade-dark">200</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-green-300)"
+                data-token="--t1-color-green-300"
+              >
+                <span class="swatch-shade swatch-shade-dark">300</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-green-400)"
+                data-token="--t1-color-green-400"
+              >
+                <span class="swatch-shade swatch-shade-dark">400</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-green-500)"
+                data-token="--t1-color-green-500"
+              >
+                <span class="swatch-shade swatch-shade-light">500</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-green-600)"
+                data-token="--t1-color-green-600"
+              >
+                <span class="swatch-shade swatch-shade-light">600</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-green-700)"
+                data-token="--t1-color-green-700"
+              >
+                <span class="swatch-shade swatch-shade-light">700</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-green-800)"
+                data-token="--t1-color-green-800"
+              >
+                <span class="swatch-shade swatch-shade-light">800</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-green-900)"
+                data-token="--t1-color-green-900"
+              >
+                <span class="swatch-shade swatch-shade-light">900</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-green-950)"
+                data-token="--t1-color-green-950"
+              >
+                <span class="swatch-shade swatch-shade-light">950</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="palette-row">
+            <div class="palette-row-header">
+              <span class="palette-name">Teal</span>
+              <span class="palette-token-pattern">--t1-color-teal-{shade}</span>
+            </div>
+            <div class="swatch-strip">
+              <div
+                class="swatch"
+                style="background: var(--t1-color-teal-50)"
+                data-token="--t1-color-teal-50"
+              >
+                <span class="swatch-shade swatch-shade-dark">50</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-teal-100)"
+                data-token="--t1-color-teal-100"
+              >
+                <span class="swatch-shade swatch-shade-dark">100</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-teal-200)"
+                data-token="--t1-color-teal-200"
+              >
+                <span class="swatch-shade swatch-shade-dark">200</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-teal-300)"
+                data-token="--t1-color-teal-300"
+              >
+                <span class="swatch-shade swatch-shade-dark">300</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-teal-400)"
+                data-token="--t1-color-teal-400"
+              >
+                <span class="swatch-shade swatch-shade-dark">400</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-teal-500)"
+                data-token="--t1-color-teal-500"
+              >
+                <span class="swatch-shade swatch-shade-light">500</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-teal-600)"
+                data-token="--t1-color-teal-600"
+              >
+                <span class="swatch-shade swatch-shade-light">600</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-teal-700)"
+                data-token="--t1-color-teal-700"
+              >
+                <span class="swatch-shade swatch-shade-light">700</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-teal-800)"
+                data-token="--t1-color-teal-800"
+              >
+                <span class="swatch-shade swatch-shade-light">800</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-teal-900)"
+                data-token="--t1-color-teal-900"
+              >
+                <span class="swatch-shade swatch-shade-light">900</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-teal-950)"
+                data-token="--t1-color-teal-950"
+              >
+                <span class="swatch-shade swatch-shade-light">950</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="palette-row">
+            <div class="palette-row-header">
+              <span class="palette-name">Sky</span>
+              <span class="palette-token-pattern">--t1-color-sky-{shade}</span>
+            </div>
+            <div class="swatch-strip">
+              <div
+                class="swatch"
+                style="background: var(--t1-color-sky-50)"
+                data-token="--t1-color-sky-50"
+              >
+                <span class="swatch-shade swatch-shade-dark">50</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-sky-100)"
+                data-token="--t1-color-sky-100"
+              >
+                <span class="swatch-shade swatch-shade-dark">100</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-sky-200)"
+                data-token="--t1-color-sky-200"
+              >
+                <span class="swatch-shade swatch-shade-dark">200</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-sky-300)"
+                data-token="--t1-color-sky-300"
+              >
+                <span class="swatch-shade swatch-shade-dark">300</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-sky-400)"
+                data-token="--t1-color-sky-400"
+              >
+                <span class="swatch-shade swatch-shade-dark">400</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-sky-500)"
+                data-token="--t1-color-sky-500"
+              >
+                <span class="swatch-shade swatch-shade-light">500</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-sky-600)"
+                data-token="--t1-color-sky-600"
+              >
+                <span class="swatch-shade swatch-shade-light">600</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-sky-700)"
+                data-token="--t1-color-sky-700"
+              >
+                <span class="swatch-shade swatch-shade-light">700</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-sky-800)"
+                data-token="--t1-color-sky-800"
+              >
+                <span class="swatch-shade swatch-shade-light">800</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-sky-900)"
+                data-token="--t1-color-sky-900"
+              >
+                <span class="swatch-shade swatch-shade-light">900</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-sky-950)"
+                data-token="--t1-color-sky-950"
+              >
+                <span class="swatch-shade swatch-shade-light">950</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="palette-row">
+            <div class="palette-row-header">
+              <span class="palette-name">Blue</span>
+              <span class="palette-token-pattern">--t1-color-blue-{shade}</span>
+            </div>
+            <div class="swatch-strip">
+              <div
+                class="swatch"
+                style="background: var(--t1-color-blue-50)"
+                data-token="--t1-color-blue-50"
+              >
+                <span class="swatch-shade swatch-shade-dark">50</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-blue-100)"
+                data-token="--t1-color-blue-100"
+              >
+                <span class="swatch-shade swatch-shade-dark">100</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-blue-200)"
+                data-token="--t1-color-blue-200"
+              >
+                <span class="swatch-shade swatch-shade-dark">200</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-blue-300)"
+                data-token="--t1-color-blue-300"
+              >
+                <span class="swatch-shade swatch-shade-dark">300</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-blue-400)"
+                data-token="--t1-color-blue-400"
+              >
+                <span class="swatch-shade swatch-shade-dark">400</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-blue-500)"
+                data-token="--t1-color-blue-500"
+              >
+                <span class="swatch-shade swatch-shade-light">500</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-blue-600)"
+                data-token="--t1-color-blue-600"
+              >
+                <span class="swatch-shade swatch-shade-light">600</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-blue-700)"
+                data-token="--t1-color-blue-700"
+              >
+                <span class="swatch-shade swatch-shade-light">700</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-blue-800)"
+                data-token="--t1-color-blue-800"
+              >
+                <span class="swatch-shade swatch-shade-light">800</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-blue-900)"
+                data-token="--t1-color-blue-900"
+              >
+                <span class="swatch-shade swatch-shade-light">900</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-blue-950)"
+                data-token="--t1-color-blue-950"
+              >
+                <span class="swatch-shade swatch-shade-light">950</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="palette-row">
+            <div class="palette-row-header">
+              <span class="palette-name">Violet</span>
+              <span class="palette-token-pattern">--t1-color-violet-{shade}</span>
+            </div>
+            <div class="swatch-strip">
+              <div
+                class="swatch"
+                style="background: var(--t1-color-violet-50)"
+                data-token="--t1-color-violet-50"
+              >
+                <span class="swatch-shade swatch-shade-dark">50</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-violet-100)"
+                data-token="--t1-color-violet-100"
+              >
+                <span class="swatch-shade swatch-shade-dark">100</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-violet-200)"
+                data-token="--t1-color-violet-200"
+              >
+                <span class="swatch-shade swatch-shade-dark">200</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-violet-300)"
+                data-token="--t1-color-violet-300"
+              >
+                <span class="swatch-shade swatch-shade-dark">300</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-violet-400)"
+                data-token="--t1-color-violet-400"
+              >
+                <span class="swatch-shade swatch-shade-dark">400</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-violet-500)"
+                data-token="--t1-color-violet-500"
+              >
+                <span class="swatch-shade swatch-shade-light">500</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-violet-600)"
+                data-token="--t1-color-violet-600"
+              >
+                <span class="swatch-shade swatch-shade-light">600</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-violet-700)"
+                data-token="--t1-color-violet-700"
+              >
+                <span class="swatch-shade swatch-shade-light">700</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-violet-800)"
+                data-token="--t1-color-violet-800"
+              >
+                <span class="swatch-shade swatch-shade-light">800</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-violet-900)"
+                data-token="--t1-color-violet-900"
+              >
+                <span class="swatch-shade swatch-shade-light">900</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-violet-950)"
+                data-token="--t1-color-violet-950"
+              >
+                <span class="swatch-shade swatch-shade-light">950</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="palette-row">
+            <div class="palette-row-header">
+              <span class="palette-name">Pink</span>
+              <span class="palette-token-pattern">--t1-color-pink-{shade}</span>
+            </div>
+            <div class="swatch-strip">
+              <div
+                class="swatch"
+                style="background: var(--t1-color-pink-50)"
+                data-token="--t1-color-pink-50"
+              >
+                <span class="swatch-shade swatch-shade-dark">50</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-pink-100)"
+                data-token="--t1-color-pink-100"
+              >
+                <span class="swatch-shade swatch-shade-dark">100</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-pink-200)"
+                data-token="--t1-color-pink-200"
+              >
+                <span class="swatch-shade swatch-shade-dark">200</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-pink-300)"
+                data-token="--t1-color-pink-300"
+              >
+                <span class="swatch-shade swatch-shade-dark">300</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-pink-400)"
+                data-token="--t1-color-pink-400"
+              >
+                <span class="swatch-shade swatch-shade-dark">400</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-pink-500)"
+                data-token="--t1-color-pink-500"
+              >
+                <span class="swatch-shade swatch-shade-light">500</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-pink-600)"
+                data-token="--t1-color-pink-600"
+              >
+                <span class="swatch-shade swatch-shade-light">600</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-pink-700)"
+                data-token="--t1-color-pink-700"
+              >
+                <span class="swatch-shade swatch-shade-light">700</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-pink-800)"
+                data-token="--t1-color-pink-800"
+              >
+                <span class="swatch-shade swatch-shade-light">800</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-pink-900)"
+                data-token="--t1-color-pink-900"
+              >
+                <span class="swatch-shade swatch-shade-light">900</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-pink-950)"
+                data-token="--t1-color-pink-950"
+              >
+                <span class="swatch-shade swatch-shade-light">950</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="palette-row">
+            <div class="palette-row-header">
+              <span class="palette-name">Gray</span>
+              <span class="palette-token-pattern">--t1-color-gray-{shade}</span>
+            </div>
+            <div class="swatch-strip">
+              <div
+                class="swatch"
+                style="background: var(--t1-color-gray-50)"
+                data-token="--t1-color-gray-50"
+              >
+                <span class="swatch-shade swatch-shade-dark">50</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-gray-100)"
+                data-token="--t1-color-gray-100"
+              >
+                <span class="swatch-shade swatch-shade-dark">100</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-gray-200)"
+                data-token="--t1-color-gray-200"
+              >
+                <span class="swatch-shade swatch-shade-dark">200</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-gray-300)"
+                data-token="--t1-color-gray-300"
+              >
+                <span class="swatch-shade swatch-shade-dark">300</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-gray-400)"
+                data-token="--t1-color-gray-400"
+              >
+                <span class="swatch-shade swatch-shade-dark">400</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-gray-500)"
+                data-token="--t1-color-gray-500"
+              >
+                <span class="swatch-shade swatch-shade-light">500</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-gray-600)"
+                data-token="--t1-color-gray-600"
+              >
+                <span class="swatch-shade swatch-shade-light">600</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-gray-700)"
+                data-token="--t1-color-gray-700"
+              >
+                <span class="swatch-shade swatch-shade-light">700</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-gray-800)"
+                data-token="--t1-color-gray-800"
+              >
+                <span class="swatch-shade swatch-shade-light">800</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-gray-900)"
+                data-token="--t1-color-gray-900"
+              >
+                <span class="swatch-shade swatch-shade-light">900</span>
+              </div>
+              <div
+                class="swatch"
+                style="background: var(--t1-color-gray-950)"
+                data-token="--t1-color-gray-950"
+              >
+                <span class="swatch-shade swatch-shade-light">950</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

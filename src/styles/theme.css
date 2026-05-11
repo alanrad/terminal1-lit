@@ -246,17 +246,30 @@
    */
 
   /* Primary */
-  --t1-color-primary-50: var(--t1-color-sky-50);
-  --t1-color-primary-100: var(--t1-color-sky-100);
-  --t1-color-primary-200: var(--t1-color-sky-200);
-  --t1-color-primary-300: var(--t1-color-sky-300);
-  --t1-color-primary-400: var(--t1-color-sky-400);
-  --t1-color-primary-500: var(--t1-color-sky-500);
-  --t1-color-primary-600: var(--t1-color-sky-600);
-  --t1-color-primary-700: var(--t1-color-sky-700);
-  --t1-color-primary-800: var(--t1-color-sky-800);
-  --t1-color-primary-900: var(--t1-color-sky-900);
-  --t1-color-primary-950: var(--t1-color-sky-950);
+  --t1-color-primary-50: var(--t1-color-red-50);
+  --t1-color-primary-100: var(--t1-color-red-100);
+  --t1-color-primary-200: var(--t1-color-red-200);
+  --t1-color-primary-300: var(--t1-color-red-300);
+  --t1-color-primary-400: var(--t1-color-red-400);
+  --t1-color-primary-500: var(--t1-color-red-500);
+  --t1-color-primary-600: var(--t1-color-red-600);
+  --t1-color-primary-700: var(--t1-color-red-700);
+  --t1-color-primary-800: var(--t1-color-red-800);
+  --t1-color-primary-900: var(--t1-color-red-900);
+  --t1-color-primary-950: var(--t1-color-red-950);
+
+  /* Info */
+  --t1-color-info-50: var(--t1-color-sky-50);
+  --t1-color-info-100: var(--t1-color-sky-100);
+  --t1-color-info-200: var(--t1-color-sky-200);
+  --t1-color-info-300: var(--t1-color-sky-300);
+  --t1-color-info-400: var(--t1-color-sky-400);
+  --t1-color-info-500: var(--t1-color-sky-500);
+  --t1-color-info-600: var(--t1-color-sky-600);
+  --t1-color-info-700: var(--t1-color-sky-700);
+  --t1-color-info-800: var(--t1-color-sky-800);
+  --t1-color-info-900: var(--t1-color-sky-900);
+  --t1-color-info-950: var(--t1-color-sky-950);
 
   /* Success */
   --t1-color-success-50: var(--t1-color-green-50);
@@ -461,7 +474,7 @@
   --t1-input-spacing-medium: var(--t1-spacing-medium);
   --t1-input-spacing-large: var(--t1-spacing-large);
 
-  --t1-input-focus-ring-color: hsl(198.6 88.7% 48.4% / 40%);
+  --t1-input-focus-ring-color: hsl(0 84.2% 60.2% / 40%);
   --t1-input-focus-ring-offset: 0;
 
   --t1-input-filled-background-color: var(--t1-color-neutral-100);
